@@ -153,7 +153,7 @@ public class CS_Chess : MonoBehaviour {
 		}
 		else Debug.LogWarning("Cannot Find TargetLine");
 		
-		myText = myPackageProcess.transform.FindChild (CS_Global.NAME_TEXT_HP).gameObject;
+		myText = myPackageProcess.transform.Find (CS_Global.NAME_TEXT_HP).gameObject;
 		
 		myCollider = this.GetComponent<CircleCollider2D> ();
 		mySpriteRenderer = this.GetComponent<SpriteRenderer> ();
@@ -709,7 +709,7 @@ public class CS_Chess : MonoBehaviour {
 	//Show HP on chess
 	public void ShowHP () {
 		if (myText == null)
-			myText = myPackageProcess.transform.FindChild (CS_Global.NAME_TEXT_HP).gameObject;
+			myText = myPackageProcess.transform.Find (CS_Global.NAME_TEXT_HP).gameObject;
 		myText.GetComponent<TextMesh> ().text = at_CurHP.ToString();
 	}
 

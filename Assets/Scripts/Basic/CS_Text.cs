@@ -19,7 +19,7 @@ public class CS_Text : MonoBehaviour {
 		this.GetComponent<TextMesh> ().text = 
 			CS_Caption.Instance.GetComponent<CS_Caption> ().LoadCaption (myCategory, myTitle);
 
-		myTextShadow = this.transform.FindChild ("TX_Shadow");
+		myTextShadow = this.transform.Find ("TX_Shadow");
 		if (myTextShadow != null)
 			myTextShadow.gameObject.SendMessage ("UpdateShadow");
 	}
