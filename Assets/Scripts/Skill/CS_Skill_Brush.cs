@@ -40,7 +40,8 @@ public class CS_Skill_Brush : CS_Skill {
 		}
 			
 		Vector3[] t_positions = linePositionList.ToArray ();
-		line.GetComponent<LineRenderer> ().numPositions = t_positions.Length;
+
+		line.GetComponent<LineRenderer> ().positionCount = t_positions.Length;
 		line.GetComponent<LineRenderer> ().SetPositions(t_positions);
 ////
 //

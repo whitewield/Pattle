@@ -66,13 +66,6 @@ public class CS_AudioManager : MonoBehaviour {
 		t_SFXAudioSource.pitch = g_SFX.GetMyPitch ();
 		t_SFXAudioSource.Play ();
 
-//		GameObject t_SFX = Instantiate (mySFXPrefab) as GameObject;
-//		t_SFX.name = "SFX_" + t_AudioClip.name;
-//		t_SFX.GetComponent<AudioSource> ().clip = t_AudioClip;
-//		t_SFX.GetComponent<AudioSource> ().volume = g_SFX.myVolum;
-//		t_SFX.GetComponent<AudioSource> ().pitch = g_SFX.GetMyPitch ();
-//		t_SFX.GetComponent<AudioSource> ().Play ();
-//		DestroyObject(t_SFX, t_AudioClip.length);
 	}
 
 	public void PlaySFX (AudioClip g_SFX, float g_volum = 1) {
@@ -90,30 +83,9 @@ public class CS_AudioManager : MonoBehaviour {
 		t_SFXAudioSource.clip = g_SFX;
 		t_SFXAudioSource.volume = g_volum;
 		t_SFXAudioSource.Play ();
-
-//		GameObject t_SFX = Instantiate (mySFXPrefab) as GameObject;
-//		t_SFX.name = "SFX_" + g_SFX.name;
-//		t_SFX.GetComponent<AudioSource> ().clip = g_SFX;
-//		t_SFX.GetComponent<AudioSource> ().Play ();
-//		DestroyObject(t_SFX, g_SFX.length);
 	}
 
-	public void PlayBGM (AudioClip g_BGM) {
-		if (myAudioSource.isPlaying == false) {
-			myAudioSource.clip = g_BGM;
-			myAudioSource.Play ();
-			return;
-		}
-
-		if (g_BGM == myAudioSource.clip)
-			return;
-
-		myAudioSource.Stop ();
-		myAudioSource.clip = g_BGM;
-		myAudioSource.Play ();
-	}
-
-	public void PlayBGM (AudioClip g_BGM, float g_Volume) {
+	public void PlayBGM (AudioClip g_BGM, float g_Volume = 1) {
 		if (myAudioSource.isPlaying == false) {
 			myAudioSource.clip = g_BGM;
 			myAudioSource.volume = g_Volume;
@@ -134,4 +106,20 @@ public class CS_AudioManager : MonoBehaviour {
 		myAudioSource.Stop ();
 	}
 
+	//Edit based on Matt Bock's code
+	public float RemapRange (float g_input, float g_inputFrom, float g_inputTo, float g_outputFrom, float g_outputTo) {
+
+		//need to test
+
+		//make sure the value between g_inputFrom and g_inputTo;
+		float t_input = g_input;
+		if (g_inputFrom < g_inputTo)
+			t_input = Mathf.Clamp (g_input, g_inputFrom, g_inputTo);
+		else 
+			t_input = Mathf.Clamp (g_input, g_inputTo, g_inputFrom);
+		
+		float t_inputRange = (g_inputTo - g_inputFrom);
+		float t_outputRange = (g_outputTo - g_outputFrom);
+		return (((t_input - g_inputFrom) * t_outputRange) / t_inputRange) + g_outputFrom;
+	}
 }
