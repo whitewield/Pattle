@@ -6,8 +6,11 @@ using UnityEngine.Networking;
 namespace Pattle {
 	namespace Chess{
 		public class PT_Chess : NetworkBehaviour {
-			[SyncVar][SerializeField] PT_ChessAttributes myAttributes;
-
+			[SyncVar][SerializeField] protected PT_ChessAttributes myAttributes;
+			//Process
+			protected int process;
+			protected int preProcess;
+			protected int lastProcess;
 			// Use this for initialization
 			void Start () {
 
