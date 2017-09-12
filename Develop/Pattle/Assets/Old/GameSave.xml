@@ -1,0 +1,29 @@
+<PattleData>
+  <Settings>
+    <language>EN</language>
+  </Settings>
+  <Chess>
+    <FireMage>1</FireMage>
+    <Paladin>1</Paladin>
+    <IceMage>1</IceMage>
+    <Warrior>1</Warrior>
+    <Archer>1</Archer>
+    <PolarBear>1</PolarBear>
+  </Chess>
+  <Adventure>
+    <TutorialMove>4</TutorialMove>
+    <TutorialSingle>2</TutorialSingle>
+    <TutorialSpell>4</TutorialSpell>
+    <TutorialClose>2</TutorialClose>
+    <TutorialDistance>2</TutorialDistance>
+    <Archer>2</Archer>
+    <FireDragon>4</FireDragon>
+    <IceMage>4</IceMage>
+    <Neptu>2</Neptu>
+    <Mushroom>4</Mushroom>
+    <Chameleon>2</Chameleon>
+  </Adventure>
+  <Bag>
+    <Coins>2332</Coins>
+  </Bag>
+</PattleData>
