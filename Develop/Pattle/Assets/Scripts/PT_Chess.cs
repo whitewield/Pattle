@@ -7,6 +7,7 @@ namespace Pattle {
 	namespace Chess{
 		public class PT_Chess : NetworkBehaviour {
 			[SyncVar][SerializeField] protected PT_ChessAttributes myAttributes;
+			[SerializeField] protected NetworkPlayer myNetworkPlayerID;
 			//Process
 			protected int process;
 			protected int preProcess;
@@ -19,6 +20,20 @@ namespace Pattle {
 			// Update is called once per frame
 			void Update () {
 
+			}
+
+			public bool Action (GameObject g_target, Vector2 g_targetPosition) {
+				if (!isServer) {
+					Debug.Log ("Action not server!");
+					return false;
+				}
+
+				this.transform.position = g_targetPosition;
+				return true;
+			}
+
+			public void SetMyNetworkPlayer (NetworkPlayer g_playerID) {
+				myNetworkPlayerID = g_playerID;
 			}
 		}
 			
