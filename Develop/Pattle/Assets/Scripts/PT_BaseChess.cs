@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class PT_BaseChess : NetworkBehaviour {
-
+	[SyncVar] int myOwnerID = -1;
 	// Use this for initialization
 	void Start () {
 		
@@ -14,4 +14,13 @@ public class PT_BaseChess : NetworkBehaviour {
 	void Update () {
 		
 	}
+
+	public int GetMyOwnerID () {
+		return myOwnerID;
+	}
+
+	public void SetMyOwnerID (int g_ID) {
+		myOwnerID = g_ID;
+	}
+
 }
