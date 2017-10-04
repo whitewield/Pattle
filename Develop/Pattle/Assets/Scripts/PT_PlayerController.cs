@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class PT_PlayerController : NetworkBehaviour {
 	[SyncVar] int myID = -1;
 	[SerializeField] GameObject[] myChessPrefabs;
+	[SerializeField] Vector2[] myChessPositions;
 //	[SyncVar] int myChessCount = 0;
 
 	private bool wasInit = false;
@@ -81,7 +82,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		if (isMouseDown == true && 
 			myGameObject_T.GetComponent<PT_BaseChess>()!= null && 
 			myGameObject_T.GetComponent<PT_BaseChess>().GetMyOwnerID() == myID &&
-			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > CS_Global.DISTANCE_DRAG) {
+			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > PT_Global.DISTANCE_DRAG) {
 			isMouseDrag = true;
 
 			ShowLine ();
@@ -189,6 +190,14 @@ public class PT_PlayerController : NetworkBehaviour {
 			return;
 		}
 
+
+		//rotate the camera
+		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
+		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == 1)
+			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
+		else
+			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 0);
+
 		if (wasInit)
 			return;
 		
@@ -197,7 +206,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		CmdCreateChess ();
 
 
-		Debug.Log (GetInstanceID ());
+//		Debug.Log (GetInstanceID ());
 	}
 
 	[Command]
@@ -210,10 +219,10 @@ public class PT_PlayerController : NetworkBehaviour {
 			return;
 		}
 
-		foreach (GameObject t_prefab in myChessPrefabs) {
+		for(int i = 0; i < myChessPrefabs.Length; i++) {
 			// create server-side instance
 
-			GameObject t_chessObject = (GameObject)Instantiate (t_prefab, Random.insideUnitCircle * 4, Quaternion.identity);
+			GameObject t_chessObject = (GameObject)Instantiate (myChessPrefabs[i], Random.insideUnitCircle * 4, Quaternion.identity);
 			PT_BaseChess t_chess = t_chessObject.GetComponent<PT_BaseChess> ();
 
 			//add the chess to the network game manager
@@ -224,25 +233,39 @@ public class PT_PlayerController : NetworkBehaviour {
 
 //			myChessCount++;
 
-			// spawn on the clients
+			t_chess.transform.position = myChessPositions [i];
 
-			NetworkServer.Spawn (t_chessObject);
+			if (myID == 1) {
+				t_chess.transform.position *= -1;
+			}
 
 			//test
 			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+			// spawn on the clients
+			NetworkServer.Spawn (t_chessObject);
 		}
 	}
 
 	[Command]
 	public void CmdChessAction (GameObject g_active, GameObject g_target, Vector2 g_targetPos) {
-		g_active.transform.position = g_targetPos;
-		RpcDone ();
+		if (g_active.GetComponent<PT_BaseChess> ().Action (g_target, g_targetPos))
+			RpcDone ();
+		else 
+			RpcUndone ();
 	}
 
 	[ClientRpc]
 	void RpcDone () {
 		if (isLocalPlayer) {
 			Done ();
+		}
+	}
+
+	[ClientRpc]
+	void RpcUndone () {
+		if (isLocalPlayer) {
+			Undone ();
 		}
 	}
 }
