@@ -32,6 +32,7 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	#region Action
 	public virtual bool Action (GameObject g_target, Vector2 g_targetPos) {
+			
 		if (myProcess != PT_Global.Process.Idle &&
 			myProcess != PT_Global.Process.CD) {
 			return false;

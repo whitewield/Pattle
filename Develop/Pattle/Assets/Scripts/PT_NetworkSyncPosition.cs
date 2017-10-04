@@ -9,7 +9,9 @@ public class PT_NetworkSyncPosition : NetworkBehaviour {
 	[SerializeField] float myLerpRate = 15;
 
 	[SyncVar] private Vector3 mySyncPosition;
+	private Vector3 myLastPosition;
 	private Transform myTransform;
+	private float myThreshold = 0.01f;
 
 	void Awake () {
 		myTransform = this.GetComponent<Transform> ();
@@ -17,7 +19,10 @@ public class PT_NetworkSyncPosition : NetworkBehaviour {
 
 	void FixedUpdate () {
 		if (isServer) {
-			mySyncPosition = myTransform.position;
+			if (Vector3.SqrMagnitude (myTransform.position - myLastPosition) > myThreshold) {
+				mySyncPosition = myTransform.position;
+				myLastPosition = myTransform.position;
+			}
 		}
 
 		if (isClient) {
@@ -25,8 +30,8 @@ public class PT_NetworkSyncPosition : NetworkBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+//	// Update is called once per frame
+//	void Update () {
+//		
+//	}
 }
