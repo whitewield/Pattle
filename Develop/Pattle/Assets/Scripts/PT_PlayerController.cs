@@ -51,6 +51,32 @@ public class PT_PlayerController : NetworkBehaviour {
 			Init();
 		}
 	}
+
+	public void Init () {
+		//		Debug.Log (GetInstanceID ());
+		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == -1) {
+			Invoke ("Init", 1);
+			Debug.Log ("Invoke");
+			return;
+		}
+
+
+		//rotate the camera
+		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
+		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == 1)
+			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
+		else
+			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 0);
+
+		if (wasInit)
+			return;
+
+		wasInit = true;
+
+		CmdCreateChess ();
+
+		//		Debug.Log (GetInstanceID ());
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -181,34 +207,7 @@ public class PT_PlayerController : NetworkBehaviour {
 	private void HideLine () {
 		myLine.SetActive (false);
 	}
-
-	public void Init () {
-//		Debug.Log (GetInstanceID ());
-		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == -1) {
-			Invoke ("Init", 1);
-			Debug.Log ("Invoke");
-			return;
-		}
-
-
-		//rotate the camera
-		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
-		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == 1)
-			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
-		else
-			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 0);
-
-		if (wasInit)
-			return;
 		
-		wasInit = true;
-
-		CmdCreateChess ();
-
-
-//		Debug.Log (GetInstanceID ());
-	}
-
 	[Command]
 	public void CmdCreateChess () {
 		myID = System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this);
@@ -240,7 +239,7 @@ public class PT_PlayerController : NetworkBehaviour {
 			}
 
 			//test
-			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
+//			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
 
 			// spawn on the clients
 			NetworkServer.Spawn (t_chessObject);
