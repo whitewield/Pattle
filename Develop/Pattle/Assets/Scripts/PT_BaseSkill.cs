@@ -5,13 +5,13 @@ using UnityEngine.Networking;
 
 public class PT_BaseSkill : NetworkBehaviour {
 
-	private PT_BaseChess myCaster;
+	protected PT_BaseChess myCaster;
 
-	private int myPD = 0;
-	private int myMD = 0;
-	private int myHeal = 0;
+	protected int myPD = 0;
+	protected int myMD = 0;
+	protected int myHeal = 0;
 
-	[SerializeField] bool isFriendlyFire = true;
+	[SerializeField] protected bool isFriendlyFire = true;
 
 	[SerializeField] GameObject mySubSkill;
 	[SerializeField] GameObject mySubParticle;

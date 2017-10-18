@@ -13,9 +13,14 @@ public class PT_ProcessDisplay : MonoBehaviour {
 	private float myDeltaTimeRatio;
 	private float myTimer;
 
-	private float myPauseTime;
-
 	[SerializeField] TextMesh myHPTextMesh;
+
+	[SerializeField] GameObject myStatus_Freeze;
+	private float myStatus_Freeze_EndTime;
+
+	[SerializeField] GameObject myStatus_Gold;
+	private float myStatus_Gold_EndTime;
+
 
 //	[SerializeField] Transform myIdleTransform;
 
@@ -56,26 +61,48 @@ public class PT_ProcessDisplay : MonoBehaviour {
 		myTimerTransform.localScale = Vector3.zero;
 	}
 
-	public void PauseProcess (float g_time) {
+	public void ShowStatus_Freeze (float g_time) {
 		//		Debug.Log ("ShowCD: " + g_time);
+		myStatus_Freeze_EndTime = Mathf.Max (myStatus_Freeze_EndTime, g_time + Time.timeSinceLevelLoad);
+		if (myStatus_Freeze.activeSelf == false) {
+			myStatus_Freeze.SetActive (true);
+		}
+	}
 
-		myPauseTime = Mathf.Max (myPauseTime, g_time);
+	public void ShowStatus_Gold (float g_time) {
+		//		Debug.Log ("ShowCD: " + g_time);
+		myStatus_Gold_EndTime = Mathf.Max (myStatus_Gold_EndTime, g_time + Time.timeSinceLevelLoad);
+		if (myStatus_Gold.activeSelf == false) {
+			myStatus_Gold.SetActive (true);
+		}
 	}
 		
 	private void Update () {
-		if (myPauseTime > 0) {
-			myPauseTime -= Time.deltaTime;
-		} else {
-			switch (myProcess) {
-			case PT_Global.Process.CT:
-				Update_CT ();
-				break;
-			case PT_Global.Process.CD:
-				Update_CD ();
-				break;
-			default:
-				break;
-			}
+		if (myStatus_Freeze.activeSelf == true && 
+			myStatus_Freeze_EndTime < Time.timeSinceLevelLoad) {
+			myStatus_Freeze.SetActive (false);
+		}
+
+		if (myStatus_Gold.activeSelf == true && 
+			myStatus_Gold_EndTime < Time.timeSinceLevelLoad) {
+			myStatus_Gold.SetActive (false);
+		}
+
+
+		if (myStatus_Freeze_EndTime > Time.timeSinceLevelLoad || 
+			myStatus_Gold_EndTime > Time.timeSinceLevelLoad) {
+			return;
+		}
+
+		switch (myProcess) {
+		case PT_Global.Process.CT:
+			Update_CT ();
+			break;
+		case PT_Global.Process.CD:
+			Update_CD ();
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -106,6 +133,10 @@ public class PT_ProcessDisplay : MonoBehaviour {
 	}
 	#endregion
 
+	#region Status
+
+	#endregion
+
 	public void ShowHP (int g_HP) {
 		if (g_HP == 0)
 			myHPTextMesh.text = "0";
@@ -116,4 +147,5 @@ public class PT_ProcessDisplay : MonoBehaviour {
 	public void HideHP () {
 		myHPTextMesh.text = "";
 	}
+
 }

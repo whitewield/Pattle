@@ -247,8 +247,11 @@ public class PT_BaseChess : NetworkBehaviour {
 
 		myStatus [(int)g_status] = Mathf.Max (myStatus [(int)g_status], g_time);
 
-		if (g_status == PT_Global.Status.Freeze || g_status == PT_Global.Status.Gold) {
-			RpcPauseProcess (g_time);
+		if (g_status == PT_Global.Status.Freeze) {
+			RpcShowStatus_Freeze (myStatus [(int)g_status]);
+		}
+		if (g_status == PT_Global.Status.Gold) {
+			RpcShowStatus_Gold (myStatus [(int)g_status]);
 		}
 
 		OnSetStatus ();
@@ -266,9 +269,9 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	private void UpdateStatus () {
-		foreach (float f_status in myStatus) {
-			if (f_status > 0)
-				f_status -= Time.deltaTime;
+		for (int i = 0; i < myStatus.Count; i++) {
+			if (myStatus [i] > 0)
+				myStatus [i] -= Time.deltaTime;
 		}
 	}
 
@@ -414,9 +417,15 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	void RpcPauseProcess (float g_time) {
+	void RpcShowStatus_Freeze (float g_time) {
 		//		Debug.Log ("RpcShowCT");
-		myProcessDisplay.PauseProcess (g_time);
+		myProcessDisplay.ShowStatus_Freeze (g_time);
+	}
+
+	[ClientRpc]
+	void RpcShowStatus_Gold (float g_time) {
+		//		Debug.Log ("RpcShowCT");
+		myProcessDisplay.ShowStatus_Gold (g_time);
 	}
 
 	[ClientRpc]
