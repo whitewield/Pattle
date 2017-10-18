@@ -4,9 +4,20 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class PT_BaseChess : NetworkBehaviour {
-	[SyncVar] int myOwnerID = -1;
+	[SyncVar] protected int myOwnerID = -1;
 
+	//Process
+	[SerializeField] GameObject myProcessDisplayPrefab;
+	protected PT_ProcessDisplay myProcessDisplay;
 	protected PT_Global.Process myProcess = PT_Global.Process.Idle;
+
+	//Attributes
+	[SerializeField] protected SO_Attributes myAttributes;
+	[SyncVar] int myCurHP;
+	protected float myTimer;//timer to count the time in different Process
+
+	//Status
+	protected List<float> myStatus = new List<float> ();
 
 	//For Action
 	protected Vector2 myPosition;
@@ -28,13 +39,23 @@ public class PT_BaseChess : NetworkBehaviour {
 		mySpriteRenderer = this.GetComponent<SpriteRenderer> ();
 
 		SetProcess (PT_Global.Process.Idle);
+		myProcessDisplay = Instantiate (myProcessDisplayPrefab, this.transform).GetComponent<PT_ProcessDisplay> ();
+		myProcessDisplay.transform.localPosition = Vector3.zero;
+		myProcessDisplay.HideProces ();
+
+		myCurHP = myAttributes.HP;
+		myProcessDisplay.ShowHP (myCurHP);
+
+		for (int i = 0; i < (int)PT_Global.Status.End; i++) {
+			myStatus.Add (0f);
+		}
 	}
 
 	#region Action
 	public virtual bool Action (GameObject g_target, Vector2 g_targetPos) {
 			
-		if (myProcess != PT_Global.Process.Idle &&
-			myProcess != PT_Global.Process.CD) {
+
+		if (myProcess != PT_Global.Process.Idle) {
 			return false;
 		}
 
@@ -62,19 +83,31 @@ public class PT_BaseChess : NetworkBehaviour {
 		return false;
 	}
 
-	public virtual void Idle () {
+	protected virtual void Idle () {
 		SetProcess (PT_Global.Process.Idle);
 	}
 
-	private void Move () {
+	protected void Move () {
 		SetProcess (PT_Global.Process.Move);
 	}
 
-	private void Attack () {
+	protected virtual void CoolDown (float g_scale = 1) {
+		SetProcess (PT_Global.Process.CD);
+		myTimer = myAttributes.CD * g_scale;
+		RpcShowCD (myTimer);
+	}
+
+	protected virtual void Cast (float g_scale = 1) {
+		SetProcess (PT_Global.Process.CT);
+		myTimer = myAttributes.CT * g_scale;
+		RpcShowCT (myTimer);
+	}
+
+	protected virtual void Attack () {
 		SetProcess (PT_Global.Process.Attack);
 	}
 
-	private void AttackBack () {
+	protected void AttackBack () {
 		SetProcess (PT_Global.Process.AttackBack);
 	}
 
@@ -90,6 +123,11 @@ public class PT_BaseChess : NetworkBehaviour {
 				myCollider.isTrigger = false;
 		}
 	}
+
+	public PT_Global.Process GetProcess () {
+		return myProcess;
+	}
+
 	#endregion
 
 	#region Update
@@ -99,16 +137,30 @@ public class PT_BaseChess : NetworkBehaviour {
 
 		if (!isServer)
 			return;
+		
+		UpdateStatus ();
+
+		if (GetStatus (PT_Global.Status.Freeze) || GetStatus (PT_Global.Status.Gold)) {
+			return;
+		}
+
 		UpdateAction ();
 	}
 
 	protected virtual void UpdateAction () {
+
 		switch (myProcess) {
 		case PT_Global.Process.Idle:
 			UpdateAction_Idle ();
 			break;
 		case PT_Global.Process.Move:
 			UpdateAction_Move ();
+			break;
+		case PT_Global.Process.CD:
+			UpdateAction_CD ();
+			break;
+		case PT_Global.Process.CT:
+			UpdateAction_CT ();
 			break;
 		case PT_Global.Process.Attack:
 			UpdateAction_Attack ();
@@ -117,6 +169,11 @@ public class PT_BaseChess : NetworkBehaviour {
 			UpdateAction_AttackBack ();
 			break;
 		}
+
+		//update Timer
+		if (myTimer > 0)
+			myTimer -= Time.deltaTime;
+//		Debug.Log ("timer: " + myTimer);
 	}
 
 	protected virtual void UpdateAction_Idle () {
@@ -135,8 +192,18 @@ public class PT_BaseChess : NetworkBehaviour {
 			myPosition = myTargetPosition;
 
 			//start cool down
-			Idle ();
+			CoolDown (0.5f);
 		}
+	}
+
+	protected virtual void UpdateAction_CD () {
+		if (myTimer <= 0)
+			Idle ();
+	}
+
+	protected virtual void UpdateAction_CT () {
+		if (myTimer <= 0)
+			Attack ();
 	}
 
 	public virtual void UpdateAction_Attack () {
@@ -148,7 +215,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		//if the chess at the target, stop
 		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.DISTANCE_RESET) {
 			//Reset and come back
-			AttackBack();
+			AttackBack ();
 		}
 	}
 
@@ -163,7 +230,45 @@ public class PT_BaseChess : NetworkBehaviour {
 			this.transform.position = myPosition;
 
 			//start cool down
-			Idle ();
+			CoolDown ();
+		}
+	}
+
+	#endregion
+
+	#region Status
+	public void SetStatus (PT_Global.Status g_status, float g_time) {
+		if (GetStatus (PT_Global.Status.Gold))
+			return;
+
+		if ((GetStatus (PT_Global.Status.SpellImmune) || GetStatus (PT_Global.Status.Bubble)) &&
+		    g_status == PT_Global.Status.Freeze)
+			return;
+
+		myStatus [(int)g_status] = Mathf.Max (myStatus [(int)g_status], g_time);
+
+		if (g_status == PT_Global.Status.Freeze || g_status == PT_Global.Status.Gold) {
+			RpcPauseProcess (g_time);
+		}
+
+		OnSetStatus ();
+	}
+
+	protected virtual void OnSetStatus () {
+
+	}
+
+	public bool GetStatus (PT_Global.Status g_status) {
+		if (myStatus [(int)g_status] > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	private void UpdateStatus () {
+		foreach (float f_status in myStatus) {
+			if (f_status > 0)
+				f_status -= Time.deltaTime;
 		}
 	}
 
@@ -178,18 +283,113 @@ public class PT_BaseChess : NetworkBehaviour {
 		CollisionAction (g_ollision2D.gameObject);
 	}
 
-	public virtual void CollisionAction(GameObject g_GO_Collision) {
+	protected virtual void CollisionAction(GameObject g_GO_Collision) {
 		if (!isServer)
 			return;
 		if (myProcess == PT_Global.Process.Dead)
 			return;
 
 		//need to be rewrite in different chess
-		if (myProcess == PT_Global.Process.Attack && 
-			g_GO_Collision.GetComponent<PT_BaseChess>() && g_GO_Collision.GetComponent<PT_BaseChess>().GetMyOwnerID() != myOwnerID) {
-			AttackBack ();
-		}
 	}
+	#endregion
+
+	#region Damage
+	public virtual void HPModify (PT_Global.HPModifierType g_type, int g_value) {
+		if (myProcess == PT_Global.Process.Dead)
+			return;
+
+		//gold prevent damage
+//		if (st_Gold >= 0)
+//			return;
+
+		int t_modifier = g_value;
+
+		if (g_type == PT_Global.HPModifierType.PhysicalDamage) {
+			t_modifier -= myAttributes.PR;
+		}
+
+		if (t_modifier < 0)
+			return;
+
+		switch (g_type) {
+		case PT_Global.HPModifierType.PhysicalDamage:
+			HPModify_PhysicalDamage (t_modifier);
+			break;
+		case PT_Global.HPModifierType.MagicDamage:
+			HPModify_MagicDamage (t_modifier);
+			break;
+		case PT_Global.HPModifierType.Healing:
+			HPModify_PhysicalDamage (t_modifier);
+			break;
+		}
+
+		//play SFX damage 
+//		PlayMySFX (myDamageSFX);
+	}
+
+	protected virtual void DoOnDamage () {
+
+	}
+
+	protected virtual void HPModify_PhysicalDamage (int g_value) {
+		//used by chameleon, mushroom
+
+		myCurHP -= g_value;
+//		myPackageStable.SendMessage("ShowDamage", -t_damage);
+		DoOnDamage ();
+
+		CheckIsDead ();
+	}
+
+	protected virtual void HPModify_MagicDamage (int g_value) {
+		//used by chameleon
+
+		if (GetStatus (PT_Global.Status.Gold) ||
+		    GetStatus (PT_Global.Status.SpellImmune) ||
+		    GetStatus (PT_Global.Status.Bubble))
+			return;
+
+		myCurHP -= g_value;
+//		myPackageStable.SendMessage("ShowDamage", -t_damage);
+		DoOnDamage ();
+
+		CheckIsDead ();
+	}
+
+	protected virtual void HPModify_Healing (int g_value) {
+
+		myCurHP += g_value;
+
+		if (myCurHP > myAttributes.HP) {
+			myCurHP = myAttributes.HP;
+		}
+
+//		myPackageStable.SendMessage("ShowHeal", t_heal);
+
+		RpcShowHP (myCurHP);
+	}
+
+	protected void CheckIsDead () {
+		if (myProcess == PT_Global.Process.Dead)
+			return;
+
+		if (myCurHP <= 0) {
+			SetProcess (PT_Global.Process.Dead);
+
+			DoOnDead ();
+			myCurHP = 0;
+
+			//play SFX dead
+//			PlayMySFX (myDeadSFX);
+		}
+
+		RpcShowHP (myCurHP);
+	}
+
+	protected virtual void DoOnDead () {
+
+	}
+
 	#endregion
 		
 	#region Network
@@ -200,6 +400,42 @@ public class PT_BaseChess : NetworkBehaviour {
 	public void SetMyOwnerID (int g_ID) {
 		myOwnerID = g_ID;
 	}
+
+	[ClientRpc]
+	void RpcShowCD (float g_time) {
+		//		Debug.Log ("RpcShowCD");
+		myProcessDisplay.ShowCD (g_time);
+	}
+
+	[ClientRpc]
+	void RpcShowCT (float g_time) {
+		//		Debug.Log ("RpcShowCT");
+		myProcessDisplay.ShowCT (g_time);
+	}
+
+	[ClientRpc]
+	void RpcPauseProcess (float g_time) {
+		//		Debug.Log ("RpcShowCT");
+		myProcessDisplay.PauseProcess (g_time);
+	}
+
+	[ClientRpc]
+	void RpcShowHP (int g_hp) {
+		//		Debug.Log ("RpcShowCT");
+		myProcessDisplay.ShowHP (g_hp);
+
+		if (g_hp == 0) {
+			//dead
+
+			myProcessDisplay.HideHP ();
+			mySpriteRenderer.sortingLayerName = PT_Global.SORTINGLAYER_DEADBODY;
+			mySpriteRenderer.color = PT_Global.COLOR_DEADBODY;
+			myCollider.enabled = false;
+		}
+	}
 	#endregion
 
+
 }
+
+

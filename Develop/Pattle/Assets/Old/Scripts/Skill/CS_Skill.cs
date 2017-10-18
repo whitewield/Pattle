@@ -31,7 +31,6 @@ public class CS_Skill : MonoBehaviour {
 	}
 	
 	public virtual void CollisionAction (GameObject g_GO_Collision) {
-
 		//if hit not chess , return
 		if (g_GO_Collision.tag != CS_Global.TAG_A && g_GO_Collision.tag != CS_Global.TAG_B)
 			return;

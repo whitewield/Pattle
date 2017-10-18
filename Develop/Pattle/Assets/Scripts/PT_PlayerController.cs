@@ -62,7 +62,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 
 		//rotate the camera
-		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
+//		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
 		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == 1)
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
 		else
@@ -104,10 +104,14 @@ public class PT_PlayerController : NetworkBehaviour {
 		}
 
 		//Debug.Log (Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition));
+		PT_BaseChess t_BaseChess_T = null;
+		if (myGameObject_T && myGameObject_T.GetComponent<PT_BaseChess> ())
+			t_BaseChess_T = myGameObject_T.GetComponent<PT_BaseChess> ();
 
 		if (isMouseDown == true && 
-			myGameObject_T.GetComponent<PT_BaseChess>()!= null && 
-			myGameObject_T.GetComponent<PT_BaseChess>().GetMyOwnerID() == myID &&
+			t_BaseChess_T != null && 
+			t_BaseChess_T.GetProcess() != PT_Global.Process.Dead &&
+			t_BaseChess_T.GetMyOwnerID() == myID &&
 			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > PT_Global.DISTANCE_DRAG) {
 			isMouseDrag = true;
 
@@ -142,11 +146,12 @@ public class PT_PlayerController : NetworkBehaviour {
 					CmdChessAction (myGameObject_X, myGameObject_Y, myPosition_Y);
 				} else {
 					if (myGameObject_X == null) {
-						if(myGameObject_T.GetComponent<PT_BaseChess>()!= null && 
-							myGameObject_T.GetComponent<PT_BaseChess>().GetMyOwnerID() == myID){
+						if (t_BaseChess_T != null &&
+						   t_BaseChess_T.GetProcess () != PT_Global.Process.Dead &&
+						   t_BaseChess_T.GetMyOwnerID () == myID) {
 							myGameObject_X = myGameObject_T;
 
-							ShowSelect();
+							ShowSelect ();
 						}
 					}
 					else {
