@@ -338,7 +338,9 @@ public class PT_BaseChess : NetworkBehaviour {
 		//used by chameleon, mushroom
 
 		myCurHP -= g_value;
-//		myPackageStable.SendMessage("ShowDamage", -t_damage);
+
+		RpcShowDamage (g_value);
+
 		DoOnDamage ();
 
 		CheckIsDead ();
@@ -353,7 +355,9 @@ public class PT_BaseChess : NetworkBehaviour {
 			return;
 
 		myCurHP -= g_value;
-//		myPackageStable.SendMessage("ShowDamage", -t_damage);
+
+		RpcShowDamage (g_value);
+
 		DoOnDamage ();
 
 		CheckIsDead ();
@@ -367,7 +371,7 @@ public class PT_BaseChess : NetworkBehaviour {
 			myCurHP = myAttributes.HP;
 		}
 
-//		myPackageStable.SendMessage("ShowHeal", t_heal);
+		RpcShowHealing (g_value);
 
 		RpcShowHP (myCurHP);
 	}
@@ -414,6 +418,18 @@ public class PT_BaseChess : NetworkBehaviour {
 	void RpcShowCT (float g_time) {
 		//		Debug.Log ("RpcShowCT");
 		myProcessDisplay.ShowCT (g_time);
+	}
+
+	[ClientRpc]
+	void RpcShowDamage (int g_value) {
+		//		Debug.Log ("RpcShowCT");
+		myProcessDisplay.ShowDamage (g_value);
+	}
+
+	[ClientRpc]
+	void RpcShowHealing (int g_value) {
+		//		Debug.Log ("RpcShowCT");
+		myProcessDisplay.ShowHealing (g_value);
 	}
 
 	[ClientRpc]

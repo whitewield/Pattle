@@ -16,6 +16,24 @@ public class PT_BaseSkill : NetworkBehaviour {
 	[SerializeField] GameObject mySubSkill;
 	[SerializeField] GameObject mySubParticle;
 
+	[SerializeField] float myKillTime = 0;
+	private float myKilltimer = 0;
+
+	protected virtual void Update () {
+		if (!isServer)
+			return;
+		
+		//kill on time
+
+		if (myKillTime == 0)
+			return;
+
+		myKilltimer += Time.deltaTime;
+		if (myKilltimer > myKillTime) {
+			Kill ();
+		}
+	}
+
 	//===============================================================================================
 	//COLLISION
 

@@ -11,7 +11,6 @@ public class CS_PackageStable : MonoBehaviour {
 
 	public void ShowDamage (int g_number) {
 		//Show Damage GameObject
-		//Debug.Log ("ShowDamage");
 		GameObject t_go_damage = Instantiate (GO_Damage) as GameObject;
 		t_go_damage.GetComponent<TextMesh> ().text = g_number.ToString();
 		SetRandomPosition (t_go_damage);
@@ -19,7 +18,6 @@ public class CS_PackageStable : MonoBehaviour {
 
 	public void ShowHeal (int g_number) {
 		//Show Heal GameObject
-		//Debug.Log ("ShowHeal");
 		GameObject t_go_heal = Instantiate (GO_Heal) as GameObject;
 		t_go_heal.GetComponent<TextMesh> ().text = "+" + g_number.ToString();
 		SetRandomPosition (t_go_heal);
