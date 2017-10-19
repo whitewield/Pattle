@@ -25,7 +25,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 //	[SerializeField] Transform myIdleTransform;
 
 	#region Process
-	public void HideProces () {
+	public void HideProcess () {
 		myTimerTransform.localScale = Vector3.zero;
 	}
 

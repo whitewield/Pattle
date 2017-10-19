@@ -41,7 +41,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		SetProcess (PT_Global.Process.Idle);
 		myProcessDisplay = Instantiate (myProcessDisplayPrefab, this.transform).GetComponent<PT_ProcessDisplay> ();
 		myProcessDisplay.transform.localPosition = Vector3.zero;
-		myProcessDisplay.HideProces ();
+		myProcessDisplay.HideProcess ();
 
 		myCurHP = myAttributes.HP;
 		myProcessDisplay.ShowHP (myCurHP);
@@ -309,9 +309,11 @@ public class PT_BaseChess : NetworkBehaviour {
 
 		if (g_type == PT_Global.HPModifierType.PhysicalDamage) {
 			t_modifier -= myAttributes.PR;
+			if (t_modifier < 1)
+				t_modifier = 1;
 		}
 
-		if (t_modifier < 0)
+		if (t_modifier <= 0)
 			return;
 
 		switch (g_type) {
@@ -453,6 +455,7 @@ public class PT_BaseChess : NetworkBehaviour {
 			//dead
 
 			myProcessDisplay.HideHP ();
+			myProcessDisplay.HideProcess ();
 			mySpriteRenderer.sortingLayerName = PT_Global.SORTINGLAYER_DEADBODY;
 			mySpriteRenderer.color = PT_Global.COLOR_DEADBODY;
 			myCollider.enabled = false;
