@@ -49,6 +49,8 @@ public class PT_BaseChess : NetworkBehaviour {
 		for (int i = 0; i < (int)PT_Global.Status.End; i++) {
 			myStatus.Add (0f);
 		}
+
+		CoolDown ();
 	}
 
 	#region Action

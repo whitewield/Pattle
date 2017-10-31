@@ -27,6 +27,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 	#region Process
 	public void HideProcess () {
 		myTimerTransform.localScale = Vector3.zero;
+		myProcess = PT_Global.Process.None;
 	}
 
 	public void ShowCD (float g_time) {

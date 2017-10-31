@@ -29,6 +29,10 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (!isServer)
+			return;
+		
+		Time.timeScale = 0;
 //		for (int i = 0; i < myPlayerList.Length; ++i) {
 //			myPlayerList [i].Init ();
 //		}
@@ -36,6 +40,13 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (!isServer)
+			return;
+
+		if (Time.timeScale == 0)
+		if (myPlayerList [0] != null && myPlayerList [1] != null) {
+			Time.timeScale = 1;
+			
+		}
 	}
 }
