@@ -20,12 +20,12 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 		} else {
 			instance = this;
 		}
-		DontDestroyOnLoad(this.gameObject);
+//		DontDestroyOnLoad(this.gameObject);
 	}
 	//========================================================================
 
-	public static PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
-	public static PT_BaseChess[,] myChessList = new PT_BaseChess[2, 3];
+	public PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
+	public PT_BaseChess[,] myChessList = new PT_BaseChess[2, 3];
 
 	// Use this for initialization
 	void Start () {
@@ -46,7 +46,6 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 		if (Time.timeScale == 0)
 		if (myPlayerList [0] != null && myPlayerList [1] != null) {
 			Time.timeScale = 1;
-			
 		}
 	}
 }

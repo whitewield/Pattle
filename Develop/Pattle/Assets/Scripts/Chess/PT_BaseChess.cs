@@ -50,7 +50,10 @@ public class PT_BaseChess : NetworkBehaviour {
 			myStatus.Add (0f);
 		}
 
-		CoolDown ();
+		//CD at beginning
+		SetProcess (PT_Global.Process.CD);
+		myTimer = myAttributes.CD;
+		myProcessDisplay.ShowCD (myTimer);
 	}
 
 	#region Action

@@ -1,0 +1,102 @@
+<!--请用 \r\n 替代换行符-->
+<!--例子：我的\r\n收藏-->
+<!--Version : 20160903-->
+<PattleData>
+  <Menu>
+    <Collection>Collection</Collection>
+    <Adventures>Adventures</Adventures>
+    <Shop>Coupon</Shop>
+    <Arena>Arena\r\n(Closed)</Arena>
+  </Menu>
+
+  <Shop>
+    <Coupon>Coupon</Coupon>
+  </Shop>
+
+  <Plan>
+    <Introduction>Preparation Introduction</Introduction>
+  </Plan>
+
+  <Settings>
+    <Title>Settings</Title>
+    <Language>Language</Language>
+  </Settings>
+
+  <Difficulty>
+  	<Normal>Normal</Normal>
+  	<Hard>Hard</Hard>
+  </Difficulty>
+
+  <Map>
+    <Tutorial>Tutorial\r\nDifficulty : ★☆☆☆☆\r\n\r\nGet basic\r\ncharacters</Tutorial>
+    <TutorialMove>Move</TutorialMove>
+    <TutorialClose>Close-combat</TutorialClose>
+    <TutorialSingle>Single target</TutorialSingle>
+    <TutorialSpell>Area-of-effect</TutorialSpell>
+    <TutorialDistance>Long-distance</TutorialDistance>
+
+    <FireDragon>HANNAN</FireDragon>
+    <Mushroom>MUSHROOM</Mushroom>
+    <IceMage>IVORY</IceMage>
+    <Archer>ADECH</Archer>
+    <Brush>BRUSH</Brush>
+    <Chameleon>GRUMPY</Chameleon>
+    <Neptu>NEPTU</Neptu>
+    <Fish>TAICHI</Fish>
+  </Map>
+
+  <Attributes>
+    <HP>HP</HP>
+    <Atk>ATK</Atk>
+    <Def>DEF</Def>
+    <SP>SP</SP>
+    <CT>CT</CT>
+    <CD>CD</CD>
+  </Attributes>
+
+  <ChessAbility>
+    <Warrior>Close-combat</Warrior>
+    <Berserker>Close-combat\r\nEffect : Attack rise when damaged</Berserker>
+    <Vampire>Close-combat\r\nEffect : Heal when causing damage</Vampire>
+    <Sword>Close-combat\r\nEffect : A sword rotated around,\r\ncausing spell damage</Sword>
+
+    <FireMage>Area-of-effect\r\nRange : M</FireMage>
+    <IceMage>Area-of-effect\r\nRange : S\r\nEffect : Freeze 1.5s</IceMage>
+    <LightMage>Area-of-effect\r\nRange : Line</LightMage>
+    <AirMage>Area-of-effect\r\nRange : L\r\nEffect : Concentric</AirMage>
+    <Brush>Control a brush\r\nEffect : Damage enemies, \r\nheal allies</Brush>
+
+    <Archer>Long-distance</Archer>
+    <Jam>Long-distance\r\nExplode range : M\r\nSelf-damage : 1</Jam>
+    <PolarBear>Place a trap\r\nEffect : Freeze 1.5s</PolarBear>
+    <Soprano>Single target\r\nEffect : Idle</Soprano>
+
+    <Paladin>Single target\r\nEffect : Heal</Paladin>
+    <Angel>Range : L\r\nEffect : Heal targets around self\r\n(Tap self to heal)</Angel>
+    <Neptu>Single target\r\nEffect : Prevent spell damage for 3s</Neptu>
+    <Avalok>Single target\r\nEffect : Prevent damage for 3s,\r\ntarget's time stops</Avalok>
+  </ChessAbility>
+
+  <ChessStory>
+    <Warrior>特罗斯\r\n有较高的生命值和护甲，\r\n队伍的前排战士。</Warrior>
+    <Berserker>博斯克\r\n越挫越勇的狂战士，\r\n抖M体质，\r\n在敌人和友方的蹂躏下，\r\n会表现出更强的战斗能力。</Berserker>
+    <Vampire>雷勒夫尼\r\n普攻为技能伤害的战士，\r\n虽然生命值很低，\r\n但是可以用过吸血进行回复。</Vampire>
+    <Sword>剑仙\r\n环绕他的剑\r\n会造成很高的技能伤害，\r\n需要掌握攻击的节奏，\r\n同时要小心不要打到队友。</Sword>
+
+    <FireMage>汉娜\r\n圆形技能伤害，\r\n攻击范围大，伤害高，\r\n并可以直接攻击地方后排，\r\n但是冷却和吟唱时间很长。</FireMage>
+    <IceMage>艾弗雷\r\n圆形技能伤害，\r\n控制能力很强。</IceMage>
+    <LightMage>明镜\r\n直线的技能伤害，\r\n伤害很高，\r\n小心不要打到队友，\r\n当然狂战士除外。</LightMage>
+    <AirMage>菲恩\r\n环形技能伤害，\r\n吸入风眼的控制\r\n可以和其他法师很好的配合。</AirMage>
+    <Brush>笔仙\r\n可以操作笔移动，\r\n笔会对敌方造成物理伤害，\r\n但是无法移动，\r\n需要队友的保护。</Brush>
+
+    <Archer>鹿羿\r\n射出造成物理伤害的弓箭，\r\n伤害很高，\r\n但是要小心队友的屁股。</Archer>
+    <Jam>果酱斗士\r\n用自己的身体作为子弹攻击敌人，\r\n子弹爆炸后会对范围内敌人\r\n造成高技能伤害，\r\n但是发子弹会对自己\r\n造成1点技能伤害。</Jam>
+    <PolarBear>皮儿\r\n陷阱造成物理伤害，\r\n并会一直保留在场上，\r\n小心别让己方的战士踩到。</PolarBear>
+    <Soprano>乐音\r\n打断目标的吟唱，\r\n或者结束目标的冷却状态，\r\n但是自身没有输出能力。</Soprano>
+
+    <Paladin>戴安\r\n有较高的生命值和护甲，\r\n并可以治疗目标，\r\n队伍的前排。</Paladin>
+    <Angel>彼得\r\n先选中，再点击自身，\r\n可以对周围目标进行治疗。</Angel>
+    <Neptu>尼普图\r\n有较高的生命值和护甲，\r\n可以作为队伍的前排，\r\n可以让目标免疫技能伤害，\r\n但是注意有吟唱时间。</Neptu>
+    <Avalok>阿瓦洛\r\n让目标免疫一切伤害，\r\n但是目标会暂停冷却和吟唱，\r\n可以试试看给敌人使用。</Avalok>
+  </ChessStory>
+</PattleData>

@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class PT_PlayerController : NetworkBehaviour {
 	[SyncVar] int myID = -1;
-	[SerializeField] GameObject[] myChessPrefabs;
+//	[SerializeField] GameObject[] myChessPrefabs;
 	[SerializeField] Vector2[] myChessPositions;
 //	[SyncVar] int myChessCount = 0;
 
@@ -26,11 +26,14 @@ public class PT_PlayerController : NetworkBehaviour {
 	void Awake()
 	{
 		//register the spaceship in the gamemanager, that will allow to loop on it.
-		if (PT_NetworkGameManager.myPlayerList [0] != null && PT_NetworkGameManager.myPlayerList [0].enabled == true) {
-			PT_NetworkGameManager.myPlayerList [1] = this;
+		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
+			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
+			PT_NetworkGameManager.Instance.myPlayerList [1] = this;
 		} else {
-			PT_NetworkGameManager.myPlayerList [0] = this;
+			PT_NetworkGameManager.Instance.myPlayerList [0] = this;
 		}
+
+//		ClientScene.RegisterPrefab
 	}
 
 	// Use this for initialization
@@ -54,7 +57,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 	public void Init () {
 		//		Debug.Log (GetInstanceID ());
-		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == -1) {
+		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == -1) {
 			Invoke ("Init", 1);
 			Debug.Log ("Invoke");
 			return;
@@ -63,7 +66,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		//rotate the camera
 //		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
-		if (System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this) == 1)
+		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == 1)
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
 		else
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 0);
@@ -73,7 +76,11 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		wasInit = true;
 
-		CmdCreateChess ();
+		CmdCreateChess (new PT_Global.ChessType[] {
+			PT_DeckManager.Instance.myChessPrefabs [0],
+			PT_DeckManager.Instance.myChessPrefabs [1],
+			PT_DeckManager.Instance.myChessPrefabs [2]
+		});
 
 		//		Debug.Log (GetInstanceID ());
 	}
@@ -214,8 +221,8 @@ public class PT_PlayerController : NetworkBehaviour {
 	}
 		
 	[Command]
-	public void CmdCreateChess () {
-		myID = System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this);
+	public void CmdCreateChess (PT_Global.ChessType[] g_chessTypes) {
+		myID = System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this);
 		Debug.Log (myID);
 
 		if (myID == -1) {
@@ -223,10 +230,14 @@ public class PT_PlayerController : NetworkBehaviour {
 			return;
 		}
 
-		for(int i = 0; i < myChessPrefabs.Length; i++) {
+		for(int i = 0; i < g_chessTypes.Length; i++) {
 			// create server-side instance
 
-			GameObject t_chessObject = (GameObject)Instantiate (myChessPrefabs[i], Random.insideUnitCircle * 4, Quaternion.identity);
+			GameObject t_chessObject = (GameObject)Instantiate (
+				                           PT_DeckManager.Instance.myChessBank.GetChessPrefab (g_chessTypes [i]), 
+				                           Random.insideUnitCircle * 4, 
+				                           Quaternion.identity
+			                           );
 			PT_BaseChess t_chess = t_chessObject.GetComponent<PT_BaseChess> ();
 
 			//add the chess to the network game manager

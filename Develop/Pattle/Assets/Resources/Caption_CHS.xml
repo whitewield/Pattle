@@ -1,0 +1,102 @@
+<!--请用 \r\n 替代换行符-->
+<!--例子：我的\r\n收藏-->
+<!--Version : 20160613-->
+<PattleData>
+  <Menu>
+    <Collection>我的收藏</Collection>
+    <Adventures>冒险模式</Adventures>
+    <Shop>兑奖中心</Shop>
+    <Arena>竞技场\r\n(未开放)</Arena>
+  </Menu>
+
+  <Shop>
+    <Coupon>优惠券</Coupon>
+  </Shop>
+
+  <Plan>
+    <Introduction>战前准备演示</Introduction>
+  </Plan>
+
+  <Settings>
+    <Title>设置</Title>
+    <Language>语言</Language>
+  </Settings>
+
+  <Difficulty>
+  	<Normal>普通</Normal>
+  	<Hard>困难</Hard>
+  </Difficulty>
+
+  <Map>
+    <Tutorial>教学\r\n难度：★☆☆☆☆\r\n\r\n完成后可获得\r\n基本角色。</Tutorial>
+    <TutorialMove>移动教学</TutorialMove>
+    <TutorialClose>近战攻击教学</TutorialClose>
+    <TutorialSingle>单体技能教学</TutorialSingle>
+    <TutorialSpell>魔法攻击教学</TutorialSpell>
+    <TutorialDistance>远距离射击教学</TutorialDistance>
+
+    <FireDragon>汉娜</FireDragon>
+    <Mushroom>菌</Mushroom>
+    <IceMage>艾弗雷</IceMage>
+    <Archer>鹿羿</Archer>
+    <Brush>笔仙</Brush>
+    <Chameleon>暴脾气</Chameleon>
+    <Neptu>尼普图</Neptu>
+    <Fish>两仪</Fish>
+  </Map>
+
+  <Attributes>
+    <HP>生命</HP>
+    <Atk>攻击</Atk>
+    <Def>防御</Def>
+    <SP>技能</SP>
+    <CT>吟唱</CT>
+    <CD>冷却</CD>
+  </Attributes>
+
+  <ChessAbility>
+    <Warrior>近战攻击</Warrior>
+    <Berserker>近战攻击\r\n生命值越低攻击力越高</Berserker>
+    <Vampire>近战攻击\r\n吸血</Vampire>
+    <Sword>近战攻击\r\n剑绕自身旋转，造成技能伤害</Sword>
+
+    <FireMage>中范围法术</FireMage>
+    <IceMage>小范围法术\r\n冻结1.5秒</IceMage>
+    <LightMage>直线法术</LightMage>
+    <AirMage>大范围法术\r\n将敌人吸入风眼</AirMage>
+    <Brush>操作笔移动\r\n对敌方造成伤害，对友方治疗</Brush>
+
+    <Archer>远距离射击</Archer>
+    <Jam>远距离射击\r\n中范围法术爆炸\r\n对自己造成1点伤害</Jam>
+    <PolarBear>放置陷阱\r\n冰冻1.5秒</PolarBear>
+    <Soprano>单个目标\r\n打断吟唱 或 结束冷却</Soprano>
+
+    <Paladin>单个目标\r\n治疗</Paladin>
+    <Angel>大范围\r\n以自身为中心治疗</Angel>
+    <Neptu>单个目标\r\n免疫技能伤害3秒</Neptu>
+    <Avalok>单个目标\r\n无敌3秒，期间目标的时间静止</Avalok>
+  </ChessAbility>
+
+  <ChessStory>
+    <Warrior>特罗斯\r\n有较高的生命值和护甲，\r\n队伍的前排战士。</Warrior>
+    <Berserker>博斯克\r\n越挫越勇的狂战士，\r\n抖M体质，\r\n在敌人和友方的蹂躏下，\r\n会表现出更强的战斗能力。</Berserker>
+    <Vampire>雷勒夫尼\r\n普攻为技能伤害的战士，\r\n虽然生命值很低，\r\n但是可以用过吸血进行回复。</Vampire>
+    <Sword>剑仙\r\n环绕他的剑\r\n会造成很高的技能伤害，\r\n需要掌握攻击的节奏，\r\n同时要小心不要打到队友。</Sword>
+
+    <FireMage>汉娜\r\n圆形技能伤害，\r\n攻击范围大，伤害高，\r\n并可以直接攻击地方后排，\r\n但是冷却和吟唱时间很长。</FireMage>
+    <IceMage>艾弗雷\r\n圆形技能伤害，\r\n控制能力很强。</IceMage>
+    <LightMage>明镜\r\n直线的技能伤害，\r\n伤害很高，\r\n小心不要打到队友，\r\n当然狂战士除外。</LightMage>
+    <AirMage>菲恩\r\n环形技能伤害，\r\n吸入风眼的控制\r\n可以和其他法师很好的配合。</AirMage>
+    <Brush>笔仙\r\n可以操作笔移动，\r\n笔会对敌方造成物理伤害，\r\n但是无法移动，\r\n需要队友的保护。</Brush>
+
+    <Archer>鹿羿\r\n射出造成物理伤害的弓箭，\r\n伤害很高，\r\n但是要小心队友的屁股。</Archer>
+    <Jam>果酱斗士\r\n用自己的身体作为子弹攻击敌人，\r\n子弹爆炸后会对范围内敌人\r\n造成高技能伤害，\r\n但是发子弹会对自己\r\n造成1点技能伤害。</Jam>
+    <PolarBear>皮儿\r\n陷阱造成物理伤害，\r\n并会一直保留在场上，\r\n小心别让己方的战士踩到。</PolarBear>
+    <Soprano>乐音\r\n打断目标的吟唱，\r\n或者结束目标的冷却状态，\r\n但是自身没有输出能力。</Soprano>
+
+    <Paladin>戴安\r\n有较高的生命值和护甲，\r\n并可以治疗目标，\r\n队伍的前排。</Paladin>
+    <Angel>彼得\r\n先选中，再点击自身，\r\n可以对周围目标进行治疗。</Angel>
+    <Neptu>尼普图\r\n有较高的生命值和护甲，\r\n可以作为队伍的前排，\r\n可以让目标免疫技能伤害，\r\n但是注意有吟唱时间。</Neptu>
+    <Avalok>阿瓦洛\r\n让目标免疫一切伤害，\r\n但是目标会暂停冷却和吟唱，\r\n可以试试看给敌人使用。</Avalok>
+  </ChessStory>
+</PattleData>
