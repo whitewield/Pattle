@@ -36,34 +36,34 @@ public class PT_Caption : MonoBehaviour {
 //	}
 
 	public void SetCaptionLanguage (string g_language) {
-		ShabbySave.SaveGame (CS_Global.SAVE_CATEGORY_SETTINGS, CS_Global.SAVE_TITLE_LANGUAGE, g_language);
+		ShabbySave.SaveGame (PT_Global.Constants.SAVE_CATEGORY_SETTINGS, PT_Global.Constants.SAVE_TITLE_LANGUAGE, g_language);
 	}
 
 	public void LoadCaptionLanguage () {
 
-		string t_language = ShabbySave.LoadGame (CS_Global.SAVE_CATEGORY_SETTINGS, CS_Global.SAVE_TITLE_LANGUAGE);
+		string t_language = ShabbySave.LoadGame (PT_Global.Constants.SAVE_CATEGORY_SETTINGS, PT_Global.Constants.SAVE_TITLE_LANGUAGE);
 
 		if (t_language == "0") {
 			//set default language
 			switch (Application.systemLanguage) { 
 			case SystemLanguage.ChineseSimplified:
-				t_language = CS_Global.LANGUAGE_CHS;
+				t_language = PT_Global.Constants.LANGUAGE_CHS;
 				break;
 			case SystemLanguage.ChineseTraditional:
-				t_language = CS_Global.LANGUAGE_CHT;
+				t_language = PT_Global.Constants.LANGUAGE_CHT;
 				break;
 			case SystemLanguage.Chinese:
-				t_language = CS_Global.LANGUAGE_CHS;
+				t_language = PT_Global.Constants.LANGUAGE_CHS;
 				break;
 			case SystemLanguage.English:
-				t_language = CS_Global.LANGUAGE_EN;
+				t_language = PT_Global.Constants.LANGUAGE_EN;
 				break;
 			default :
-				t_language = CS_Global.LANGUAGE_EN;
+				t_language = PT_Global.Constants.LANGUAGE_EN;
 				break;
 			}
 
-			ShabbySave.SaveGame (CS_Global.SAVE_CATEGORY_SETTINGS, CS_Global.SAVE_TITLE_LANGUAGE, t_language);
+			ShabbySave.SaveGame (PT_Global.Constants.SAVE_CATEGORY_SETTINGS, PT_Global.Constants.SAVE_TITLE_LANGUAGE, t_language);
 		}
 
 		Debug.Log("load caption language : " + t_language);

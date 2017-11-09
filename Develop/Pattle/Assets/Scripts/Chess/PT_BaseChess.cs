@@ -75,11 +75,11 @@ public class PT_BaseChess : NetworkBehaviour {
 	/// <param name="g_target">target gameobject.</param>
 	/// <param name="g_targetPos">target position.</param>
 	protected virtual bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
-		if (g_target.name == (PT_Global.NAME_MAP_FIELD + myOwnerID.ToString ())) {
+		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
 			Move ();
 			return true;
-		} else if (g_target.name == (PT_Global.NAME_MAP_FIELD + (1 - myOwnerID).ToString ()) ||
+		} else if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + (1 - myOwnerID).ToString ()) ||
 			(g_target.GetComponent<PT_BaseChess> () && g_target.GetComponent<PT_BaseChess> ().GetMyOwnerID () != myOwnerID)) {
 			myTargetPosition = g_targetPos;
 			myPosition = this.transform.position;
@@ -188,10 +188,10 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual void UpdateAction_Move () {
 		//move the chess
 		this.transform.position = 
-			Vector2.Lerp (this.transform.position, myTargetPosition, PT_Global.SPEED_MOVE * Time.deltaTime);
+			Vector2.Lerp (this.transform.position, myTargetPosition, PT_Global.Constants.SPEED_MOVE * Time.deltaTime);
 
 		//if the chess at the target, stop
-		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.DISTANCE_RESET) {
+		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.Constants.DISTANCE_RESET) {
 			//set my position
 			this.transform.position = myTargetPosition;
 			myPosition = myTargetPosition;
@@ -215,10 +215,10 @@ public class PT_BaseChess : NetworkBehaviour {
 		//different in different character
 		//move the chess
 		this.transform.position = 
-			Vector2.Lerp (this.transform.position, myTargetPosition, PT_Global.SPEED_MOVE * Time.deltaTime);
+			Vector2.Lerp (this.transform.position, myTargetPosition, PT_Global.Constants.SPEED_MOVE * Time.deltaTime);
 
 		//if the chess at the target, stop
-		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.DISTANCE_RESET) {
+		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.Constants.DISTANCE_RESET) {
 			//Reset and come back
 			AttackBack ();
 		}
@@ -227,10 +227,10 @@ public class PT_BaseChess : NetworkBehaviour {
 	public virtual void UpdateAction_AttackBack () {
 		//move the chess
 		this.transform.position = 
-			Vector2.Lerp (this.transform.position, myPosition, PT_Global.SPEED_MOVE * Time.deltaTime);
+			Vector2.Lerp (this.transform.position, myPosition, PT_Global.Constants.SPEED_MOVE * Time.deltaTime);
 
 		//if the chess at the target, stop
-		if (Vector2.Distance (this.transform.position, myPosition) <= PT_Global.DISTANCE_RESET) {
+		if (Vector2.Distance (this.transform.position, myPosition) <= PT_Global.Constants.DISTANCE_RESET) {
 			//set my position
 			this.transform.position = myPosition;
 
@@ -461,8 +461,8 @@ public class PT_BaseChess : NetworkBehaviour {
 
 			myProcessDisplay.HideHP ();
 			myProcessDisplay.HideProcess ();
-			mySpriteRenderer.sortingLayerName = PT_Global.SORTINGLAYER_DEADBODY;
-			mySpriteRenderer.color = PT_Global.COLOR_DEADBODY;
+			mySpriteRenderer.sortingLayerName = PT_Global.Constants.SORTINGLAYER_DEADBODY;
+			mySpriteRenderer.color = PT_Global.Constants.COLOR_DEADBODY;
 			myCollider.enabled = false;
 		}
 	}

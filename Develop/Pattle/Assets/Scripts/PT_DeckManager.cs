@@ -25,10 +25,7 @@ public class PT_DeckManager : MonoBehaviour {
 
 	public SO_ChessBank myChessBank;
 
-	public PT_Global.ChessType[] myChessPrefabs;
-
-	[SerializeField] PT_Global.ChessType[] myChessPrefabsSet1;
-	[SerializeField] PT_Global.ChessType[] myChessPrefabsSet2;
+	[SerializeField] PT_Global.ChessType[] myChessTypes = new PT_Global.ChessType[3];
 
 	// Use this for initialization
 	void Start () {
@@ -37,13 +34,14 @@ public class PT_DeckManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			Debug.Log ("Set1");
-			myChessPrefabs = myChessPrefabsSet1;
-		}
-		if (Input.GetKeyDown (KeyCode.W)) {
-			Debug.Log ("Set2");
-			myChessPrefabs = myChessPrefabsSet2;
-		}
+		
+	}
+
+	public void SetChessTypes (PT_Global.ChessType[] g_types) {
+		myChessTypes = g_types;
+	}
+
+	public PT_Global.ChessType[] GetChessTypes () {
+		return myChessTypes;
 	}
 }

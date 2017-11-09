@@ -76,11 +76,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		wasInit = true;
 
-		CmdCreateChess (new PT_Global.ChessType[] {
-			PT_DeckManager.Instance.myChessPrefabs [0],
-			PT_DeckManager.Instance.myChessPrefabs [1],
-			PT_DeckManager.Instance.myChessPrefabs [2]
-		});
+		CmdCreateChess (PT_DeckManager.Instance.GetChessTypes ());
 
 		//		Debug.Log (GetInstanceID ());
 	}
@@ -119,7 +115,7 @@ public class PT_PlayerController : NetworkBehaviour {
 			t_BaseChess_T != null && 
 			t_BaseChess_T.GetProcess() != PT_Global.Process.Dead &&
 			t_BaseChess_T.GetMyOwnerID() == myID &&
-			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > PT_Global.DISTANCE_DRAG) {
+			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > PT_Global.Constants.DISTANCE_DRAG) {
 			isMouseDrag = true;
 
 			ShowLine ();
