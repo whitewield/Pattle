@@ -56,7 +56,11 @@ namespace PT_Global{
 		Healing
 	}
 
+
+
 	public static class Constants {
+
+		public const int DECK_SIZE = 3;
 
 		public const float DISTANCE_DRAG = 100.0f;
 		public const float DISTANCE_RESET = 0.1f;
@@ -81,11 +85,32 @@ namespace PT_Global{
 		public const string SAVE_CATEGORY_COUPON = "Coupon";
 		public const string SAVE_TITLE_COINS = "Coins";
 
+		public const string SAVE_CATEGORY_PRESET = "Preset";
+		public static readonly string[] SAVE_TITLE_PRESET_CHESS = { "C0", "C1", "C2" };
+		public static readonly string[] SAVE_TITLE_PRESET_POSITION = { "P0", "P1", "P2" };
+
 		public const string LANGUAGE_DEFAULT = "CHS";
 		public const string LANGUAGE_CHS = "CHS";
 		public const string LANGUAGE_CHT = "CHT";
 		public const string LANGUAGE_EN = "EN";
 
-		public static Color COLOR_DEADBODY = new Color(0.2f, 0.2f, 0.2f, 0.5f);
+		public static Color COLOR_DEADBODY = new Color (0.2f, 0.2f, 0.2f, 0.5f);
+		public static Color COLOR_CHESS_ACTIVE = Color.white;
+		public static Color COLOR_CHESS_INACTIVE = new Color (1, 1, 1, 0.5f);
+
+		public static Vector2 StringToVector2 (string t_string) {
+//			public Vector3 stringToVec(string s) {
+//				string[] temp = s.Substring (1, s.Length-2).Split (',');
+//				return new Vector3 (float.Parse(temp[0]), float.Parse(temp[1]), float.Parse(temp[2]));
+//			}
+
+			string[] t_numbers = t_string.Split (',');
+			return new Vector2 (float.Parse (t_numbers [0]), float.Parse (t_numbers [1]));
+		}
+
+		public static string Vector2ToString (Vector2 t_vector2) {
+			string t_string = t_vector2.x.ToString ("0.###") + "," + t_vector2.y.ToString ("0.###");
+			return t_string;
+		}
 	}
 }

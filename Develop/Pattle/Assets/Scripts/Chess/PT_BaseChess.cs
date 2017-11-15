@@ -329,7 +329,7 @@ public class PT_BaseChess : NetworkBehaviour {
 			HPModify_MagicDamage (t_modifier);
 			break;
 		case PT_Global.HPModifierType.Healing:
-			HPModify_PhysicalDamage (t_modifier);
+			HPModify_Healing (t_modifier);
 			break;
 		}
 

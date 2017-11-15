@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class PT_PlayerController : NetworkBehaviour {
 	[SyncVar] int myID = -1;
 //	[SerializeField] GameObject[] myChessPrefabs;
-	[SerializeField] Vector2[] myChessPositions;
+//	[SerializeField] Vector2[] myChessPositions;
 //	[SyncVar] int myChessCount = 0;
 
 	private bool wasInit = false;
@@ -23,8 +23,7 @@ public class PT_PlayerController : NetworkBehaviour {
 	private Vector3 myMouseDownPosition;
 	private bool isMouseDrag;
 
-	void Awake()
-	{
+	void Awake () {
 		//register the spaceship in the gamemanager, that will allow to loop on it.
 		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
 			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
@@ -76,7 +75,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		wasInit = true;
 
-		CmdCreateChess (PT_DeckManager.Instance.GetChessTypes ());
+		CmdCreateChess (PT_DeckManager.Instance.GetChessTypes (), PT_DeckManager.Instance.GetChessPositions ());
 
 		//		Debug.Log (GetInstanceID ());
 	}
@@ -217,7 +216,7 @@ public class PT_PlayerController : NetworkBehaviour {
 	}
 		
 	[Command]
-	public void CmdCreateChess (PT_Global.ChessType[] g_chessTypes) {
+	public void CmdCreateChess (PT_Global.ChessType[] g_chessTypes, Vector2[] g_positions) {
 		myID = System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this);
 		Debug.Log (myID);
 
@@ -244,7 +243,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 //			myChessCount++;
 
-			t_chess.transform.position = myChessPositions [i];
+			t_chess.transform.position = g_positions [i];
 
 			if (myID == 1) {
 				t_chess.transform.position *= -1;

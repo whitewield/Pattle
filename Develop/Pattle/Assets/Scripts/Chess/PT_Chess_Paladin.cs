@@ -11,7 +11,7 @@ public class PT_Chess_Paladin : PT_BaseChess {
 			myTargetPosition = g_targetPos;
 			Move ();
 			return true;
-		} else if (g_target.GetComponent<PT_BaseChess> () && g_target.GetComponent<PT_BaseChess> ().GetMyOwnerID () == myOwnerID) {
+		} else if (g_target.GetComponent<PT_BaseChess> ()) {
 			myTargetGameObject = g_target;
 			myTargetPosition = g_targetPos;
 			myPosition = this.transform.position;
