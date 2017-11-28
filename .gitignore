@@ -33,6 +33,9 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-Develop/Pattle/Library/
-Develop/Pattle/Temp/
+Develop/Pattle/[Ll]ibrary/
+Develop/Pattle/[Tt]emp/
+Develop/Pattle/[Oo]bj/
+Develop/Pattle/[Bb]uild/
+Develop/Pattle/[Bb]uilds/
 Builds

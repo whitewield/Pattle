@@ -18,14 +18,26 @@ namespace PT_Global{
 
 	public enum ChessType {
 		none = 0,
-
+		___Blood___ = 100,
 		Warrior = 101,
-
+		Vampire = 102,
+		Berserker = 103,
+		Sword = 104,
+		___Magic___ = 200,
 		IceMage = 201,
-
+		FireMage = 202,
+		LightMage = 202,
+		WindMage = 202,
+		___Earth___ = 300,
 		Archer = 301,
-
+		IceBear = 302,
+		Soprano = 303,
+		Jam = 304,
+		___Light___ = 400,
 		Paladin = 401,
+		Angel = 402,
+		Avalok = 403,
+		Neptu = 404
 	}
 
 	public enum Process {
@@ -62,6 +74,10 @@ namespace PT_Global{
 
 		public const int DECK_SIZE = 3;
 
+		public const string PATH_TARGET_SIGN = "PrefabsLoad/Target/TargetSign";
+		public const string PATH_TARGET_LINE = "PrefabsLoad/Target/Targetline";
+		public const string PATH_NETWORK = "PrefabsLoad/Network";
+
 		public const float DISTANCE_DRAG = 100.0f;
 		public const float DISTANCE_RESET = 0.1f;
 		public const float DISTANCE_UI_RESET = 0.0025f;
@@ -86,6 +102,7 @@ namespace PT_Global{
 		public const string SAVE_TITLE_COINS = "Coins";
 
 		public const string SAVE_CATEGORY_PRESET = "Preset";
+		public const string SAVE_TITLE_PRESET_IP = "IP";
 		public static readonly string[] SAVE_TITLE_PRESET_CHESS = { "C0", "C1", "C2" };
 		public static readonly string[] SAVE_TITLE_PRESET_POSITION = { "P0", "P1", "P2" };
 

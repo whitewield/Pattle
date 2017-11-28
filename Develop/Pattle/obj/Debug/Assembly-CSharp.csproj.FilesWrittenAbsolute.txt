@@ -21,3 +21,10 @@
 /Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/UnityEngine.UIAutomation.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/UnityEngine.GoogleAudioSpatializer.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/UnityEngine.SpatialTracking.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/UnityEngine.Purchasing.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/Unity.Cecil.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/Unity.Cecil.Pdb.dll
+/Users/Wield/Works/Git/Pattle/Develop/Pattle/Temp/bin/Debug/Unity.Cecil.Mdb.dll

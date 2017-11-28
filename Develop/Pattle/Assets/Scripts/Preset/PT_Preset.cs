@@ -231,6 +231,7 @@ public class PT_Preset : MonoBehaviour {
 
 	#region Buttons
 	public void OnButtonBack () {
+		myCollection.SetChessInUse (PT_DeckManager.Instance.GetChessTypes ());
 		myDeck.SetFromDeckManager ();
 		myField.SetPositionFromDeckManager ();
 		myState = PresetState.ShowDeck;

@@ -5,11 +5,15 @@ using UnityEngine.Networking;
 
 public class PT_BaseChess : NetworkBehaviour {
 	[SyncVar] protected int myOwnerID = -1;
+	[SyncVar] protected int myID = -1;
+	private PT_PlayerController myPlayerController;
 
 	//Process
 	[SerializeField] GameObject myProcessDisplayPrefab;
 	protected PT_ProcessDisplay myProcessDisplay;
-	protected PT_Global.Process myProcess = PT_Global.Process.Idle;
+	protected PT_Global.Process myProcess = PT_Global.Process.None;
+	protected PT_Global.Process myQueueProcess = PT_Global.Process.None;
+	protected PT_Global.Process myLastProcess = PT_Global.Process.None;
 
 	//Attributes
 	[SerializeField] protected SO_Attributes myAttributes;
@@ -21,6 +25,7 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	//For Action
 	protected Vector2 myPosition;
+	protected bool isSingleTarget = false;
 	protected GameObject myTargetGameObject;
 	protected Vector2 myTargetPosition;
 
@@ -54,13 +59,19 @@ public class PT_BaseChess : NetworkBehaviour {
 		SetProcess (PT_Global.Process.CD);
 		myTimer = myAttributes.CD;
 		myProcessDisplay.ShowCD (myTimer);
+
+		CustomInitialize ();
+	}
+
+	protected virtual void CustomInitialize () {
+
 	}
 
 	#region Action
 	public virtual bool Action (GameObject g_target, Vector2 g_targetPos) {
-			
-
-		if (myProcess != PT_Global.Process.Idle) {
+		
+		if (myProcess != PT_Global.Process.Idle && 
+			myProcess != PT_Global.Process.CD) {
 			return false;
 		}
 
@@ -77,15 +88,48 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
 		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
-			Move ();
+			QueueMove ();
 			return true;
 		} else if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + (1 - myOwnerID).ToString ()) ||
 			(g_target.GetComponent<PT_BaseChess> () && g_target.GetComponent<PT_BaseChess> ().GetMyOwnerID () != myOwnerID)) {
 			myTargetPosition = g_targetPos;
 			myPosition = this.transform.position;
-			Attack ();
+			QueueAttack ();
+			return true;
 		}
+		QueueIdle ();
 		return false;
+	}
+
+	public void QueueIdle () {
+		myQueueProcess = PT_Global.Process.Idle;
+	}
+
+	public void QueueMove () {
+		myQueueProcess = PT_Global.Process.Move;
+		myPlayerController.RpcShowTarget (myID, -1, -1, myTargetPosition);
+	}
+
+	public void QueueAttack () {
+		myQueueProcess = PT_Global.Process.Attack;
+
+		if (isSingleTarget) {
+			PT_BaseChess t_baseChess = myTargetGameObject.GetComponent<PT_BaseChess> ();
+			myPlayerController.RpcShowTarget (myID, t_baseChess.GetMyOwnerID (), t_baseChess.GetMyID (), myTargetPosition);
+		} else {
+			myPlayerController.RpcShowTarget (myID, -1, -1, myTargetPosition);
+		}
+	}
+
+	public void QueueCast () {
+		myQueueProcess = PT_Global.Process.CT;
+
+		if (isSingleTarget) {
+			PT_BaseChess t_baseChess = myTargetGameObject.GetComponent<PT_BaseChess> ();
+			myPlayerController.RpcShowTarget (myID, t_baseChess.GetMyOwnerID (), t_baseChess.GetMyID (), myTargetPosition);
+		} else {
+			myPlayerController.RpcShowTarget (myID, -1, -1, myTargetPosition);
+		}
 	}
 
 	protected virtual void Idle () {
@@ -100,6 +144,8 @@ public class PT_BaseChess : NetworkBehaviour {
 		SetProcess (PT_Global.Process.CD);
 		myTimer = myAttributes.CD * g_scale;
 		RpcShowCD (myTimer);
+
+		myPlayerController.RpcHideTarget (myID);
 	}
 
 	protected virtual void Cast (float g_scale = 1) {
@@ -114,6 +160,8 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	protected void AttackBack () {
 		SetProcess (PT_Global.Process.AttackBack);
+
+		myPlayerController.RpcHideTarget (myID);
 	}
 
 	protected void SetProcess (PT_Global.Process g_process) {
@@ -182,7 +230,20 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void UpdateAction_Idle () {
-
+		if (myQueueProcess == PT_Global.Process.Move) {
+			Move ();
+			//play SFX move 
+//			PlayMySFX (myMoveSFX);
+		} else if (myQueueProcess == PT_Global.Process.Attack) {
+			Attack ();
+			//play SFX ATK 
+//			PlayMySFX (myAttackSFX);
+		} else if (myQueueProcess == PT_Global.Process.CT) {
+			Cast ();
+			//play SFX CT 
+//			PlayMySFX (myCastSFX);
+		}
+		myQueueProcess = PT_Global.Process.None;
 	}
 
 	protected virtual void UpdateAction_Move () {
@@ -280,6 +341,14 @@ public class PT_BaseChess : NetworkBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Used by soprano
+	/// </summary>
+	public void BeReady () {
+		Idle ();
+		RpcShowIdle ();
+	}
+
 	#endregion
 
 	#region Collision
@@ -344,6 +413,9 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual void HPModify_PhysicalDamage (int g_value) {
 		//used by chameleon, mushroom
 
+		if (GetStatus (PT_Global.Status.Gold))
+			return;
+
 		myCurHP -= g_value;
 
 		RpcShowDamage (g_value);
@@ -392,6 +464,7 @@ public class PT_BaseChess : NetworkBehaviour {
 
 			DoOnDead ();
 			myCurHP = 0;
+			myPlayerController.RpcHideTarget (myID);
 
 			//play SFX dead
 //			PlayMySFX (myDeadSFX);
@@ -415,12 +488,30 @@ public class PT_BaseChess : NetworkBehaviour {
 		myOwnerID = g_ID;
 	}
 
+	public void SetMyPlayerController (PT_PlayerController g_controller) {
+		if (myPlayerController == null)
+			myPlayerController = g_controller;
+	}
+
+	public void SetMyID (int g_ID) {
+		myID = g_ID;
+	}
+
+	public int GetMyID () {
+		return myID;
+	}
+
+	[ClientRpc]
+	void RpcShowIdle () {
+		myProcessDisplay.HideProcess ();
+	}
+
 	[ClientRpc]
 	void RpcShowCD (float g_time) {
 		//		Debug.Log ("RpcShowCD");
 		myProcessDisplay.ShowCD (g_time);
 	}
-
+		
 	[ClientRpc]
 	void RpcShowCT (float g_time) {
 		//		Debug.Log ("RpcShowCT");

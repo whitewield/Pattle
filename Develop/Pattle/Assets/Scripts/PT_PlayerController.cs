@@ -23,7 +23,14 @@ public class PT_PlayerController : NetworkBehaviour {
 	private Vector3 myMouseDownPosition;
 	private bool isMouseDrag;
 
+	private List<PT_PlayerController_TargetDisplay> myTargetDisplays = new List<PT_PlayerController_TargetDisplay> ();
+	private GameObject myTargetSignPrefab;
+	private GameObject myTargetLinePrefab;
+
 	void Awake () {
+		myTargetSignPrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_SIGN);
+		myTargetLinePrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_LINE);
+
 		//register the spaceship in the gamemanager, that will allow to loop on it.
 		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
 			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
@@ -48,13 +55,14 @@ public class PT_PlayerController : NetworkBehaviour {
 		HideSelect ();
 		HideLine ();
 		
-		if (PT_NetworkGameManager.Instance != null) {
-			//we MAY be awake late (see comment on _wasInit above), so if the instance is already there we init
-			Init();
-		}
+//		if (PT_NetworkGameManager.Instance != null) {
+//			//we MAY be awake late (see comment on _wasInit above), so if the instance is already there we init
+//			Init();
+//		}
 	}
 
 	public void Init () {
+
 		//		Debug.Log (GetInstanceID ());
 		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == -1) {
 			Invoke ("Init", 1);
@@ -75,6 +83,17 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		wasInit = true;
 
+		// init target display list
+		for (int i = 0; i < PT_Global.Constants.DECK_SIZE; i++) {
+			myTargetDisplays.Add (
+				new PT_PlayerController_TargetDisplay (
+					"(" + i.ToString () + ")",
+					Instantiate (myTargetSignPrefab, this.transform),
+					Instantiate (myTargetLinePrefab, this.transform)
+				)
+			);
+		}
+
 		CmdCreateChess (PT_DeckManager.Instance.GetChessTypes (), PT_DeckManager.Instance.GetChessPositions ());
 
 		//		Debug.Log (GetInstanceID ());
@@ -84,6 +103,10 @@ public class PT_PlayerController : NetworkBehaviour {
 	void Update () {
 		if (!base.isLocalPlayer)
 			return;
+
+		foreach (PT_PlayerController_TargetDisplay f_targetDisplay in myTargetDisplays) {
+			f_targetDisplay.UpdateTarget ();
+		}
 
 		if (myGameObject_X != null)
 			mySelect.transform.position = myGameObject_X.transform.position;
@@ -252,13 +275,18 @@ public class PT_PlayerController : NetworkBehaviour {
 			//test
 //			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
 
+
 			// spawn on the clients
 			NetworkServer.Spawn (t_chessObject);
+
+			PT_NetworkGameManager.Instance.RpcAddChessToList (myID, t_chessObject);
+
 		}
 	}
 
 	[Command]
 	public void CmdChessAction (GameObject g_active, GameObject g_target, Vector2 g_targetPos) {
+		g_active.GetComponent<PT_BaseChess>().SetMyPlayerController (this);
 		if (g_active.GetComponent<PT_BaseChess> ().Action (g_target, g_targetPos))
 			RpcDone ();
 		else 
@@ -277,5 +305,103 @@ public class PT_PlayerController : NetworkBehaviour {
 		if (isLocalPlayer) {
 			Undone ();
 		}
+	}
+
+	[ClientRpc]
+	public void RpcShowTarget (int g_ID, int g_targetOwnerID, int g_targetID, Vector2 g_TargetPosition) {
+		if (!isLocalPlayer)
+			return;
+
+		Debug.Log (g_ID + ", " + g_targetOwnerID + ", " + g_targetID + ", " + g_TargetPosition);
+
+		myTargetDisplays [g_ID].SetOwner (myID, g_ID);
+
+		if (g_targetOwnerID == -1 || g_targetID == -1) {
+			myTargetDisplays [g_ID].ShowTarget (g_TargetPosition);
+		} else
+			myTargetDisplays [g_ID].ShowTarget (g_targetOwnerID, g_targetID);
+	}
+
+	[ClientRpc]
+	public void RpcHideTarget (int g_ID) {
+		if (!isLocalPlayer)
+			return;
+
+		myTargetDisplays [g_ID].HideTarget ();
+	}
+
+	[ClientRpc]
+	public void RpcInit () {
+		if (isLocalPlayer) {
+			Init ();
+		}
+	}
+}
+
+public class PT_PlayerController_TargetDisplay {
+	private GameObject myChess;
+	private GameObject myTargetSign;
+	private GameObject myTargetLine;
+
+	private GameObject myTargetGameObject;
+	private bool myTargetIsSingle = false;
+	private Vector2 myTargetPosition;
+
+	public PT_PlayerController_TargetDisplay (string g_name, GameObject g_sign, GameObject g_line) {
+		myTargetSign = g_sign;
+		myTargetSign.name = "TargetSign_" + g_name;
+		myTargetSign.SetActive (false);
+
+		myTargetLine = g_line;
+		myTargetLine.name = "TargetLine_" + g_name;
+		myTargetLine.SetActive (false);
+	}
+
+	public void SetOwner (int g_chessOwnerID, int g_chessID) {
+		if (myChess == null) {
+			myChess = PT_NetworkGameManager.Instance.myChessList [g_chessOwnerID] [g_chessID];
+		}
+	}
+
+	public void ShowTarget (int g_targetOwnerID, int g_targetID) {
+		myTargetIsSingle = true;
+		myTargetGameObject = PT_NetworkGameManager.Instance.myChessList [g_targetOwnerID] [g_targetID];
+
+		myTargetSign.SetActive (true);
+		myTargetLine.SetActive (true);
+
+		UpdateTarget ();
+	}
+
+	public void ShowTarget (Vector2 g_TargetPosition) {
+		myTargetIsSingle = false;
+		myTargetPosition = g_TargetPosition;
+
+		myTargetSign.SetActive (true);
+		myTargetLine.SetActive (true);
+
+		UpdateTarget ();
+	}
+
+	public void UpdateTarget () {
+		if (myTargetLine == null || myTargetSign == null)
+			return;
+
+		if (myTargetLine.activeSelf == false || myTargetSign.activeSelf == false)
+			return;
+
+		Debug.Log ("UpdateTarget");
+
+		if (myTargetIsSingle) {
+			myTargetSign.transform.position = myTargetGameObject.transform.position;
+		} else
+			myTargetSign.transform.position = myTargetPosition;
+		myTargetLine.GetComponent<LineRenderer> ().SetPosition (0, myChess.transform.position);
+		myTargetLine.GetComponent<LineRenderer> ().SetPosition (1, myTargetSign.transform.position);
+	}
+
+	public void HideTarget () {
+		myTargetLine.SetActive (false);
+		myTargetSign.SetActive (false);
 	}
 }

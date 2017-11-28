@@ -7,16 +7,21 @@ public class PT_Chess_IceMage : PT_BaseChess {
 	[SerializeField] GameObject mySkillPrefab;
 
 	protected override bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
+		if (myProcess == PT_Global.Process.Dead)
+			return false;
+		
 		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
-			Move ();
+			QueueMove ();
 			return true;
 		} else if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + (1 - myOwnerID).ToString ()) ||
 			(g_target.GetComponent<PT_BaseChess> () && g_target.GetComponent<PT_BaseChess> ().GetMyOwnerID () != myOwnerID)) {
 			myTargetPosition = g_targetPos;
 			myPosition = this.transform.position;
-			Cast ();
+			QueueCast ();
+			return true;
 		}
+		QueueIdle ();
 		return false;
 	}
 
