@@ -346,6 +346,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	/// </summary>
 	public void BeReady () {
 		Idle ();
+		myPlayerController.RpcHideTarget (myID);
 		RpcShowIdle ();
 	}
 

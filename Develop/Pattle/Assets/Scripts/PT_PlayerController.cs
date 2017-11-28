@@ -287,7 +287,6 @@ public class PT_PlayerController : NetworkBehaviour {
 
 	[Command]
 	public void CmdChessAction (GameObject g_active, GameObject g_target, Vector2 g_targetPos) {
-//		g_active.GetComponent<PT_BaseChess>().SetMyPlayerController (this);
 		if (g_active.GetComponent<PT_BaseChess> ().Action (g_target, g_targetPos))
 			RpcDone ();
 		else 
@@ -313,7 +312,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		if (!isLocalPlayer)
 			return;
 
-		Debug.Log (g_ID + ", " + g_targetOwnerID + ", " + g_targetID + ", " + g_TargetPosition);
+//		Debug.Log (g_ID + ", " + g_targetOwnerID + ", " + g_targetID + ", " + g_TargetPosition);
 
 		myTargetDisplays [g_ID].SetOwner (myID, g_ID);
 
@@ -391,7 +390,7 @@ public class PT_PlayerController_TargetDisplay {
 		if (myTargetLine.activeSelf == false || myTargetSign.activeSelf == false)
 			return;
 
-		Debug.Log ("UpdateTarget");
+//		Debug.Log ("UpdateTarget");
 
 		if (myTargetIsSingle) {
 			myTargetSign.transform.position = myTargetGameObject.transform.position;

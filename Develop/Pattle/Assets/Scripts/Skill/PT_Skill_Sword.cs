@@ -12,6 +12,9 @@ public class PT_Skill_Sword : PT_BaseSkill {
 	protected override void Update () {
 		if (!isServer)
 			return;
+
+		if (myCaster.GetStatus (PT_Global.Status.Freeze) || myCaster.GetStatus (PT_Global.Status.Gold))
+			return;
 		
 		myProcess += Time.deltaTime * mySpeed;
 		if (myProcess > 360)
