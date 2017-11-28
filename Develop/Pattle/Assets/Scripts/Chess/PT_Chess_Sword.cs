@@ -38,6 +38,6 @@ public class PT_Chess_Sword : PT_BaseChess {
 	}
 
 	protected override void DoOnDead () {
-		Network.Destroy (mySword);
+		mySword.GetComponent<PT_BaseSkill> ().Kill ();
 	}
 }

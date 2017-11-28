@@ -263,6 +263,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 			//set the player id to the chess
 			t_chess.SetMyOwnerID (myID);
+			t_chess.SetMyPlayerController (this);
 
 //			myChessCount++;
 
@@ -286,7 +287,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 	[Command]
 	public void CmdChessAction (GameObject g_active, GameObject g_target, Vector2 g_targetPos) {
-		g_active.GetComponent<PT_BaseChess>().SetMyPlayerController (this);
+//		g_active.GetComponent<PT_BaseChess>().SetMyPlayerController (this);
 		if (g_active.GetComponent<PT_BaseChess> ().Action (g_target, g_targetPos))
 			RpcDone ();
 		else 
