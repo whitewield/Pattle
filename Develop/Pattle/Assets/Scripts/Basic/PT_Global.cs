@@ -30,7 +30,7 @@ namespace PT_Global{
 		AirMage = 204,
 		___Earth___ = 300,
 		Archer = 301,
-		IceBear = 302,
+		Hunter = 302,
 		Soprano = 303,
 		Jam = 304,
 		___Light___ = 400,
@@ -89,6 +89,9 @@ namespace PT_Global{
 
 		public const string NAME_MAP_FIELD = "MapField_";
 		public const string NAME_SLOTS = "Slots";
+		public const string NAME_NETWORK_DISCOVERY = "NetworkDiscovery";
+
+		public const string SIGN_PASSWORD = "-/*/-";
 
 		public const string SORTINGLAYER_DEADBODY = "DeadBody";
 		public const string SORTINGLAYER_CHESS = "Chess";
@@ -101,8 +104,9 @@ namespace PT_Global{
 		public const string SAVE_CATEGORY_COUPON = "Coupon";
 		public const string SAVE_TITLE_COINS = "Coins";
 
+		public const string SAVE_CATEGORY_NETWORK = "Network";
+		public const string SAVE_TITLE_NETWORK_NAME = "Name";
 		public const string SAVE_CATEGORY_PRESET = "Preset";
-		public const string SAVE_TITLE_PRESET_IP = "IP";
 		public static readonly string[] SAVE_TITLE_PRESET_CHESS = { "C0", "C1", "C2" };
 		public static readonly string[] SAVE_TITLE_PRESET_POSITION = { "P0", "P1", "P2" };
 

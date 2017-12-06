@@ -372,9 +372,9 @@ public class PT_BaseChess : NetworkBehaviour {
 	#endregion
 
 	#region Damage
-	public virtual void HPModify (PT_Global.HPModifierType g_type, int g_value) {
+	public virtual bool HPModify (PT_Global.HPModifierType g_type, int g_value) {
 		if (myProcess == PT_Global.Process.Dead)
-			return;
+			return false;
 
 		//gold prevent damage
 //		if (st_Gold >= 0)
@@ -389,7 +389,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		}
 
 		if (t_modifier <= 0)
-			return;
+			return false;
 
 		switch (g_type) {
 		case PT_Global.HPModifierType.PhysicalDamage:
@@ -403,6 +403,7 @@ public class PT_BaseChess : NetworkBehaviour {
 			break;
 		}
 
+		return true;
 		//play SFX damage 
 //		PlayMySFX (myDamageSFX);
 	}
@@ -472,6 +473,10 @@ public class PT_BaseChess : NetworkBehaviour {
 		}
 
 		RpcShowHP (myCurHP);
+	}
+
+	public int GetCurHP () {
+		return myCurHP;
 	}
 
 	protected virtual void DoOnDead () {

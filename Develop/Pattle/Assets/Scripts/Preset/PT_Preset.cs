@@ -71,7 +71,7 @@ public class PT_Preset : MonoBehaviour {
 	}
 
 	private void UpdateInput () {
-		Debug.Log (myState);
+//		Debug.Log (myState);
 		switch (myState) {
 		case PresetState.ShowCollection:
 			UpdateInput_Collection ();

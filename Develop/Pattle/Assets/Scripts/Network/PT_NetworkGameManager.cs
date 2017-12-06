@@ -72,6 +72,15 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 	}
 
 	public void Quit () {
+		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
+		if (t_NetworkDiscoveryGameObject != null) {
+			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
+			if (t_NetworkDiscovery != null &&
+			    t_NetworkDiscovery.running) {
+				t_NetworkDiscovery.StopBroadcast ();
+			}
+		}
+
 		Time.timeScale = 1;
 		if (isServer)
 			NetworkManager.singleton.StopHost ();

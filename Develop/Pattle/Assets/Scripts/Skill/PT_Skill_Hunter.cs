@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class PT_Skill_LightMage : PT_BaseSkill {
-
-	[SyncVar] Vector2 myDirection;
+public class PT_Skill_Hunter : PT_BaseSkill {
+	[SerializeField] float myFreezeTime;
 
 	protected override void CollisionAction (GameObject g_GO_Collision) {
 		if (!isServer)
@@ -34,21 +32,9 @@ public class PT_Skill_LightMage : PT_BaseSkill {
 		if (myHeal != 0) {
 			t_chess.HPModify (PT_Global.HPModifierType.Healing, myHeal);
 		}
-	}
 
-	public void SetDirection (Vector2 g_targetPosition) {
-		myDirection = (g_targetPosition - (Vector2)this.transform.position).normalized;
+		t_chess.SetStatus (PT_Global.Status.Freeze, myFreezeTime);
 
-		Quaternion t_quaternion = Quaternion.Euler (0, 0, 
-			Vector2.Angle (Vector2.up, myDirection) * Mathf.Sign (myDirection.x * -1));
-
-		this.transform.rotation = t_quaternion;
-
-//		RpcSetDirection (t_quaternion.eulerAngles);
-	}
-
-	[ClientRpc]
-	void RpcSetDirection (Vector3 g_euler) {
-		this.transform.rotation = Quaternion.Euler (g_euler);
+		Kill ();
 	}
 }
