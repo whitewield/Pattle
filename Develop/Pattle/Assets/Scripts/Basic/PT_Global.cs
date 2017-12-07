@@ -91,7 +91,7 @@ namespace PT_Global{
 		public const string NAME_SLOTS = "Slots";
 		public const string NAME_NETWORK_DISCOVERY = "NetworkDiscovery";
 
-		public const string SIGN_PASSWORD = "-/*/-";
+		public const string SYMBOL_PASSWORD = "-/*/-";
 
 		public const string SORTINGLAYER_DEADBODY = "DeadBody";
 		public const string SORTINGLAYER_CHESS = "Chess";
