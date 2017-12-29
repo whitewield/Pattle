@@ -1,14 +1,18 @@
 <PattleData>
   <Preset>
-    <P0>2.947,-7.825</P0>
-    <P1>0.551,-2.39</P1>
-    <P2>-3.907,-5.568</P2>
-    <C0>202</C0>
+    <P0>-0.25,-3.06</P0>
+    <P1>1.819,-6.736</P1>
+    <P2>-3.221,-6.108</P2>
+    <C0>103</C0>
     <C1>104</C1>
-    <C2>101</C2>
+    <C2>204</C2>
     <IP>172.16.30.165</IP>
   </Preset>
   <Settings>
     <Language>EN</Language>
   </Settings>
+  <Network>
+    <Name>Hi</Name>
+    <Password>123</Password>
+  </Network>
 </PattleData>

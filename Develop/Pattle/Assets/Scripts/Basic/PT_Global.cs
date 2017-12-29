@@ -106,6 +106,8 @@ namespace PT_Global{
 
 		public const string SAVE_CATEGORY_NETWORK = "Network";
 		public const string SAVE_TITLE_NETWORK_NAME = "Name";
+		public const string SAVE_TITLE_NETWORK_PASSWORD = "Password";
+		public const string SAVE_TITLE_NETWORK_JOIN_PASSWORD = "JoinPassword";
 		public const string SAVE_CATEGORY_PRESET = "Preset";
 		public static readonly string[] SAVE_TITLE_PRESET_CHESS = { "C0", "C1", "C2" };
 		public static readonly string[] SAVE_TITLE_PRESET_POSITION = { "P0", "P1", "P2" };
@@ -114,6 +116,8 @@ namespace PT_Global{
 		public const string LANGUAGE_CHS = "CHS";
 		public const string LANGUAGE_CHT = "CHT";
 		public const string LANGUAGE_EN = "EN";
+
+		public const string CAPTION_CHESSABILITY = "ChessAbility";
 
 		public static Color COLOR_DEADBODY = new Color (0.2f, 0.2f, 0.2f, 0.5f);
 		public static Color COLOR_CHESS_ACTIVE = Color.white;

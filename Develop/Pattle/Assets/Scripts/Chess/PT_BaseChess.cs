@@ -565,7 +565,9 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 	#endregion
 
-
+	public SO_Attributes GetAttributes () {
+		return myAttributes;
+	}
 }
 
 

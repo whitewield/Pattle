@@ -56,25 +56,25 @@
 
   <ChessAbility>
     <Warrior>Close-combat</Warrior>
-    <Berserker>Close-combat\r\nEffect : Attack rise when damaged</Berserker>
-    <Vampire>Close-combat\r\nEffect : Heal when causing damage</Vampire>
-    <Sword>Close-combat\r\nEffect : A sword rotated around,\r\ncausing spell damage</Sword>
+    <Berserker>Close-combat\r\nEffect: Attack rise when damaged</Berserker>
+    <Vampire>Close-combat\r\nEffect: Heal when causing damage</Vampire>
+    <Sword>Close-combat\r\nEffect: Magic sword rotating around</Sword>
 
-    <FireMage>Area-of-effect\r\nRange : M</FireMage>
-    <IceMage>Area-of-effect\r\nRange : S\r\nEffect : Freeze 1.5s</IceMage>
-    <LightMage>Area-of-effect\r\nRange : Line</LightMage>
-    <AirMage>Area-of-effect\r\nRange : L\r\nEffect : Concentric</AirMage>
-    <Brush>Control a brush\r\nEffect : Damage enemies, \r\nheal allies</Brush>
+    <FireMage>Area-of-effect\r\nMedium Circle</FireMage>
+    <IceMage>Area-of-effect\r\nSmall Circle, Effect: Freeze 1.5s</IceMage>
+    <LightMage>Area-of-effect\r\nLine</LightMage>
+    <AirMage>Area-of-effect\r\nLarge Circle, Effect: Cyclone</AirMage>
+    <Brush>Control a brush\r\nEffect: Damage enemies, heal allies</Brush>
 
     <Archer>Long-distance</Archer>
-    <Jam>Long-distance\r\nExplode range : M\r\nSelf-damage : 1</Jam>
-    <PolarBear>Place a trap\r\nEffect : Freeze 1.5s</PolarBear>
-    <Soprano>Single target\r\nEffect : Idle</Soprano>
+    <Jam>Long-distance\r\nExplode Medium Circle, Self-damage : 1</Jam>
+    <Hunter>Place a trap\r\nEffect: Freeze 1s</Hunter>
+    <Soprano>Single target\r\nEffect: Refresh</Soprano>
 
-    <Paladin>Single target\r\nEffect : Heal</Paladin>
-    <Angel>Range : L\r\nEffect : Heal targets around self\r\n(Tap self to heal)</Angel>
-    <Neptu>Single target\r\nEffect : Prevent spell damage for 3s</Neptu>
-    <Avalok>Single target\r\nEffect : Prevent damage for 3s,\r\ntarget's time stops</Avalok>
+    <Paladin>Single target\r\nEffect: Heal</Paladin>
+    <Angel>Large Circle\r\nEffect: Double-tap to heal targets around</Angel>
+    <Neptu>Single target\r\nEffect: Prevent spell damage for 3s</Neptu>
+    <Avalok>Single target\r\nEffect: Prevent damage for 3s, time stops</Avalok>
   </ChessAbility>
 
   <ChessStory>
@@ -91,7 +91,7 @@
 
     <Archer>鹿羿\r\n射出造成物理伤害的弓箭，\r\n伤害很高，\r\n但是要小心队友的屁股。</Archer>
     <Jam>果酱斗士\r\n用自己的身体作为子弹攻击敌人，\r\n子弹爆炸后会对范围内敌人\r\n造成高技能伤害，\r\n但是发子弹会对自己\r\n造成1点技能伤害。</Jam>
-    <PolarBear>皮儿\r\n陷阱造成物理伤害，\r\n并会一直保留在场上，\r\n小心别让己方的战士踩到。</PolarBear>
+    <Hunter>皮儿\r\n陷阱造成物理伤害，\r\n并会一直保留在场上，\r\n小心别让己方的战士踩到。</Hunter>
     <Soprano>乐音\r\n打断目标的吟唱，\r\n或者结束目标的冷却状态，\r\n但是自身没有输出能力。</Soprano>
 
     <Paladin>戴安\r\n有较高的生命值和护甲，\r\n并可以治疗目标，\r\n队伍的前排。</Paladin>

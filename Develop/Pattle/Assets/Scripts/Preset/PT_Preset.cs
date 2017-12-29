@@ -30,6 +30,7 @@ public class PT_Preset : MonoBehaviour {
 	[SerializeField] AnimatedSection[] myAnimatedSections;
 
 	[SerializeField] PT_Preset_Collection myCollection;
+	[SerializeField] PT_Preset_Info myInfo;
 	[SerializeField] PT_Preset_Deck myDeck;
 	[SerializeField] PT_Preset_Field myField;
 
@@ -93,13 +94,19 @@ public class PT_Preset : MonoBehaviour {
 				Physics2D.OverlapPoint (myPresetCamera.ScreenToWorldPoint (Input.mousePosition), (int)Mathf.Pow (2, 8));
 
 			if (t_collider != null) {
+
 				myInput_Collection_Slot = t_collider.GetComponent<PT_Preset_Collection_Slot> ();
 				if (myInput_Collection_Slot != null &&
-				    myInput_Collection_Slot.GetChessType () != PT_Global.ChessType.none &&
-				    myInput_Collection_Slot.GetInUse () == false) {
-					myInput_Collection_Slot.SetInUse (true);
-					myDragChess.sprite = myInput_Collection_Slot.GetSprite ();
-					isMouseDown = true;
+					myInput_Collection_Slot.GetChessType () != PT_Global.ChessType.none) {
+					//show chess info
+					myInfo.ShowInfo (myInput_Collection_Slot.GetChessInfo ());
+					if (myInput_Collection_Slot.GetInUse () == false) {
+						myInput_Collection_Slot.SetInUse (true);
+						myDragChess.sprite = myInput_Collection_Slot.GetSprite ();
+						isMouseDown = true;
+					} else {
+						myInput_Collection_Slot = null;
+					}
 				} else {
 					myInput_Collection_Slot = null;
 				}
@@ -107,6 +114,8 @@ public class PT_Preset : MonoBehaviour {
 				myInput_Deck_Slot = t_collider.GetComponent<PT_Preset_Deck_Slot> ();
 				if (myInput_Deck_Slot != null &&
 					myInput_Deck_Slot.GetChessType () != PT_Global.ChessType.none) {
+					//show chess info
+					myInfo.ShowInfo (myInput_Deck_Slot.GetChessInfo ());
 					myInput_Deck_Slot.RemoveSprite ();
 					myDragChess.sprite = myInput_Deck_Slot.GetSprite ();
 					isMouseDown = true;
@@ -186,6 +195,12 @@ public class PT_Preset : MonoBehaviour {
 					myInput_Field_Chess.SetSprite (null);
 					isMouseDown = true;
 				}
+
+				PT_Preset_Deck_Slot t_deck_slot = t_collider.GetComponent<PT_Preset_Deck_Slot> ();
+				if (t_deck_slot != null) {
+					//show chess info
+					myInfo.ShowInfo (t_deck_slot.GetChessInfo ());
+				}
 			}
 
 		}
@@ -239,9 +254,10 @@ public class PT_Preset : MonoBehaviour {
 	}
 
 	public void OnButtonDeck () {
-		if (myState == PresetState.ShowDeck || myState == PresetState.ShowFormation)
+		if (myState == PresetState.ShowDeck || myState == PresetState.ShowFormation) {
 			myState = PresetState.ShowCollection;
-		else if (myState == PresetState.ShowCollection) {
+			myInfo.ShowInfo (PT_DeckManager.Instance.myChessBank.GetChessInfo (PT_DeckManager.Instance.GetChessTypes () [0]));
+		} else if (myState == PresetState.ShowCollection) {
 			if (myDeck.CheckReady ()) {
 				myField.SetSprites (myDeck.GetSprites ());
 				myState = PresetState.ShowFormation;
