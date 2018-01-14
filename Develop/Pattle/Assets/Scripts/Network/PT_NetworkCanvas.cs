@@ -133,7 +133,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 
 		if (myNetworkDiscovery.running == false) {
 			myPageSearch_Info.text = "ERROR: no myNetworkDiscovery";
-			yield return null;
+			yield break;
 		}
 
 		myPageSearch_Info.text = "";
@@ -141,7 +141,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 
 		if (myBroadcastsReceived == null) {
 			myPageSearch_Info.text = "ERROR: no myBroadcastsReceived";
-			yield return null;
+			yield break;
 		}
 
 		foreach (string f_ip in myBroadcastsReceived.Keys) {
@@ -174,20 +174,22 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	}
 
 	private string[] GetRoomData (string g_ip) {
+		if (myBroadcastsReceived == null || myBroadcastsReceived.ContainsKey (g_ip) == false)
+			return null;
 		string t_data = System.Text.Encoding.Unicode.GetString (myBroadcastsReceived [g_ip].broadcastData);
 		return t_data.Split (mySplitStringArray, System.StringSplitOptions.RemoveEmptyEntries);
 	}
 
 	private string GetRoomName (string g_ip) {
 		string[] t_dataArray = GetRoomData (g_ip);
-		if (t_dataArray.Length > 0 && t_dataArray [0] != "")
+		if (t_dataArray != null && t_dataArray.Length > 0 && t_dataArray [0] != "")
 			return t_dataArray [0];
 		return "ERROR: NO ROOM NAME!";
 	}
 
 	private string GetRoomPassword (string g_ip) {
 		string[] t_dataArray = GetRoomData (g_ip);
-		if (t_dataArray.Length > 1)
+		if (t_dataArray != null && t_dataArray.Length > 1)
 			return t_dataArray [1];
 		return "";
 	}

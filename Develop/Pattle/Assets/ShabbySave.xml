@@ -14,5 +14,7 @@
   <Network>
     <Name>Hi</Name>
     <Password>123</Password>
+    <JoinPassword>
+    </JoinPassword>
   </Network>
 </PattleData>
