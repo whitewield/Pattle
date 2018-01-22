@@ -14,6 +14,8 @@ namespace PT_Global{
 		Earth = 3,
 
 		Light = 4,
+
+		End = 5,
 	}
 
 	public enum ChessType {
@@ -37,7 +39,9 @@ namespace PT_Global{
 		Paladin = 401,
 		Angel = 402,
 		Avalok = 403,
-		Neptu = 404
+		Neptu = 404,
+		___Boss___ = 500,
+		Dragon = 501,
 	}
 
 	public enum Process {

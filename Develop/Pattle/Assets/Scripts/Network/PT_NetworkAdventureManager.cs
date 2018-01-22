@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PT_NetworkGameManager : NetworkBehaviour {
+public class PT_NetworkAdventureManager : NetworkBehaviour {
 
-	private static PT_NetworkGameManager instance = null;
+	private static PT_NetworkAdventureManager instance = null;
 
 	[SyncVar (hook = "OnStart")] bool isStart = false;
 	public PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
 	public List<List<GameObject>> myChessList = new List<List<GameObject>> ();
-	public PT_BattleUI myBattleUI;
+//	public PT_BattleUI myBattleUI;
 
 	//========================================================================
-	public static PT_NetworkGameManager Instance {
+	public static PT_NetworkAdventureManager Instance {
 		get { 
 			return instance;
 		}
@@ -35,13 +35,13 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		myBattleUI.HideWait ();
+//		myBattleUI.HideWait ();
 
 		if (!isServer)
 			return;
 		
 		Time.timeScale = 0;
-		myBattleUI.ShowWait ();
+//		myBattleUI.ShowWait ();
 //		for (int i = 0; i < myPlayerList.Length; ++i) {
 //			myPlayerList [i].Init ();
 //		}
@@ -66,7 +66,7 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 		if (Time.timeScale == 0 || isStart == false)
 		if (myPlayerList [0] != null && myPlayerList [1] != null) {
 			Time.timeScale = 1;
-			myBattleUI.HideWait ();
+//			myBattleUI.HideWait ();
 			isStart = true;
 		}
 	}

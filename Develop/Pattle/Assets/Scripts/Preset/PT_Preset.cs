@@ -254,7 +254,7 @@ public class PT_Preset : MonoBehaviour {
 	}
 
 	public void OnButtonDeck () {
-		if (myState == PresetState.ShowDeck || myState == PresetState.ShowFormation) {
+		if (myState == PresetState.ShowDeck) {
 			myState = PresetState.ShowCollection;
 			myInfo.ShowInfo (PT_DeckManager.Instance.myChessBank.GetChessInfo (PT_DeckManager.Instance.GetChessTypes () [0]));
 		} else if (myState == PresetState.ShowCollection) {
@@ -262,6 +262,12 @@ public class PT_Preset : MonoBehaviour {
 				myField.SetSprites (myDeck.GetSprites ());
 				myState = PresetState.ShowFormation;
 			}
+		} else if (myState == PresetState.ShowFormation) {
+			//save 
+			myDeck.ApplyChessType();
+			myField.ApplyChessPosition();
+
+			myState = PresetState.ShowDeck;
 		}
 		SetAnimation (myState);
 	}

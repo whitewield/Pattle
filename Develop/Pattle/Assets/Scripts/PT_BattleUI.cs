@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using PT_Global;
 
-public class PT_BattleUI : MonoBehaviour {
+public class PT_BattleUI : PT_GameUI {
 	[SerializeField] GameObject myPage_Wait;
 	[SerializeField] TextMesh myText_Name;
 	[SerializeField] TextMesh myText_Password;
@@ -32,10 +32,6 @@ public class PT_BattleUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-	}
-
-	public void OnButtonJoin () {
-		PT_NetworkGameManager.Instance.Quit ();
 	}
 
 	public void ShowWait () {

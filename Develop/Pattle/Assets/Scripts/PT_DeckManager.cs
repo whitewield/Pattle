@@ -20,9 +20,9 @@ public class PT_DeckManager : MonoBehaviour {
 			Destroy(this.gameObject);
 		} else {
 			instance = this;
+			DontDestroyOnLoad(this.gameObject);
+			LoadChess ();
 		}
-		DontDestroyOnLoad(this.gameObject);
-		LoadChess ();
 	}
 	//========================================================================
 
@@ -34,6 +34,12 @@ public class PT_DeckManager : MonoBehaviour {
 	}; 
 	private Vector2[] myChessPositions;
 	private Vector2[] myDefaultChessPositions = { new Vector2 (-3, -3), new Vector2 (3, -3), new Vector2 (0, -7) };
+
+	private bool isUsingAdventureChess;
+	private ChessType[] myAdventure_ChessTypes;
+	private Vector2[] myAdventure_ChessPositions;
+	private ChessType myAdventure_BossTypes;
+	private Vector2 myAdventure_BossPositions;
 
 	// Use this for initialization
 	void Start () {
