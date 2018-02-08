@@ -107,12 +107,15 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	public void QueueMove () {
 		myQueueProcess = PT_Global.Process.Move;
-		myPlayerController.RpcShowTarget (myID, -1, -1, myTargetPosition);
+
+		if (myPlayerController != null)
+			myPlayerController.RpcShowTarget (myID, -1, -1, myTargetPosition);
 	}
 
 	public void QueueAttack () {
 		myQueueProcess = PT_Global.Process.Attack;
 
+		if (myPlayerController != null)
 		if (isSingleTarget) {
 			PT_BaseChess t_baseChess = myTargetGameObject.GetComponent<PT_BaseChess> ();
 			myPlayerController.RpcShowTarget (myID, t_baseChess.GetMyOwnerID (), t_baseChess.GetMyID (), myTargetPosition);
@@ -124,6 +127,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	public void QueueCast () {
 		myQueueProcess = PT_Global.Process.CT;
 
+		if (myPlayerController != null)
 		if (isSingleTarget) {
 			PT_BaseChess t_baseChess = myTargetGameObject.GetComponent<PT_BaseChess> ();
 			myPlayerController.RpcShowTarget (myID, t_baseChess.GetMyOwnerID (), t_baseChess.GetMyID (), myTargetPosition);
@@ -136,7 +140,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		SetProcess (PT_Global.Process.Idle);
 	}
 
-	protected void Move () {
+	protected virtual void Move () {
 		SetProcess (PT_Global.Process.Move);
 	}
 
@@ -145,7 +149,8 @@ public class PT_BaseChess : NetworkBehaviour {
 		myTimer = myAttributes.CD * g_scale;
 		RpcShowCD (myTimer);
 
-		myPlayerController.RpcHideTarget (myID);
+		if (myPlayerController != null)
+			myPlayerController.RpcHideTarget (myID);
 	}
 
 	protected virtual void Cast (float g_scale = 1) {
@@ -161,7 +166,8 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected void AttackBack () {
 		SetProcess (PT_Global.Process.AttackBack);
 
-		myPlayerController.RpcHideTarget (myID);
+		if (myPlayerController != null)
+			myPlayerController.RpcHideTarget (myID);
 	}
 
 	protected void SetProcess (PT_Global.Process g_process) {
@@ -346,7 +352,8 @@ public class PT_BaseChess : NetworkBehaviour {
 	/// </summary>
 	public void BeReady () {
 		Idle ();
-		myPlayerController.RpcHideTarget (myID);
+		if (myPlayerController != null)
+			myPlayerController.RpcHideTarget (myID);
 		RpcShowIdle ();
 	}
 
@@ -466,7 +473,9 @@ public class PT_BaseChess : NetworkBehaviour {
 
 			DoOnDead ();
 			myCurHP = 0;
-			myPlayerController.RpcHideTarget (myID);
+
+			if (myPlayerController != null)
+				myPlayerController.RpcHideTarget (myID);
 
 			//play SFX dead
 //			PlayMySFX (myDeadSFX);

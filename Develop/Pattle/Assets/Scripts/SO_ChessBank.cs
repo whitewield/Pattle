@@ -9,6 +9,8 @@ public class SO_ChessBank : ScriptableObject {
 	public List<ChessInfo> Earth;
 	public List<ChessInfo> Light;
 
+	public List<ChessInfo> Boss;
+
 	public ChessInfo emptyInfo;
 
 	public List<ChessInfo> GetList (PT_Global.ChessClass g_class) {
@@ -21,6 +23,8 @@ public class SO_ChessBank : ScriptableObject {
 			return Earth;
 		case PT_Global.ChessClass.Light:
 			return Light;
+		case PT_Global.ChessClass.Boss:
+			return Boss;
 		}
 		Debug.LogError ("cannot find the list");
 		return null;
@@ -52,6 +56,11 @@ public class SO_ChessBank : ScriptableObject {
 		}
 
 		foreach (ChessInfo f_info in Light) {
+			if (f_info.chessType == g_chessType)
+				return f_info;
+		}
+
+		foreach (ChessInfo f_info in Boss) {
 			if (f_info.chessType == g_chessType)
 				return f_info;
 		}

@@ -3,114 +3,80 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PT_NetworkAdventureManager : NetworkBehaviour {
-
-	private static PT_NetworkAdventureManager instance = null;
-
-	[SyncVar (hook = "OnStart")] bool isStart = false;
-	public PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
-	public List<List<GameObject>> myChessList = new List<List<GameObject>> ();
-//	public PT_BattleUI myBattleUI;
-
-	//========================================================================
-	public static PT_NetworkAdventureManager Instance {
-		get { 
-			return instance;
-		}
-	}
-
-	void Awake () {
-		if (instance != null && instance != this) {
-			Destroy(this.gameObject);
-		} else {
-			instance = this;
-		}
-//		DontDestroyOnLoad(this.gameObject);
-
-		myChessList.Add (new List<GameObject> ());
-		myChessList.Add (new List<GameObject> ());
-	}
-	//========================================================================
-
+public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 
 	// Use this for initialization
-	void Start () {
-//		myBattleUI.HideWait ();
+	protected override void Start () {
 
-		if (!isServer)
-			return;
-		
-		Time.timeScale = 0;
-//		myBattleUI.ShowWait ();
-//		for (int i = 0; i < myPlayerList.Length; ++i) {
-//			myPlayerList [i].Init ();
-//		}
 	}
 	
 	// Update is called once per frame
-	void Update () {
-//		if (Input.GetKeyDown (KeyCode.Space)) {
-//			Debug.Log (myChessList [0].Count + ":" + myChessList [1].Count);
-//			foreach (GameObject f_chess in myChessList[0]) {
-//				Debug.Log (f_chess);
-//			}
-//
-//			foreach (GameObject f_chess in myChessList[1]) {
-//				Debug.Log (f_chess);
-//			}
-//		}
-
+	protected override void Update () {
 		if (!isServer)
 			return;
 
-		if (Time.timeScale == 0 || isStart == false)
-		if (myPlayerList [0] != null && myPlayerList [1] != null) {
-			Time.timeScale = 1;
-//			myBattleUI.HideWait ();
-			isStart = true;
+		if (isStart == false)
+		if (myPlayerList [0] != null) {
+			OnStart ();
 		}
 	}
 
-	public void Quit () {
-		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
-		if (t_NetworkDiscoveryGameObject != null) {
-			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
-			if (t_NetworkDiscovery != null &&
-			    t_NetworkDiscovery.running) {
-				t_NetworkDiscovery.StopBroadcast ();
-			}
-		}
-
-		Time.timeScale = 1;
+	public override  void Quit () {
 		if (isServer)
 			NetworkManager.singleton.StopHost ();
-		else {
-			NetworkManager.singleton.StopClient ();
-			CmdQuit ();
-		}
 	}
 
-	void OnStart (bool g_isStart) {
+	protected override void OnStart () {
 		if (!isServer)
 			return;
 		Debug.Log ("OnStart");
-		if (g_isStart == true) {
-			myPlayerList [0].RpcInit ();
-			myPlayerList [1].RpcInit ();
-		}
+
+		myPlayerList [0].RpcInit ();
+
+		CreateBoss ();
+
+		isStart = true;
+	}
+
+	private void CreateBoss () {
+		//create boss
+		GameObject t_bossObject = Instantiate (PT_DeckManager.Instance.GetAdventureBossPrefab(), this.transform) as GameObject;
+
+		PT_BaseBoss t_boss = t_bossObject.GetComponent<PT_BaseBoss> ();
+
+		//add the chess to the network game manager
+		//			PT_NetworkGameManager.myChessList [myID].Add (t_chess);
+
+		//set the boss id to the chess
+		t_boss.SetMyOwnerID (1);
+
+		t_boss.InitPosition ();
+
+		t_boss.SetMyManager (this);
+
+		// spawn on the clients
+		NetworkServer.Spawn (t_bossObject);
+
+		PT_NetworkGameManager.Instance.RpcAddChessToList (1, t_bossObject);
+	}
+
+	public List<GameObject> GetPlayerChessList () {
+		return myChessList [0];
 	}
 
 	[Command]
-	public void CmdQuit () {
+	public override void CmdQuit () {
 		Debug.Log ("CmdQuit");
 		Quit ();
 	}
 
 	[ClientRpc]
-	public void RpcAddChessToList(int g_playerID, GameObject g_chess) {
+	public override void RpcAddChessToList(int g_playerID, GameObject g_chess) {
 		myChessList [g_playerID].Add (g_chess);
 		g_chess.GetComponent<PT_BaseChess> ().SetMyID (myChessList [g_playerID].Count - 1);
 	}
+
+
 }
 
 

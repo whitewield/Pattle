@@ -38,8 +38,7 @@ public class PT_DeckManager : MonoBehaviour {
 	private bool isUsingAdventureChess;
 	private ChessType[] myAdventure_ChessTypes;
 	private Vector2[] myAdventure_ChessPositions;
-	private ChessType myAdventure_BossTypes;
-	private Vector2 myAdventure_BossPositions;
+	private ChessType myAdventure_BossType;
 
 	// Use this for initialization
 	void Start () {
@@ -130,5 +129,17 @@ public class PT_DeckManager : MonoBehaviour {
 
 	public Vector2[] GetChessPositions () {
 		return myChessPositions;
+	}
+
+	public void SetAdventureBossType (ChessType g_type) {
+		myAdventure_BossType = g_type;
+	}
+
+	public ChessType GetAdventureBossType () {
+		return myAdventure_BossType;
+	}
+
+	public GameObject GetAdventureBossPrefab () {
+		return myChessBank.GetChessPrefab (myAdventure_BossType);
 	}
 }

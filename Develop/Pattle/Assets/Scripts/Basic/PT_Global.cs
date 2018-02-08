@@ -15,7 +15,9 @@ namespace PT_Global{
 
 		Light = 4,
 
-		End = 5,
+		Boss = 5,
+
+		End = 6,
 	}
 
 	public enum ChessType {
@@ -41,7 +43,7 @@ namespace PT_Global{
 		Avalok = 403,
 		Neptu = 404,
 		___Boss___ = 500,
-		Dragon = 501,
+		FireDragon = 501,
 	}
 
 	public enum Process {
@@ -140,6 +142,12 @@ namespace PT_Global{
 		public static string Vector2ToString (Vector2 t_vector2) {
 			string t_string = t_vector2.x.ToString ("0.###") + "," + t_vector2.y.ToString ("0.###");
 			return t_string;
+		}
+
+		public static T GetRandomEnum<T> () {
+			System.Array A = System.Enum.GetValues (typeof(T));
+			T V = (T)A.GetValue (Random.Range (0, A.Length));
+			return V;
 		}
 	}
 }

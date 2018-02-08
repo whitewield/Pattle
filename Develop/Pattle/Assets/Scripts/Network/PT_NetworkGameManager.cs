@@ -5,9 +5,9 @@ using UnityEngine.Networking;
 
 public class PT_NetworkGameManager : NetworkBehaviour {
 
-	private static PT_NetworkGameManager instance = null;
+	protected static PT_NetworkGameManager instance = null;
 
-	[SyncVar (hook = "OnStart")] bool isStart = false;
+	protected bool isStart = false;
 	public PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
 	public List<List<GameObject>> myChessList = new List<List<GameObject>> ();
 	public PT_BattleUI myBattleUI;
@@ -24,90 +24,40 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 			Destroy(this.gameObject);
 		} else {
 			instance = this;
+			//		DontDestroyOnLoad(this.gameObject);
+			myChessList.Add (new List<GameObject> ());
+			myChessList.Add (new List<GameObject> ());
 		}
-//		DontDestroyOnLoad(this.gameObject);
-
-		myChessList.Add (new List<GameObject> ());
-		myChessList.Add (new List<GameObject> ());
 	}
 	//========================================================================
 
 
 	// Use this for initialization
-	void Start () {
-		myBattleUI.HideWait ();
-
-		if (!isServer)
-			return;
+	protected virtual void Start () {
 		
-		Time.timeScale = 0;
-		myBattleUI.ShowWait ();
-//		for (int i = 0; i < myPlayerList.Length; ++i) {
-//			myPlayerList [i].Init ();
-//		}
 	}
 	
 	// Update is called once per frame
-	void Update () {
-//		if (Input.GetKeyDown (KeyCode.Space)) {
-//			Debug.Log (myChessList [0].Count + ":" + myChessList [1].Count);
-//			foreach (GameObject f_chess in myChessList[0]) {
-//				Debug.Log (f_chess);
-//			}
-//
-//			foreach (GameObject f_chess in myChessList[1]) {
-//				Debug.Log (f_chess);
-//			}
-//		}
-
-		if (!isServer)
-			return;
-
-		if (Time.timeScale == 0 || isStart == false)
-		if (myPlayerList [0] != null && myPlayerList [1] != null) {
-			Time.timeScale = 1;
-			myBattleUI.HideWait ();
-			isStart = true;
-		}
+	protected virtual void Update () {
+		
 	}
 
-	public void Quit () {
-		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
-		if (t_NetworkDiscoveryGameObject != null) {
-			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
-			if (t_NetworkDiscovery != null &&
-			    t_NetworkDiscovery.running) {
-				t_NetworkDiscovery.StopBroadcast ();
-			}
-		}
-
-		Time.timeScale = 1;
-		if (isServer)
-			NetworkManager.singleton.StopHost ();
-		else {
-			NetworkManager.singleton.StopClient ();
-			CmdQuit ();
-		}
+	public virtual void Quit () {
+		
 	}
 
-	void OnStart (bool g_isStart) {
-		if (!isServer)
-			return;
-		Debug.Log ("OnStart");
-		if (g_isStart == true) {
-			myPlayerList [0].RpcInit ();
-			myPlayerList [1].RpcInit ();
-		}
+	protected virtual void OnStart () {
+		
 	}
 
 	[Command]
-	public void CmdQuit () {
+	public virtual void CmdQuit () {
 		Debug.Log ("CmdQuit");
 		Quit ();
 	}
 
 	[ClientRpc]
-	public void RpcAddChessToList(int g_playerID, GameObject g_chess) {
+	public virtual void RpcAddChessToList(int g_playerID, GameObject g_chess) {
 		myChessList [g_playerID].Add (g_chess);
 		g_chess.GetComponent<PT_BaseChess> ().SetMyID (myChessList [g_playerID].Count - 1);
 	}

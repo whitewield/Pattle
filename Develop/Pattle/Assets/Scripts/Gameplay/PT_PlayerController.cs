@@ -285,6 +285,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		}
 	}
 
+
 	[Command]
 	public void CmdChessAction (GameObject g_active, GameObject g_target, Vector2 g_targetPos) {
 		if (g_active.GetComponent<PT_BaseChess> ().Action (g_target, g_targetPos))
