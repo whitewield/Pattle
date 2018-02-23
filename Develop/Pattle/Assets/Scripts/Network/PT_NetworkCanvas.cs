@@ -26,6 +26,9 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	[SerializeField] Text myPagePassword_Info;
 	// Use this for initialization
 	void Start () {
+		//do not use the adventure chess
+		PT_DeckManager.Instance.UseAdventureChess (false);
+
 		myNetworkManager = NetworkManager.singleton;
 		myNetworkDiscovery = 
 			GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY).GetComponent<NetworkDiscovery> ();
@@ -38,12 +41,14 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		t_load = ShabbySave.LoadGame (Constants.SAVE_CATEGORY_NETWORK, Constants.SAVE_TITLE_NETWORK_PASSWORD);
 		if (t_load != "0")
 			myPageCreate_Input_Password.text = t_load;
+
+		PT_Preset.Instance.Show ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-	}
+//	void Update () {
+//
+//	}
 
 	public void OnButtonCreate () {
 		string t_name = myPageCreate_Input_Name.text;

@@ -1,36 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using PT_Global;
 
 [CreateAssetMenu(fileName = "ChessBank", menuName = "Wield/ChessBank", order = 2)]
 public class SO_ChessBank : ScriptableObject {
+	[Header ("Chess")]
 	public List<ChessInfo> Blood;
 	public List<ChessInfo> Magic;
 	public List<ChessInfo> Earth;
 	public List<ChessInfo> Light;
-
-	public List<ChessInfo> Boss;
-
 	public ChessInfo emptyInfo;
 
-	public List<ChessInfo> GetList (PT_Global.ChessClass g_class) {
+	[Header ("Boss")]
+	public List<BossInfo> BossList;
+	public BossInfo emptyBossInfo;
+
+	public List<ChessInfo> GetList (ChessClass g_class) {
 		switch (g_class) {
-		case PT_Global.ChessClass.Blood:
+		case ChessClass.Blood:
 			return Blood;
-		case PT_Global.ChessClass.Magic:
+		case ChessClass.Magic:
 			return Magic;
-		case PT_Global.ChessClass.Earth:
+		case ChessClass.Earth:
 			return Earth;
-		case PT_Global.ChessClass.Light:
+		case ChessClass.Light:
 			return Light;
-		case PT_Global.ChessClass.Boss:
-			return Boss;
 		}
 		Debug.LogError ("cannot find the list");
 		return null;
 	}
 
-	public GameObject GetChessPrefab (PT_Global.ChessType g_chessType) {
+	public List<BossInfo> GetBossList () {
+		return BossList;
+	}
+
+	public GameObject GetChessPrefab (ChessType g_chessType) {
 		ChessInfo t_chessInfo = GetChessInfo (g_chessType);
 
 		if (t_chessInfo.chessType == emptyInfo.chessType)
@@ -39,7 +44,26 @@ public class SO_ChessBank : ScriptableObject {
 		return t_chessInfo.prefab;
 	}
 
-	public ChessInfo GetChessInfo (PT_Global.ChessType g_chessType) {
+	public GameObject GetBossPrefab (BossType g_bossType, BossDifficulty g_bossDifficulty) {
+		BossInfo t_bossInfo = GetBossInfo (g_bossType);
+
+		if (t_bossInfo.bossType == emptyBossInfo.bossType)
+			return null;
+
+		switch (g_bossDifficulty) {
+		case BossDifficulty.Easy:
+			return t_bossInfo.prefabEasy;
+		case BossDifficulty.Normal:
+			return t_bossInfo.prefabNormal;
+		case BossDifficulty.Hard:
+			return t_bossInfo.prefabHard;
+		default:
+			Debug.LogError ("Boss Difficulty not found!");
+			return t_bossInfo.prefabEasy;
+		}
+	}
+
+	public ChessInfo GetChessInfo (ChessType g_chessType) {
 		foreach (ChessInfo f_info in Blood) {
 			if (f_info.chessType == g_chessType)
 				return f_info;
@@ -60,17 +84,36 @@ public class SO_ChessBank : ScriptableObject {
 				return f_info;
 		}
 
-		foreach (ChessInfo f_info in Boss) {
-			if (f_info.chessType == g_chessType)
+		return emptyInfo;
+	}
+
+	public BossInfo GetBossInfo (BossType g_bossType) {
+		foreach (BossInfo f_info in BossList) {
+			if (f_info.bossType == g_bossType)
 				return f_info;
 		}
 
-		return emptyInfo;
+		return emptyBossInfo;
+	}
+
+	public SO_AdventureChessSettings GetAdventureChessSettings (BossType g_bossType) {
+		BossInfo t_bossInfo = GetBossInfo (g_bossType);
+
+		return t_bossInfo.chessSettings;
 	}
 }
 
 [System.Serializable]
 public struct ChessInfo {
-	public PT_Global.ChessType chessType;
+	public ChessType chessType;
 	public GameObject prefab;
+}
+
+[System.Serializable]
+public struct BossInfo {
+	public BossType bossType;
+	public GameObject prefabEasy;
+	public GameObject prefabNormal;
+	public GameObject prefabHard;
+	public SO_AdventureChessSettings chessSettings;
 }

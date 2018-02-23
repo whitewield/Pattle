@@ -38,7 +38,8 @@ public class PT_DeckManager : MonoBehaviour {
 	private bool isUsingAdventureChess;
 	private ChessType[] myAdventure_ChessTypes;
 	private Vector2[] myAdventure_ChessPositions;
-	private ChessType myAdventure_BossType;
+	private BossType myAdventure_BossType;
+	private BossDifficulty myAdventure_BossDifficulty;
 
 	// Use this for initialization
 	void Start () {
@@ -101,6 +102,10 @@ public class PT_DeckManager : MonoBehaviour {
 		
 	}
 
+	public void UseAdventureChess (bool g_bool) {
+		isUsingAdventureChess = g_bool;
+	}
+
 	public void SetChessTypes (ChessType[] g_types) {
 		myChessTypes = g_types;
 		for (int i = 0; i < Constants.DECK_SIZE; i++) {
@@ -113,6 +118,9 @@ public class PT_DeckManager : MonoBehaviour {
 	}
 
 	public ChessType[] GetChessTypes () {
+		if (isUsingAdventureChess)
+			return myAdventure_ChessTypes;
+		
 		return myChessTypes;
 	}
 
@@ -128,18 +136,46 @@ public class PT_DeckManager : MonoBehaviour {
 	}
 
 	public Vector2[] GetChessPositions () {
+		if (isUsingAdventureChess)
+			return myAdventure_ChessPositions;
+		
 		return myChessPositions;
 	}
 
-	public void SetAdventureBossType (ChessType g_type) {
+	public void SetAdventureBoss (BossType g_type, BossDifficulty g_difficulty) {
+		if (g_type == BossType.none) {
+			Debug.LogWarning ("setting boss type to none?!");
+		}
 		myAdventure_BossType = g_type;
+		myAdventure_BossDifficulty = g_difficulty;
 	}
 
-	public ChessType GetAdventureBossType () {
-		return myAdventure_BossType;
+	public BossDifficulty GetAdventureDifficulty () {
+		return myAdventure_BossDifficulty;
 	}
+
+	public void SetAdventureChess (BossType g_bossType) {
+		SO_AdventureChessSettings t_setting = myChessBank.GetAdventureChessSettings (g_bossType);
+		if (t_setting == null)
+			return;
+		
+		myAdventure_ChessTypes = t_setting.chessTypes;
+		myAdventure_ChessPositions = t_setting.chessPositions;
+	}
+
+	public ChessType[] GetAdventureChessTypes () {
+		return myAdventure_ChessTypes;
+	}
+
+	public Vector2[] GetAdventureChessPositions () {
+		return myAdventure_ChessPositions;
+	}
+
+//	public ChessType GetAdventureBossType () {
+//		return myAdventure_BossType;
+//	}
 
 	public GameObject GetAdventureBossPrefab () {
-		return myChessBank.GetChessPrefab (myAdventure_BossType);
+		return myChessBank.GetBossPrefab (myAdventure_BossType, myAdventure_BossDifficulty);
 	}
 }

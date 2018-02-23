@@ -89,8 +89,13 @@ public class PT_BaseBoss : PT_BaseChess {
 		// if the list is empty, return null
 		if (t_enemyList == null || t_enemyList.Count == 0)
 			return null;
-		
-		return t_enemyList [Random.Range (0, t_enemyList.Count)];
+
+		// if all the enemies are dead, return the first enemy in the list
+		List<GameObject> t_enemyAliveList = GetEnemies_Alive ();
+		if (t_enemyAliveList == null || t_enemyAliveList.Count == 0)
+			return t_enemyList [0];
+
+		return t_enemyAliveList [Random.Range (0, t_enemyAliveList.Count)];
 	}
 
 
@@ -107,25 +112,30 @@ public class PT_BaseBoss : PT_BaseChess {
 		if (t_enemyList == null || t_enemyList.Count == 0)
 			return null;
 
+		// if all the enemies are dead, return the first enemy in the list
+		List<GameObject> t_enemyAliveList = GetEnemies_Alive ();
+		if (t_enemyAliveList == null || t_enemyAliveList.Count == 0)
+			return t_enemyList [0];
+
 		// create a list that puts in all the enemies with lowest HP
 		List<GameObject> t_targetEnemyList = new List<GameObject> ();
-		t_targetEnemyList.Add (t_enemyList [0]);
-		int t_targetEnemyHP = GetEnemyHP (t_enemyList [0]);
+		t_targetEnemyList.Add (t_enemyAliveList [0]);
+		int t_targetEnemyHP = GetEnemyHP (t_enemyAliveList [0]);
 
 		// go though the list of enemies 
-		for (int i = 0; i < t_enemyList.Count; i++) {
+		for (int i = 0; i < t_enemyAliveList.Count; i++) {
 			
-			int f_HP = GetEnemyHP (t_enemyList [i]);
+			int f_HP = GetEnemyHP (t_enemyAliveList [i]);
 
 			// if current HP is smaller that recoreded enemies
 			if (f_HP < t_targetEnemyHP) {
 				t_targetEnemyHP = f_HP;
 
 				t_targetEnemyList.Clear ();
-				t_targetEnemyList.Add (t_enemyList [i]);
+				t_targetEnemyList.Add (t_enemyAliveList [i]);
 
-			} else if (f_HP == t_targetEnemyHP && t_targetEnemyList.Contains (t_enemyList [i]) == false) {
-				t_targetEnemyList.Add (t_enemyList [i]);
+			} else if (f_HP == t_targetEnemyHP && t_targetEnemyList.Contains (t_enemyAliveList [i]) == false) {
+				t_targetEnemyList.Add (t_enemyAliveList [i]);
 			}
 		}
 
@@ -144,14 +154,18 @@ public class PT_BaseBoss : PT_BaseChess {
 		if (t_enemyList == null || t_enemyList.Count == 0)
 			return null;
 
-		t_enemyList = new List<GameObject> (t_enemyList);
+		// if all the enemies are dead, return the enemy list
+		List<GameObject> t_enemyAliveList = GetEnemies_Alive ();
+		if (t_enemyAliveList == null || t_enemyAliveList.Count == 0)
+			return t_enemyList;
+
 		List<GameObject> t_targetList = new List<GameObject> ();
 
 		for (int f_loopTime = 0; f_loopTime < 100; f_loopTime++) {
 
-			int w_index = Random.Range (0, t_enemyList.Count);
-			t_targetList.Add (t_enemyList [w_index]);
-			t_enemyList.RemoveAt (w_index);
+			int w_index = Random.Range (0, t_enemyAliveList.Count);
+			t_targetList.Add (t_enemyAliveList [w_index]);
+			t_enemyAliveList.RemoveAt (w_index);
 
 			if (f_loopTime == 100) {
 				Debug.LogError ("I Spend Too Much Time In This Loop!");
@@ -159,6 +173,42 @@ public class PT_BaseBoss : PT_BaseChess {
 		}
 
 		return t_targetList;
+	}
+		
+	protected List<GameObject> GetEnemies_Alive () {
+		// get the enemy list from manager
+		List<GameObject> t_enemyList = myManager.GetPlayerChessList ();
+
+		// if the list is empty, return null
+		if (t_enemyList == null || t_enemyList.Count == 0)
+			return null;
+
+		t_enemyList = new List<GameObject> (t_enemyList);
+
+		for (int i = 0; i < t_enemyList.Count; i++) {
+			if (CheckEnemyDeath (t_enemyList [i])) {
+				t_enemyList.RemoveAt (i);
+				i--;
+			}
+		}
+
+		return t_enemyList;
+	}
+
+	protected bool CheckEnemyDeath (GameObject g_enemyObject) {
+		if (g_enemyObject.GetComponent<PT_BaseChess> () == null) {
+			Debug.LogError ("cannot get the base chess script!");
+			return true;
+		}
+		return g_enemyObject.GetComponent<PT_BaseChess> ().GetProcess () == PT_Global.Process.Dead;
+	}
+
+	protected int GetEnemyHP (GameObject g_enemyObject) {
+		if (g_enemyObject.GetComponent<PT_BaseChess> () == null) {
+			Debug.LogError ("cannot get the base chess script!");
+			return -1;
+		}
+		return g_enemyObject.GetComponent<PT_BaseChess> ().GetCurHP ();
 	}
 
 
@@ -174,32 +224,24 @@ public class PT_BaseBoss : PT_BaseChess {
 		if (t_enemyList == null || t_enemyList.Count == 0)
 			return null;
 
-		t_enemyList = new List<GameObject> (t_enemyList);
+		// if all the enemies are dead, return the enemy list
+		List<GameObject> t_enemyAliveList = GetEnemies_Alive ();
+		if (t_enemyAliveList == null || t_enemyAliveList.Count == 0)
+			return t_enemyList;
 
-		for (int i = 0; i < t_enemyList.Count - 1; i++) {
-			for (int j = 0; j < t_enemyList.Count - i - 1; j++) {
-				if (GetEnemyHP (t_enemyList [j]) > GetEnemyHP (t_enemyList [j + 1])) {
-					GameObject f_temp = t_enemyList [j];
-					t_enemyList [j] = t_enemyList [j + 1];
-					t_enemyList [j + 1] = f_temp;
+		for (int i = 0; i < t_enemyAliveList.Count - 1; i++) {
+			for (int j = 0; j < t_enemyAliveList.Count - i - 1; j++) {
+				if (GetEnemyHP (t_enemyAliveList [j]) > GetEnemyHP (t_enemyAliveList [j + 1])) {
+					GameObject f_temp = t_enemyAliveList [j];
+					t_enemyAliveList [j] = t_enemyAliveList [j + 1];
+					t_enemyAliveList [j + 1] = f_temp;
 				}
 			}
 		}
 
-		return t_enemyList;
+		return t_enemyAliveList;
 	}
 
 
-	/// <summary>
-	/// Gets the enemy HP.
-	/// </summary>
-	/// <returns> enemy HP.</returns>
-	/// <param name="g_enemyObject"> Enemy game object.</param>
-	protected int GetEnemyHP (GameObject g_enemyObject) {
-		if (g_enemyObject.GetComponent<PT_BaseChess> () == null) {
-			Debug.LogError ("cannot get the base chess script!");
-			return -1;
-		}
-		return g_enemyObject.GetComponent<PT_BaseChess> ().GetCurHP ();
-	}
+
 }

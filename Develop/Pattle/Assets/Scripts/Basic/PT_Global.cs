@@ -15,9 +15,7 @@ namespace PT_Global{
 
 		Light = 4,
 
-		Boss = 5,
-
-		End = 6,
+		End,
 	}
 
 	public enum ChessType {
@@ -42,8 +40,17 @@ namespace PT_Global{
 		Angel = 402,
 		Avalok = 403,
 		Neptu = 404,
-		___Boss___ = 500,
-		FireDragon = 501,
+	}
+
+	public enum BossType {
+		none = 0,
+		FireDragon = 1,
+	}
+
+	public enum BossDifficulty {
+		Easy,
+		Normal,
+		Hard
 	}
 
 	public enum Process {
@@ -91,7 +98,7 @@ namespace PT_Global{
 		public const float UI_COLLECTION_TAG_ON = 0.2f;
 
 		public const float SPEED_MOVE = 4.0f;
-		public const float SPEED_UI_LERP = 6.0f;
+		public const float SPEED_UI_LERP = 10.0f;
 
 		public const string NAME_MAP_FIELD = "MapField_";
 		public const string NAME_SLOTS = "Slots";

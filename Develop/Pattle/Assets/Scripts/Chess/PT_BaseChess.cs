@@ -351,10 +351,11 @@ public class PT_BaseChess : NetworkBehaviour {
 	/// Used by soprano
 	/// </summary>
 	public void BeReady () {
-		Idle ();
 		if (myPlayerController != null)
 			myPlayerController.RpcHideTarget (myID);
 		RpcShowIdle ();
+
+		Idle ();
 	}
 
 	#endregion

@@ -54,27 +54,50 @@
     <CD>CD</CD>
   </Attributes>
 
+  <ChessName>
+    <Warrior>Warrior</Warrior>
+    <Berserker>Berserker</Berserker>
+    <Vampire>Vampire</Vampire>
+    <Sword>Sword</Sword>
+
+    <FireMage>FireMage</FireMage>
+    <IceMage>IceMage</IceMage>
+    <LightMage>LightMage</LightMage>
+    <AirMage>AirMage</AirMage>
+    <Brush>Brush</Brush>
+
+    <Archer>Archer</Archer>
+    <Jam>Jam</Jam>
+    <Hunter>Hunter</Hunter>
+    <Soprano>Soprano</Soprano>
+
+    <Paladin>Paladin</Paladin>
+    <Angel>Angel</Angel>
+    <Neptu>Neptu</Neptu>
+    <Avalok>Avalok</Avalok>
+  </ChessName>
+
   <ChessAbility>
     <Warrior>Close-combat</Warrior>
-    <Berserker>Close-combat\r\nEffect: Attack rise when damaged</Berserker>
-    <Vampire>Close-combat\r\nEffect: Heal when causing damage</Vampire>
-    <Sword>Close-combat\r\nEffect: Magic sword rotating around</Sword>
+    <Berserker>Close-combat\r\nEffect: Attack rise \r\nwhen damaged</Berserker>
+    <Vampire>Close-combat\r\nEffect: Heal when \r\ncausing damage</Vampire>
+    <Sword>Close-combat\r\nEffect: Magic sword \r\nrotating around</Sword>
 
     <FireMage>Area-of-effect\r\nMedium Circle</FireMage>
-    <IceMage>Area-of-effect\r\nSmall Circle, Effect: Freeze 1.5s</IceMage>
+    <IceMage>Area-of-effect\r\nSmall Circle, \r\nEffect: Freeze 1.5s</IceMage>
     <LightMage>Area-of-effect\r\nLine</LightMage>
-    <AirMage>Area-of-effect\r\nLarge Circle, Effect: Cyclone</AirMage>
-    <Brush>Control a brush\r\nEffect: Damage enemies, heal allies</Brush>
+    <AirMage>Area-of-effect\r\nLarge Circle, \r\nEffect: Cyclone</AirMage>
+    <Brush>Control a brush\r\nEffect: Damage enemies, \r\nheal allies</Brush>
 
     <Archer>Long-distance</Archer>
-    <Jam>Long-distance\r\nExplode Medium Circle, Self-damage : 1</Jam>
+    <Jam>Long-distance\r\nExplode Medium Circle, \r\nSelf-damage : 1</Jam>
     <Hunter>Place a trap\r\nEffect: Freeze 1s</Hunter>
     <Soprano>Single target\r\nEffect: Refresh</Soprano>
 
     <Paladin>Single target\r\nEffect: Heal</Paladin>
-    <Angel>Large Circle\r\nEffect: Double-tap to heal targets around</Angel>
-    <Neptu>Single target\r\nEffect: Prevent spell damage for 3s</Neptu>
-    <Avalok>Single target\r\nEffect: Prevent damage for 3s, time stops</Avalok>
+    <Angel>Large Circle\r\nEffect: Double-tap to heal \r\ntargets around</Angel>
+    <Neptu>Single target\r\nEffect: Prevent spell damage \r\nfor 3s</Neptu>
+    <Avalok>Single target\r\nEffect: Prevent damage for 3s, \r\ntime stops</Avalok>
   </ChessAbility>
 
   <ChessStory>

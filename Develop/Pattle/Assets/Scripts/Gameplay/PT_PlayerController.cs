@@ -241,7 +241,7 @@ public class PT_PlayerController : NetworkBehaviour {
 	[Command]
 	public void CmdCreateChess (PT_Global.ChessType[] g_chessTypes, Vector2[] g_positions) {
 		myID = System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this);
-		Debug.Log (myID);
+//		Debug.Log (myID);
 
 		if (myID == -1) {
 			Invoke ("CmdCreateChess", 1);

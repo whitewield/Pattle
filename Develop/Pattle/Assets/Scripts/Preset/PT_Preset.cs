@@ -9,6 +9,8 @@ public class PT_Preset : MonoBehaviour {
 		ShowDeck,
 		ShowCollection,
 		ShowFormation,
+
+		ShowAdventureDeck,
 	}
 
 	[System.Serializable]
@@ -32,6 +34,7 @@ public class PT_Preset : MonoBehaviour {
 	[SerializeField] PT_Preset_Collection myCollection;
 	[SerializeField] PT_Preset_Info myInfo;
 	[SerializeField] PT_Preset_Deck myDeck;
+	[SerializeField] PT_Preset_AdventureDeck myAdventureDeck;
 	[SerializeField] PT_Preset_Field myField;
 
 	[SerializeField] Camera myPresetCamera;
@@ -57,13 +60,15 @@ public class PT_Preset : MonoBehaviour {
 			instance = this;
 		}
 		//		DontDestroyOnLoad(this.gameObject);
+
+		InitAnimation ();
 	}
 	//========================================================================
 
 	// Use this for initialization
-	void Start () {
-		InitAnimation ();
-	}
+//	void Start () {
+//		InitAnimation ();
+//	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -281,6 +286,20 @@ public class PT_Preset : MonoBehaviour {
 		SetAnimation (myState);
 	}
 	#endregion
+
+	public void Show () {
+		SetAnimation (PresetState.ShowDeck);
+	}
+
+	public void ShowAdventure () {
+		myAdventureDeck.SetFromDeckManager ();
+		SetAnimation (PresetState.ShowAdventureDeck);
+	}
+
+	public void Hide () {
+		SetAnimation (PresetState.Hide);
+	}
+
 
 	#region Animations
 	private void InitAnimation () {
