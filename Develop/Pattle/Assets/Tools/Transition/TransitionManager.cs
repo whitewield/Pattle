@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class TransitionManager : MonoBehaviour {
 
@@ -37,12 +38,19 @@ public class TransitionManager : MonoBehaviour {
 		TransitionOut
 	}
 
+	public enum TransitionMode {
+		Normal,
+		Host,
+		Client,
+	}
+
 	[SerializeField] Collider2D myCollider2D;
 	[SerializeField] SpriteRenderer mySpriteRenderer;
 	[SerializeField] Color myTransitionColor = Color.black;
 	[SerializeField] float myAnimationTime = 0.5f;
 	private float myAnimationTimer;
 	private Status myStatus = Status.Idle;
+	private TransitionMode myTransitionMode = TransitionMode.Normal;
 
 	// Use this for initialization
 	void Start () {
@@ -92,8 +100,18 @@ public class TransitionManager : MonoBehaviour {
 	}
 
 	public void StartTransition (string g_scene) {
+		myTransitionMode = TransitionMode.Normal;
+
 		myNextScene = g_scene;
-//		myGrapeAnimator.SetBool ("isGrape", true);
+		//		myGrapeAnimator.SetBool ("isGrape", true);
+		TransitionOut ();
+	}
+
+	public void StartTransition (TransitionMode g_trasitionMode) {
+		myTransitionMode = g_trasitionMode;
+
+		myNextScene = "";
+		//		myGrapeAnimator.SetBool ("isGrape", true);
 		TransitionOut ();
 	}
 
@@ -118,6 +136,16 @@ public class TransitionManager : MonoBehaviour {
 	}
 
 	public void StartLoading () {
-		SceneManager.LoadSceneAsync (myNextScene);
+		switch (myTransitionMode) {
+		case TransitionMode.Normal:
+			SceneManager.LoadSceneAsync (myNextScene);
+			break;
+		case TransitionMode.Host:
+			NetworkManager.singleton.StartHost ();
+			break;
+		case TransitionMode.Client:
+			NetworkManager.singleton.StartClient ();
+			break;
+		}
 	}
 }

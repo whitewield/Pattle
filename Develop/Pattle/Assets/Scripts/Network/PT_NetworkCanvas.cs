@@ -7,6 +7,15 @@ using PT_Global;
 
 public class PT_NetworkCanvas : MonoBehaviour {
 
+	enum NetworkMenuState {
+		Create,
+		Search,
+		Password,
+	}
+
+	private NetworkMenuState myState = NetworkMenuState.Create;
+	private RectTransform myCurrentPage;
+
 	private NetworkManager myNetworkManager;
 	private NetworkDiscovery myNetworkDiscovery;
 	public Dictionary<string,NetworkBroadcastResult> myBroadcastsReceived;
@@ -42,13 +51,20 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		if (t_load != "0")
 			myPageCreate_Input_Password.text = t_load;
 
+		SetState (NetworkMenuState.Create);
+
 		PT_Preset.Instance.Show ();
 	}
 	
 	// Update is called once per frame
-//	void Update () {
-//
-//	}
+	void Update () {
+		UpdatePage ();
+	}
+
+	private void UpdatePage () {
+		Vector2 t_targetPos = new Vector2 (-myCurrentPage.anchoredPosition.x, -myCurrentPage.anchoredPosition.y);
+		myPageAll.anchoredPosition = Vector2.Lerp (myPageAll.anchoredPosition, t_targetPos, Time.unscaledDeltaTime * PT_Global.Constants.SPEED_UI_LERP);
+	}
 
 	public void OnButtonCreate () {
 		string t_name = myPageCreate_Input_Name.text;
@@ -82,18 +98,18 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		myNetworkDiscovery.Initialize ();
 		myNetworkDiscovery.broadcastData = t_data;
 		myNetworkDiscovery.StartAsServer ();
-		myNetworkManager.StartHost ();
+		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Host);
 	}
 
 	public void OnButtonSearch () {
-		ShowPage (myPageSearch);
+		SetState (NetworkMenuState.Search);
 		StartCoroutine (SearchRooms ());
 	}
 
 	public void JoinRoom (string g_ip) {
 		myNetworkManager.networkAddress = g_ip;
 		if (GetRoomPassword (g_ip) == "")
-			myNetworkManager.StartClient ();
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Client);
 		else {
 			myPagePassword_Info.text = "Please enter password.";
 			myPagePassword_Name.text = GetRoomName (g_ip);
@@ -104,7 +120,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 				);
 			if (t_password != "0")
 				myPagePassword_Input.text = t_password;
-			ShowPage (myPagePassword);
+			SetState (NetworkMenuState.Password);
 		}
 	}
 
@@ -115,7 +131,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 				Constants.SAVE_TITLE_NETWORK_JOIN_PASSWORD, 
 				myPagePassword_Input.text
 			);
-			myNetworkManager.StartClient ();
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Client);
 		} else {
 			myPagePassword_Info.text = "Wrong password!";
 		}
@@ -160,22 +176,38 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		yield return null;
 	}
 
-	public void OnButtonSearchBack () {
-		if (myNetworkDiscovery.running)
-			myNetworkDiscovery.StopBroadcast ();
-		ShowPage (myPageCreate);
+	public void OnButtonBack () {
+		switch (myState) {
+		case NetworkMenuState.Create:
+			TransitionManager.Instance.StartTransition ("NetworkMenu");
+			break;
+		case NetworkMenuState.Search:
+			if (myNetworkDiscovery.running)
+				myNetworkDiscovery.StopBroadcast ();
+			SetState (NetworkMenuState.Create);
+			break;
+		case NetworkMenuState.Password:
+			SetState (NetworkMenuState.Search);
+			break;
+		}
 	}
 
-	public void OnButtonPasswordBack () {
-		ShowPage (myPageSearch);
-	}
-
-	private void ShowPage (RectTransform g_page) {
-		myPageAll.anchoredPosition = new Vector2 (-g_page.anchoredPosition.x, myPageAll.anchoredPosition.y);
-
-		myPageCreate_Info.text = "";
-		myPageSearch_Info.text = "";
-		myPagePassword_Info.text = "";
+	private void SetState (NetworkMenuState g_state) {
+		myState = g_state;
+		switch (myState) {
+		case NetworkMenuState.Create:
+			myPageCreate_Info.text = "";
+			myCurrentPage = myPageCreate;
+			break;
+		case NetworkMenuState.Search:
+			myPageSearch_Info.text = "";
+			myCurrentPage = myPageSearch;
+			break;
+		case NetworkMenuState.Password:
+			myPageSearch_Info.text = "";
+			myCurrentPage = myPagePassword;
+			break;
+		}
 	}
 
 	private string[] GetRoomData (string g_ip) {

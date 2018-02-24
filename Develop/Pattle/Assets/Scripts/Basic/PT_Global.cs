@@ -47,10 +47,17 @@ namespace PT_Global{
 		FireDragon = 1,
 	}
 
+	public enum MedalType {
+		None = 0,
+		Bronze = 1,
+		Silver = 2,
+		Gold = 3,
+	}
+
 	public enum BossDifficulty {
-		Easy,
-		Normal,
-		Hard
+		Easy = 0,
+		Normal = 1,
+		Hard = 2
 	}
 
 	public enum Process {

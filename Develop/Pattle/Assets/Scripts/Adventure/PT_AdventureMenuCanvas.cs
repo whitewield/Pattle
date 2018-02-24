@@ -15,6 +15,50 @@ namespace Pattle {
 
 			public BossType myBossType;
 			public GameObject myMapPrefab;
+
+			public int myUnlockMedalCount;
+		}
+
+		public static class AdventureSave {
+			public static MedalType[] LoadMedalTypes (BossType g_bossType) {
+				string t_loadString = ShabbySave.LoadGame (Constants.SAVE_CATEGORY_ADVENTURE, g_bossType.ToString ());
+
+				int t_load = int.Parse (t_loadString);
+
+				//left to right: easy, normal, hard
+				MedalType[] t_medalTypes = new MedalType[3];
+				t_medalTypes [0] = (MedalType)(t_load / 100);
+				t_medalTypes [1] = (MedalType)((t_load % 100) / 10);
+				t_medalTypes [2] = (MedalType)(t_load % 10);
+
+				return t_medalTypes;
+			}
+
+			public static void SaveMedalTypes (BossType g_bossType, MedalType[] g_medalTypes) {
+				//left to right: easy, normal, hard
+				string t_saveString = 
+					((int)g_medalTypes [0]).ToString () +
+					((int)g_medalTypes [1]).ToString () +
+					((int)g_medalTypes [2]).ToString ();
+
+				ShabbySave.SaveGame (Constants.SAVE_CATEGORY_ADVENTURE, g_bossType.ToString (), t_saveString);
+			}
+
+			public static MedalType LoadMedalType (BossType g_bossType, BossDifficulty g_difficulty) {
+				return LoadMedalTypes (g_bossType) [(int)(g_difficulty)];
+			}
+
+			public static void SaveMedalType (BossType g_bossType, BossDifficulty g_difficulty, MedalType g_medalType) {
+				MedalType t_currentMedalType = LoadMedalType (g_bossType, g_difficulty);
+
+				if ((int)t_currentMedalType < (int)g_medalType) {
+					//save
+
+					MedalType[] t_medalTypes = LoadMedalTypes (g_bossType);
+					t_medalTypes [(int)g_difficulty] = g_medalType;
+					SaveMedalTypes (g_bossType, t_medalTypes);
+				}
+			}
 		}
 	}
 }
@@ -41,16 +85,23 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 	[Header ("AdventureList")]
 	[SerializeField] RectTransform myPageAdventureList;
 	[SerializeField] RectTransform myPageAdventureList_Content;
+	private List<PT_AdventureButton> myPageAdventureList_Buttons = new List<PT_AdventureButton> ();
 	[SerializeField] Vector2 myPageAdventureList_Content_Height;//x -> the base height, y -> the spacing
 	[SerializeField] GameObject[] myPageAdventureList_ButtonPrefabs;
 	[SerializeField] GameObject myMedalsPrefab;
 	public GameObject MedalsPrefab { get { return myMedalsPrefab; } }
+	private int myMedalCount = 0;
+	[SerializeField] Color myMedalColor_None = Color.clear;
+	[SerializeField] Color myMedalColor_Bronze = Color.black;
+	[SerializeField] Color myMedalColor_Silver = Color.gray;
+	[SerializeField] Color myMedalColor_Gold = Color.yellow;
 
 	[Header ("Difficulty")]
 	[SerializeField] RectTransform myPageDifficulty;
 	[SerializeField] Text myPageDifficulty_Name;
 	[SerializeField] RectTransform myPageDifficulty_Image;
 	private GameObject myPageDifficulty_CurrentImage;
+	[SerializeField] Image[] myPageDifficulty_MedalImages;
 
 	[Header ("Deck")]
 	[SerializeField] RectTransform myPageDeck;
@@ -73,18 +124,50 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//saving test
+		MedalType[] t_saveTest = {MedalType.Gold, MedalType.Silver, MedalType.Bronze};
+		AdventureSave.SaveMedalTypes (BossType.FireDragon, t_saveTest);
+		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Easy));
+		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Normal));
+		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Hard));
+
 		Init_AdventureList ();
 
 		SetState (AdventureMenuState.AdventureList);
+
+		Debug.Log ("medal count: " + myMedalCount);
 	}
 
 	private void Init_AdventureList () {
 		float t_height = myPageAdventureList_Content_Height.x;
 
 		foreach (GameObject f_prefab in myPageAdventureList_ButtonPrefabs) {
-			RectTransform t_rectTransform = Instantiate (f_prefab, myPageAdventureList_Content).transform as RectTransform;
-			t_height += t_rectTransform.sizeDelta.y;
+			GameObject f_gameObject = Instantiate (f_prefab, myPageAdventureList_Content);
+
+			// add the button to the button list
+			PT_AdventureButton f_buttonScript = f_gameObject.GetComponent<PT_AdventureButton> ();
+			myPageAdventureList_Buttons.Add (f_buttonScript);
+
+			//show medals
+			MedalType[] f_medals = AdventureSave.LoadMedalTypes (f_buttonScript.GetBossType ());
+			f_buttonScript.Init (myMedalsPrefab, f_medals);
+
+			//update medal count
+			foreach (MedalType f_type in f_medals) {
+				if (f_type != MedalType.None) {
+					myMedalCount++;
+				}
+			}
+
+			// change the height in content object
+			RectTransform f_rectTransform = f_gameObject.transform as RectTransform;
+			t_height += f_rectTransform.sizeDelta.y;
 			t_height += myPageAdventureList_Content_Height.y;
+		}
+
+		//check buttons unlock or lock
+		foreach (PT_AdventureButton f_button in myPageAdventureList_Buttons) {
+			f_button.CheckLock (myMedalCount);
 		}
 
 		t_height -= myPageAdventureList_Content_Height.y;
@@ -128,6 +211,12 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 		myPageDifficulty_Name.text = g_setup.myMenuDisplayName;
 		myPageDeck_Name.text = g_setup.myMenuDisplayName;
 
+		//show medals
+		MedalType[] t_medals = AdventureSave.LoadMedalTypes (g_setup.myBossType);
+		for (int i = 0; i < t_medals.Length; i++) {
+			myPageDifficulty_MedalImages [i].color = PT_AdventureMenuCanvas.Instance.GetMedalColor (t_medals [i]);
+		}
+
 		// update the Adventure Chess settings
 		PT_DeckManager.Instance.SetAdventureChess (g_setup.myBossType);
 
@@ -161,7 +250,7 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 		NetworkManager.singleton.matchSize = 1;
 		NetworkManager.singleton.onlineScene = "NetworkAdventure";
 		NetworkManager.singleton.offlineScene = "NetworkAdventureMenu";
-		NetworkManager.singleton.StartHost ();
+		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Host);
 	}
 
 	public void OnButtonBack () {
@@ -191,6 +280,21 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 		case AdventureMenuState.Deck:
 			myCurrentPage = myPageDeck;
 			break;
+		}
+	}
+
+	public Color GetMedalColor (MedalType g_medalType) {
+		switch (g_medalType) {
+		case MedalType.Gold:
+			return myMedalColor_Gold;
+		case MedalType.Silver:
+			return myMedalColor_Silver;
+		case MedalType.Bronze:
+			return myMedalColor_Bronze;
+
+		case MedalType.None:
+		default:
+			return myMedalColor_None;
 		}
 	}
 
