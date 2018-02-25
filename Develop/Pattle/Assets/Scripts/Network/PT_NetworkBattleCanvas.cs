@@ -1,21 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using PT_Global;
+using UnityEngine.UI;
 
-public class PT_BattleUI : PT_GameUI {
+public class PT_NetworkBattleCanvas : PT_BattleCanvas {
+
 	[SerializeField] GameObject myPage_Wait;
 	[SerializeField] GameObject mySet_Password;
-	[SerializeField] TextMesh myText_Room;
-	[SerializeField] TextMesh myText_Password;
-	[SerializeField] TextMesh myText_IP;
+	[SerializeField] Text myText_Room;
+	[SerializeField] Text myText_Password;
+	[SerializeField] Text myText_IP;
+
 	// Use this for initialization
 	void Start () {
-		myText_Room.text = ShabbySave.LoadGame (
-			Constants.SAVE_CATEGORY_NETWORK, 
-			Constants.SAVE_TITLE_NETWORK_NAME
-		);
+		myText_Room.text = 
+			ShabbySave.LoadGame (
+				Constants.SAVE_CATEGORY_NETWORK, 
+				Constants.SAVE_TITLE_NETWORK_NAME
+			);
 
 		string t_pwd = 
 			ShabbySave.LoadGame (
@@ -42,4 +45,5 @@ public class PT_BattleUI : PT_GameUI {
 		Debug.Log ("HideWait");
 		myPage_Wait.SetActive (false);
 	}
+
 }

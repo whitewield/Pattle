@@ -10,7 +10,7 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 	protected bool isStart = false;
 	public PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
 	public List<List<GameObject>> myChessList = new List<List<GameObject>> ();
-	public PT_BattleUI myBattleUI;
+	public PT_GameUI myGameUI;
 
 	//========================================================================
 	public static PT_NetworkGameManager Instance {
