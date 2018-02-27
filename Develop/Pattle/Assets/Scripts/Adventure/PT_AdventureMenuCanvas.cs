@@ -249,14 +249,14 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 	public void OnButtonStart () {
 		NetworkManager.singleton.matchSize = 1;
 		NetworkManager.singleton.onlineScene = "NetworkAdventure";
-		NetworkManager.singleton.offlineScene = "NetworkAdventureMenu";
-		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Host);
+//		NetworkManager.singleton.offlineScene = "NetworkAdventureMenu";
+		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartHost);
 	}
 
 	public void OnButtonBack () {
 		switch (myState) {
 		case AdventureMenuState.AdventureList:
-			TransitionManager.Instance.StartTransition ("NetworkMenu");
+			TransitionManager.Instance.StartTransition (Constants.SCENE_MENU);
 			break;
 		case AdventureMenuState.Difficulty:
 			SetState (AdventureMenuState.AdventureList);

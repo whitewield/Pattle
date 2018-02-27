@@ -23,7 +23,9 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 
 	public override  void Quit () {
 		if (isServer)
-			NetworkManager.singleton.StopHost ();
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
+		else 
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopClient);
 	}
 
 	protected override void OnStart () {

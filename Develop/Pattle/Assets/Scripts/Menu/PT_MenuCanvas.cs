@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using PT_Global;
 
 public class PT_MenuCanvas : MonoBehaviour {
 
@@ -17,12 +18,13 @@ public class PT_MenuCanvas : MonoBehaviour {
 
 	public void OnButtonAdventure () {
 		NetworkManager.singleton.matchSize = 1;
-		NetworkManager.singleton.onlineScene = "NetworkAdventure";
-		TransitionManager.Instance.StartTransition ("NetworkAdventureMenu");
+		NetworkManager.singleton.onlineScene = Constants.SCENE_ADVENTURE;
+		TransitionManager.Instance.StartTransition (Constants.SCENE_ADVENTUREMENU);
 	}
 
 	public void OnButtonArena () {
 		NetworkManager.singleton.matchSize = 2;
-		NetworkManager.singleton.onlineScene = "NetworkBattle";
+		NetworkManager.singleton.onlineScene = Constants.SCENE_BATTLE;
+		TransitionManager.Instance.StartTransition (Constants.SCENE_LOBBY);
 	}
 }

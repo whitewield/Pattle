@@ -28,11 +28,6 @@ public class PT_BattleUI : PT_GameUI {
 			myText_Password.text = t_pwd;
 		myText_IP.text = Network.player.ipAddress;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void ShowWait () {
 		myPage_Wait.SetActive (true);

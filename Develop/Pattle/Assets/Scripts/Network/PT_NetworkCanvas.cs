@@ -98,7 +98,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		myNetworkDiscovery.Initialize ();
 		myNetworkDiscovery.broadcastData = t_data;
 		myNetworkDiscovery.StartAsServer ();
-		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Host);
+		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartHost);
 	}
 
 	public void OnButtonSearch () {
@@ -109,7 +109,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	public void JoinRoom (string g_ip) {
 		myNetworkManager.networkAddress = g_ip;
 		if (GetRoomPassword (g_ip) == "")
-			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Client);
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartClient);
 		else {
 			myPagePassword_Info.text = "Please enter password.";
 			myPagePassword_Name.text = GetRoomName (g_ip);
@@ -131,7 +131,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 				Constants.SAVE_TITLE_NETWORK_JOIN_PASSWORD, 
 				myPagePassword_Input.text
 			);
-			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.Client);
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartClient);
 		} else {
 			myPagePassword_Info.text = "Wrong password!";
 		}
@@ -179,7 +179,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	public void OnButtonBack () {
 		switch (myState) {
 		case NetworkMenuState.Create:
-			TransitionManager.Instance.StartTransition ("NetworkMenu");
+			TransitionManager.Instance.StartTransition (Constants.SCENE_MENU);
 			break;
 		case NetworkMenuState.Search:
 			if (myNetworkDiscovery.running)

@@ -56,7 +56,7 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 
 		Time.timeScale = 1;
 		if (isServer) {
-			NetworkManager.singleton.StopHost ();
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
 		} else if (isClient) {
 //			NetworkManager.singleton.StopClient ();
 			CmdQuit ();

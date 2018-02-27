@@ -92,6 +92,13 @@ namespace PT_Global{
 
 	public static class Constants {
 
+		public const string SCENE_MENU = "NetworkMenu";
+		public const string SCENE_LOBBY = "NetworkLobby";
+		public const string SCENE_BATTLE = "NetworkBattle";
+		public const string SCENE_ADVENTUREMENU = "NetworkAdventureMenu";
+		public const string SCENE_ADVENTURE = "NetworkAdventure";
+		public const string SCENE_ENDGAME = "NetworkEndGame";
+
 		public const int DECK_SIZE = 3;
 
 		public const string PATH_TARGET_SIGN = "PrefabsLoad/Target/TargetSign";

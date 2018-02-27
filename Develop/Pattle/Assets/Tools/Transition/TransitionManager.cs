@@ -23,6 +23,7 @@ public class TransitionManager : MonoBehaviour {
 		}
 
 		DontDestroyOnLoad(this.gameObject);
+		this.transform.position = Vector3.zero;
 	}
 	//========================================================================
 
@@ -40,8 +41,10 @@ public class TransitionManager : MonoBehaviour {
 
 	public enum TransitionMode {
 		Normal,
-		Host,
-		Client,
+		StartHost,
+		StopHost,
+		StartClient,
+		StopClient,
 	}
 
 	[SerializeField] Collider2D myCollider2D;
@@ -140,11 +143,17 @@ public class TransitionManager : MonoBehaviour {
 		case TransitionMode.Normal:
 			SceneManager.LoadSceneAsync (myNextScene);
 			break;
-		case TransitionMode.Host:
+		case TransitionMode.StartHost:
 			NetworkManager.singleton.StartHost ();
 			break;
-		case TransitionMode.Client:
+		case TransitionMode.StopHost:
+			NetworkManager.singleton.StopHost ();
+			break;
+		case TransitionMode.StartClient:
 			NetworkManager.singleton.StartClient ();
+			break;
+		case TransitionMode.StopClient:
+			NetworkManager.singleton.StopClient ();
 			break;
 		}
 	}
