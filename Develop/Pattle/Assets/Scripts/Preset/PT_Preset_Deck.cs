@@ -15,7 +15,7 @@ public class PT_Preset_Deck : MonoBehaviour {
 	}
 
 	public void SetFromDeckManager () {
-		PT_Global.ChessType[] t_chessTypes = PT_DeckManager.Instance.GetChessTypes ();
+		PT_Global.ChessType[] t_chessTypes = PT_DeckManager.Instance.GetArenaChessTypes ();
 		for (int i = 0; i < mySlots.Length; i++) {
 			mySlots [i].SetChessInfo (PT_DeckManager.Instance.myChessBank.GetChessInfo (t_chessTypes [i]));
 		}

@@ -27,7 +27,7 @@ public class PT_Preset_Collection : MonoBehaviour {
 		InitPage (myCollectionPage_Earth, ref myCollectionPage_Earth_SlotArray);
 		InitPage (myCollectionPage_Light, ref myCollectionPage_Light_SlotArray);
 
-		SetChessInUse (PT_DeckManager.Instance.GetChessTypes ());
+		SetChessInUse (PT_DeckManager.Instance.GetArenaChessTypes ());
 	}
 
 	/// <summary>

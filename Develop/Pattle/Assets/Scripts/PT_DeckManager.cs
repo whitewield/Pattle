@@ -35,7 +35,7 @@ public class PT_DeckManager : MonoBehaviour {
 	private Vector2[] myChessPositions;
 	private Vector2[] myDefaultChessPositions = { new Vector2 (-3, -3), new Vector2 (3, -3), new Vector2 (0, -7) };
 
-	private GameMode myGameMode;
+	private GameMode myGameMode = GameMode.Arena;
 
 	private ChessType[] myAdventure_ChessTypes;
 	private Vector2[] myAdventure_ChessPositions;
@@ -146,7 +146,8 @@ public class PT_DeckManager : MonoBehaviour {
 		if (myGameMode == GameMode.Adventure &&
 			(myAdventure_BossDifficulty == BossDifficulty.Easy || myAdventure_BossDifficulty == BossDifficulty.Normal))
 			return myAdventure_ChessPositions;
-		
+
+		Debug.LogWarning("normal chess pos");
 		return myChessPositions;
 	}
 
@@ -185,5 +186,13 @@ public class PT_DeckManager : MonoBehaviour {
 
 	public GameObject GetAdventureBossPrefab () {
 		return myChessBank.GetBossPrefab (myAdventure_BossType, myAdventure_BossDifficulty);
+	}
+
+	public ChessType[] GetArenaChessTypes () {
+		return myChessTypes;
+	}
+
+	public Vector2[] GetArenaChessPositions () {
+		return myChessPositions;
 	}
 }

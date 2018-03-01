@@ -237,6 +237,12 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 		// update the boss in deck manager
 		PT_DeckManager.Instance.SetAdventureBoss (myCurrentSetup.myBossType, g_difficulty);
 
+		// show the deck
+		if (g_difficulty == BossDifficulty.Hard)
+			PT_Preset.Instance.Show ();
+		else
+			PT_Preset.Instance.ShowAdventure ();
+
 		SetState (AdventureMenuState.Deck);
 	}
 

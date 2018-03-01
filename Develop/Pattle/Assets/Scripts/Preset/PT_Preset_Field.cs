@@ -22,7 +22,7 @@ public class PT_Preset_Field : MonoBehaviour {
 	}
 
 	public void SetPositionFromDeckManager () {
-		Vector2[] t_chessPositions = PT_DeckManager.Instance.GetChessPositions ();
+		Vector2[] t_chessPositions = PT_DeckManager.Instance.GetArenaChessPositions ();
 		for (int i = 0; i < myChesses.Length; i++) {
 			myChesses [i].transform.transform.localPosition = 
 				new Vector3 (t_chessPositions [i].x, -Mathf.Abs (t_chessPositions [i].y));
