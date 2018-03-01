@@ -8,13 +8,13 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 
 	// Use this for initialization
 	protected override void Start () {
-		((PT_BattleUI)myGameUI).HideWait ();
+		((PT_NetworkBattleCanvas)myGameCanvas).HideWait ();
 
 		if (!isServer)
 			return;
 		
 		Time.timeScale = 0;
-		((PT_BattleUI)myGameUI).ShowWait ();
+		((PT_NetworkBattleCanvas)myGameCanvas).ShowWait ();
 //		for (int i = 0; i < myPlayerList.Length; ++i) {
 //			myPlayerList [i].Init ();
 //		}
@@ -39,7 +39,7 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 		if (Time.timeScale == 0 || isStart == false)
 		if (myPlayerList [0] != null && myPlayerList [1] != null) {
 			Time.timeScale = 1;
-			((PT_BattleUI)myGameUI).HideWait ();
+			((PT_NetworkBattleCanvas)myGameCanvas).HideWait ();
 			OnStart ();
 //			isStart = true;
 		}

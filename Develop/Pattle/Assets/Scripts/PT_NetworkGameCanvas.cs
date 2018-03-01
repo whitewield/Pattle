@@ -1,20 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
-using PT_Global;
 
-public class PT_GameUI : MonoBehaviour {
-//	// Use this for initialization
-//	void Start () {
-//		
-//	}
-//	
-//	// Update is called once per frame
-//	void Update () {
-//		
-//	}
-//
+public class PT_NetworkGameCanvas : MonoBehaviour {
+
 	public void OnButtonQuit () {
 		PT_PlayerController[] t_players = PT_NetworkGameManager.Instance.myPlayerList;
 		for (int i = 0; i < t_players.Length; i++) {

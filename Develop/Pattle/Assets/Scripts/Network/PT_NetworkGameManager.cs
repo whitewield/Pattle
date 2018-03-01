@@ -6,18 +6,12 @@ using UnityEngine.Networking;
 public class PT_NetworkGameManager : NetworkBehaviour {
 
 	protected static PT_NetworkGameManager instance = null;
+	public static PT_NetworkGameManager Instance { get { return instance; } }
 
 	protected bool isStart = false;
 	public PT_PlayerController[] myPlayerList = new PT_PlayerController[2];
 	public List<List<GameObject>> myChessList = new List<List<GameObject>> ();
-	public PT_GameUI myGameUI;
-
-	//========================================================================
-	public static PT_NetworkGameManager Instance {
-		get { 
-			return instance;
-		}
-	}
+	public PT_NetworkGameCanvas myGameCanvas;
 
 	void Awake () {
 		if (instance != null && instance != this) {
@@ -29,7 +23,6 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 			myChessList.Add (new List<GameObject> ());
 		}
 	}
-	//========================================================================
 
 
 	// Use this for initialization
@@ -48,6 +41,10 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 
 	protected virtual void OnStart () {
 		
+	}
+
+	public List<GameObject> GetChessList (int g_ID) {
+		return myChessList [g_ID];
 	}
 
 	[Command]

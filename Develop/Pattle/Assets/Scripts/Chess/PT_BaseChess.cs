@@ -478,6 +478,7 @@ public class PT_BaseChess : NetworkBehaviour {
 			if (myPlayerController != null)
 				myPlayerController.RpcHideTarget (myID);
 
+			myPlayerController.CheckLose ();
 			//play SFX dead
 //			PlayMySFX (myDeadSFX);
 		}

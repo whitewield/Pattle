@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using PT_Global;
 
 public class PT_BattleUI : PT_GameUI {
 	[SerializeField] GameObject myPage_Wait;
 	[SerializeField] GameObject mySet_Password;
-	[SerializeField] TextMesh myText_Room;
-	[SerializeField] TextMesh myText_Password;
-	[SerializeField] TextMesh myText_IP;
+	[SerializeField] Text myText_Room;
+	[SerializeField] Text myText_Password;
+	[SerializeField] Text myText_IP;
+
+	[SerializeField] GameObject myButton_Surrender;
 	// Use this for initialization
 	void Start () {
 		myText_Room.text = ShabbySave.LoadGame (
@@ -30,11 +33,28 @@ public class PT_BattleUI : PT_GameUI {
 	}
 
 	public void ShowWait () {
+		Debug.Log ("ShowWait");
+		myButton_Surrender.SetActive (false);
 		myPage_Wait.SetActive (true);
 	}
 
 	public void HideWait () {
 		Debug.Log ("HideWait");
+		myButton_Surrender.SetActive (true);
 		myPage_Wait.SetActive (false);
+	}
+
+	public void OnButtonCancelWait () {
+		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
+		if (t_NetworkDiscoveryGameObject != null) {
+			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
+			if (t_NetworkDiscovery != null &&
+				t_NetworkDiscovery.running) {
+				t_NetworkDiscovery.StopBroadcast ();
+			}
+		}
+
+		NetworkManager.singleton.offlineScene = Constants.SCENE_LOBBY;
+		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
 	}
 }

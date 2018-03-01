@@ -21,15 +21,25 @@ public class PT_Button : MonoBehaviour {
 	private PT_ButtonEvent onClick = new PT_ButtonEvent();
 	public PT_ButtonEvent onClickEvent { get { return onClick; } set { onClick = value; } }
 
+	private bool isPressed;
+
 	public void OnMouseDown () {
 		if (doPositionChange)
 			myButtonTransform.localPosition = myPressedPosition;
-		onClickEvent.Invoke ();
+
+		isPressed = true;
 	}
 
 	public void OnMouseUp () {
 		if (doPositionChange)
 			myButtonTransform.localPosition = myNormalPosition;
+
+		if (isPressed)
+			onClickEvent.Invoke ();
+	}
+
+	public void OnMouseExit() {
+		isPressed = false;
 	}
 
 }

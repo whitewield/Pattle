@@ -5,9 +5,22 @@ using PT_Global;
 
 public class PT_EndGameUI : MonoBehaviour {
 
+	[SerializeField] GameObject myVictoryDisplay;
+	[SerializeField] GameObject myDefeatDisplay;
 	[SerializeField] SpriteRenderer[] myChessDisplays;
 
 	void Start () {
+
+		if (PT_DeckManager.Instance.IsWinning) {
+			myVictoryDisplay.SetActive (true);
+			myDefeatDisplay.SetActive (false);
+		} else {
+			myVictoryDisplay.SetActive (false);
+			myDefeatDisplay.SetActive (true);
+		}
+			
+
+		// show chess sprites
 		ChessType[] t_chessTypes = PT_DeckManager.Instance.GetChessTypes ();
 		for (int i = 0; i < t_chessTypes.Length; i++) {
 			myChessDisplays [i].sprite = 

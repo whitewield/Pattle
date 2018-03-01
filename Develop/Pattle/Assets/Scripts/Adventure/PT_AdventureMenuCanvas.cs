@@ -124,6 +124,8 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (NetworkManager.singleton.onlineScene != Constants.SCENE_ADVENTURE)
+			NetworkManager.singleton.onlineScene = Constants.SCENE_ADVENTURE;
 		//set game mode to adventure
 		PT_DeckManager.Instance.SetGameMode (GameMode.Adventure);
 
@@ -232,7 +234,8 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 		// change difficulty display
 		myPageDeck_DifficultyText.text = g_difficulty.ToString ();
-		myPageDeck_DifficultyImage.color = g_color;
+		myPageDeck_DifficultyText.color = g_color;
+//		myPageDeck_DifficultyImage.color = g_color;
 
 		// update the boss in deck manager
 		PT_DeckManager.Instance.SetAdventureBoss (myCurrentSetup.myBossType, g_difficulty);
@@ -247,7 +250,6 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 	}
 
 	public void OnButtonStart () {
-//		NetworkManager.singleton.offlineScene = "NetworkAdventureMenu";
 		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartHost);
 	}
 

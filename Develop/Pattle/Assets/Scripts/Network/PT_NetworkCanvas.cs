@@ -35,6 +35,9 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	[SerializeField] Text myPagePassword_Info;
 	// Use this for initialization
 	void Start () {
+		if (NetworkManager.singleton.onlineScene != Constants.SCENE_BATTLE)
+			NetworkManager.singleton.onlineScene = Constants.SCENE_BATTLE;
+
 		//set game mode to arena
 		PT_DeckManager.Instance.SetGameMode (GameMode.Arena);
 

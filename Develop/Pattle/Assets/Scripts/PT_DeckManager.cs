@@ -42,6 +42,9 @@ public class PT_DeckManager : MonoBehaviour {
 	private BossType myAdventure_BossType;
 	private BossDifficulty myAdventure_BossDifficulty;
 
+	private bool isWinning = false;
+	public bool IsWinning { get { return isWinning; } set { isWinning = value; } }
+
 	// Use this for initialization
 	void Start () {
 
@@ -147,7 +150,7 @@ public class PT_DeckManager : MonoBehaviour {
 			(myAdventure_BossDifficulty == BossDifficulty.Easy || myAdventure_BossDifficulty == BossDifficulty.Normal))
 			return myAdventure_ChessPositions;
 
-		Debug.LogWarning("normal chess pos");
+//		Debug.LogWarning("normal chess pos");
 		return myChessPositions;
 	}
 

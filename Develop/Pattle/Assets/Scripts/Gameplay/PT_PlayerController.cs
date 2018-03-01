@@ -31,7 +31,14 @@ public class PT_PlayerController : NetworkBehaviour {
 		myTargetSignPrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_SIGN);
 		myTargetLinePrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_LINE);
 
-		//register the spaceship in the gamemanager, that will allow to loop on it.
+
+
+//		ClientScene.RegisterPrefab
+	}
+
+	// Use this for initialization
+	void Start () {
+		// register on network game manager
 		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
 			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
 			PT_NetworkGameManager.Instance.myPlayerList [1] = this;
@@ -39,11 +46,6 @@ public class PT_PlayerController : NetworkBehaviour {
 			PT_NetworkGameManager.Instance.myPlayerList [0] = this;
 		}
 
-//		ClientScene.RegisterPrefab
-	}
-
-	// Use this for initialization
-	void Start () {
 		if (!base.isLocalPlayer) {
 			return;
 		}
@@ -237,6 +239,23 @@ public class PT_PlayerController : NetworkBehaviour {
 	private void HideLine () {
 		myLine.SetActive (false);
 	}
+
+	public void CheckLose () {
+		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (myID);
+		Debug.Log (t_chessList.Count);
+		for (int i = 0; i < t_chessList.Count; i++) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != PT_Global.Process.Dead) {
+				return;
+			}
+		}
+		Lose ();
+	}
+
+	public void Lose () {
+		if (isLocalPlayer) {
+			CmdLose ();
+		}
+	}
 		
 	[Command]
 	public void CmdCreateChess (PT_Global.ChessType[] g_chessTypes, Vector2[] g_positions) {
@@ -292,6 +311,37 @@ public class PT_PlayerController : NetworkBehaviour {
 			RpcDone ();
 		else 
 			RpcUndone ();
+	}
+
+	[Command]
+	public void CmdLose () {
+		RpcLose ();
+	}
+
+	[ClientRpc]
+	void RpcLose () {
+		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
+		if (t_NetworkDiscoveryGameObject != null) {
+			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
+			if (t_NetworkDiscovery != null &&
+				t_NetworkDiscovery.running) {
+				t_NetworkDiscovery.StopBroadcast ();
+			}
+		}
+
+		Time.timeScale = 1;
+
+		if (isLocalPlayer) {
+			PT_DeckManager.Instance.IsWinning = false;
+		} else {
+			PT_DeckManager.Instance.IsWinning = true;
+		}
+
+		if (isServer) {
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
+		} else {
+			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopClient);
+		}
 	}
 
 	[ClientRpc]
