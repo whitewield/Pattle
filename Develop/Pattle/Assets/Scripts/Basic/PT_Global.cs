@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace PT_Global{
 
+	public enum GameMode {
+		Adventure,
+		Arena,
+	}
+
 	public enum ChessClass {
 		Start = 0,
 

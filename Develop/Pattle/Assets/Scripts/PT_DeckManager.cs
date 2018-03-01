@@ -35,7 +35,8 @@ public class PT_DeckManager : MonoBehaviour {
 	private Vector2[] myChessPositions;
 	private Vector2[] myDefaultChessPositions = { new Vector2 (-3, -3), new Vector2 (3, -3), new Vector2 (0, -7) };
 
-	private bool isUsingAdventureChess;
+	private GameMode myGameMode;
+
 	private ChessType[] myAdventure_ChessTypes;
 	private Vector2[] myAdventure_ChessPositions;
 	private BossType myAdventure_BossType;
@@ -43,7 +44,6 @@ public class PT_DeckManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
 
 	}
 
@@ -102,8 +102,14 @@ public class PT_DeckManager : MonoBehaviour {
 		
 	}
 
-	public void UseAdventureChess (bool g_bool) {
-		isUsingAdventureChess = g_bool;
+	public void SetGameMode (GameMode g_mode) {
+		myGameMode = g_mode;
+		if (myGameMode == GameMode.Arena) {
+		}
+	}
+
+	public GameMode GetGameMode () {
+		return myGameMode;
 	}
 
 	public void SetChessTypes (ChessType[] g_types) {
@@ -118,7 +124,8 @@ public class PT_DeckManager : MonoBehaviour {
 	}
 
 	public ChessType[] GetChessTypes () {
-		if (isUsingAdventureChess)
+		if (myGameMode == GameMode.Adventure &&
+		    (myAdventure_BossDifficulty == BossDifficulty.Easy || myAdventure_BossDifficulty == BossDifficulty.Normal))
 			return myAdventure_ChessTypes;
 		
 		return myChessTypes;
@@ -136,7 +143,8 @@ public class PT_DeckManager : MonoBehaviour {
 	}
 
 	public Vector2[] GetChessPositions () {
-		if (isUsingAdventureChess)
+		if (myGameMode == GameMode.Adventure &&
+			(myAdventure_BossDifficulty == BossDifficulty.Easy || myAdventure_BossDifficulty == BossDifficulty.Normal))
 			return myAdventure_ChessPositions;
 		
 		return myChessPositions;

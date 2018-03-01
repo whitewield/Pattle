@@ -35,8 +35,8 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	[SerializeField] Text myPagePassword_Info;
 	// Use this for initialization
 	void Start () {
-		//do not use the adventure chess
-		PT_DeckManager.Instance.UseAdventureChess (false);
+		//set game mode to arena
+		PT_DeckManager.Instance.SetGameMode (GameMode.Arena);
 
 		myNetworkManager = NetworkManager.singleton;
 		myNetworkDiscovery = 

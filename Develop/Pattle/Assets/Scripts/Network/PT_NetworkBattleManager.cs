@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using PT_Global;
 
 public class PT_NetworkBattleManager : PT_NetworkGameManager {
 
@@ -56,6 +57,10 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 
 		Time.timeScale = 1;
 		if (isServer) {
+			if (isStart == false) {
+				NetworkManager.singleton.offlineScene = Constants.SCENE_LOBBY;
+			}
+
 			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
 		} else if (isClient) {
 //			NetworkManager.singleton.StopClient ();
@@ -64,8 +69,10 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 	}
 
 	protected override void OnStart () {
-		if (!isServer)
+		if (!isServer) {
+			isStart = true;
 			return;
+		}
 		Debug.Log ("OnStart");
 		myPlayerList [0].RpcInit ();
 		myPlayerList [1].RpcInit ();

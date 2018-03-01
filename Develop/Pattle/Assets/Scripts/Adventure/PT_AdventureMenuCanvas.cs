@@ -80,7 +80,7 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 	[SerializeField] RectTransform myPageAll;
 
 	private AdventureSetup myCurrentSetup;
-	private BossDifficulty myCurrentDifficulty;
+//	private BossDifficulty myCurrentDifficulty;
 
 	[Header ("AdventureList")]
 	[SerializeField] RectTransform myPageAdventureList;
@@ -124,6 +124,9 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//set game mode to adventure
+		PT_DeckManager.Instance.SetGameMode (GameMode.Adventure);
+
 		//saving test
 		MedalType[] t_saveTest = {MedalType.Gold, MedalType.Silver, MedalType.Bronze};
 		AdventureSave.SaveMedalTypes (BossType.FireDragon, t_saveTest);
@@ -225,20 +228,11 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 	public void OnButtonDifficulty (BossDifficulty g_difficulty, Color g_color) {
 		// store difficulty
-		myCurrentDifficulty = g_difficulty;
+//		myCurrentDifficulty = g_difficulty;
 
 		// change difficulty display
 		myPageDeck_DifficultyText.text = g_difficulty.ToString ();
 		myPageDeck_DifficultyImage.color = g_color;
-
-		// show deck
-		if (myCurrentDifficulty == BossDifficulty.Hard) {
-			PT_Preset.Instance.Show ();
-			PT_DeckManager.Instance.UseAdventureChess (false);
-		}else {
-			PT_Preset.Instance.ShowAdventure ();
-			PT_DeckManager.Instance.UseAdventureChess (true);
-		}
 
 		// update the boss in deck manager
 		PT_DeckManager.Instance.SetAdventureBoss (myCurrentSetup.myBossType, g_difficulty);
@@ -247,8 +241,6 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 	}
 
 	public void OnButtonStart () {
-		NetworkManager.singleton.matchSize = 1;
-		NetworkManager.singleton.onlineScene = "NetworkAdventure";
 //		NetworkManager.singleton.offlineScene = "NetworkAdventureMenu";
 		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartHost);
 	}
