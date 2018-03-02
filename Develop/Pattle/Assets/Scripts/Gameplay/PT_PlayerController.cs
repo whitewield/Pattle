@@ -31,21 +31,18 @@ public class PT_PlayerController : NetworkBehaviour {
 		myTargetSignPrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_SIGN);
 		myTargetLinePrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_LINE);
 
-
-
-//		ClientScene.RegisterPrefab
-	}
-
-	// Use this for initialization
-	void Start () {
-		// register on network game manager
 		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
 			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
 			PT_NetworkGameManager.Instance.myPlayerList [1] = this;
 		} else {
 			PT_NetworkGameManager.Instance.myPlayerList [0] = this;
 		}
+//		ClientScene.RegisterPrefab
+	}
 
+	// Use this for initialization
+	void Start () {
+		// register on network game manager
 		if (!base.isLocalPlayer) {
 			return;
 		}

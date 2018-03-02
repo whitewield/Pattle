@@ -41,7 +41,7 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 			Time.timeScale = 1;
 			((PT_NetworkBattleCanvas)myGameCanvas).HideWait ();
 			OnStart ();
-			isStart = true;
+//			isStart = true;
 		}
 	}
 
