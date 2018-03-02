@@ -131,7 +131,6 @@ namespace PT_Global{
 		public const string SAVE_CATEGORY_SETTINGS = "Settings";
 		public const string SAVE_TITLE_LANGUAGE = "Language";
 		public const string SAVE_CATEGORY_ADVENTURE = "Adventure";
-		public const string SAVE_CATEGORY_CHESS = "Chess";
 		public const string SAVE_CATEGORY_BAG = "Bag";
 		public const string SAVE_CATEGORY_COUPON = "Coupon";
 		public const string SAVE_TITLE_COINS = "Coins";
@@ -150,6 +149,7 @@ namespace PT_Global{
 		public const string LANGUAGE_EN = "EN";
 
 		public const string CAPTION_CHESSABILITY = "ChessAbility";
+		public const string CAPTION_CHESSNAME = "ChessName";
 
 		public static Color COLOR_DEADBODY = new Color (0.2f, 0.2f, 0.2f, 0.5f);
 		public static Color COLOR_CHESS_ACTIVE = Color.white;

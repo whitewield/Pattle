@@ -39,6 +39,9 @@ public class PT_Button : MonoBehaviour {
 	}
 
 	public void OnMouseExit() {
+		if (doPositionChange)
+			myButtonTransform.localPosition = myNormalPosition;
+		
 		isPressed = false;
 	}
 

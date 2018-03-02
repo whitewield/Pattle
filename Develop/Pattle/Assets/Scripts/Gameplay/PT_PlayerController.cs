@@ -246,13 +246,13 @@ public class PT_PlayerController : NetworkBehaviour {
 				return;
 			}
 		}
-		Lose ();
+
+		RpcLose ();
 	}
 
 	public void Lose () {
-		if (isLocalPlayer) {
+		if (isLocalPlayer)
 			CmdLose ();
-		}
 	}
 		
 	[Command]
@@ -309,6 +309,19 @@ public class PT_PlayerController : NetworkBehaviour {
 			RpcDone ();
 		else 
 			RpcUndone ();
+	}
+
+	[Command]
+	public void CmdCheckLose () {
+		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (myID);
+		Debug.Log (t_chessList.Count);
+		for (int i = 0; i < t_chessList.Count; i++) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != PT_Global.Process.Dead) {
+				return;
+			}
+		}
+
+		RpcLose ();
 	}
 
 	[Command]

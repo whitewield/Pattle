@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PT_Text : MonoBehaviour {
 
-	private TextMesh myTextMesh;
+	private Text myText;
 	[SerializeField] string myCategory;
 	[SerializeField] string myTitle;
 	private Transform myTextShadow;
 
 	// Use this for initialization
 	void Awake () {
-		myTextMesh = this.GetComponent<TextMesh> ();
+		myText = this.GetComponent<Text> ();
 	}
 
 	void Start () {
@@ -24,7 +25,7 @@ public class PT_Text : MonoBehaviour {
 		if (myTitle == "")
 			return;
 		
-		myTextMesh.text = 
+		myText.text = 
 			PT_Caption.Instance.LoadCaption (myCategory, myTitle);
 
 //		myTextShadow = this.transform.Find ("TX_Shadow");
