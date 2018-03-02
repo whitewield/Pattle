@@ -39,5 +39,6 @@ public class PT_Chess_Sword : PT_BaseChess {
 
 	protected override void DoOnDead () {
 		mySword.GetComponent<PT_BaseSkill> ().Kill ();
+		base.DoOnDead ();
 	}
 }

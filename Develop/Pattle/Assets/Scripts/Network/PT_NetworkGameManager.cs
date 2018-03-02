@@ -35,22 +35,12 @@ public class PT_NetworkGameManager : NetworkBehaviour {
 		
 	}
 
-	public virtual void Quit () {
-		
-	}
-
 	protected virtual void OnStart () {
 		
 	}
 
 	public List<GameObject> GetChessList (int g_ID) {
 		return myChessList [g_ID];
-	}
-
-	[Command]
-	public virtual void CmdQuit () {
-		Debug.Log ("CmdQuit");
-		Quit ();
 	}
 
 	[ClientRpc]

@@ -21,13 +21,6 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 		}
 	}
 
-	public override  void Quit () {
-		if (isServer)
-			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
-		else 
-			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopClient);
-	}
-
 	protected override void OnStart () {
 		if (!isServer)
 			return;
@@ -66,10 +59,23 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 		return myChessList [0];
 	}
 
-	[Command]
-	public override void CmdQuit () {
-		Debug.Log ("CmdQuit");
-		Quit ();
+	public void CheckBossLose () {
+		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (1);
+		Debug.Log (t_chessList.Count);
+		for (int i = 0; i < t_chessList.Count; i++) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != PT_Global.Process.Dead) {
+				return;
+			}
+		}
+		BossLose ();
+	}
+
+	private void BossLose () {
+		Time.timeScale = 1;
+
+		PT_DeckManager.Instance.IsWinning = true;
+			
+		TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
 	}
 
 	[ClientRpc]

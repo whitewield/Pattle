@@ -41,36 +41,12 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 			Time.timeScale = 1;
 			((PT_NetworkBattleCanvas)myGameCanvas).HideWait ();
 			OnStart ();
-//			isStart = true;
-		}
-	}
-
-	public override void Quit () {
-		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
-		if (t_NetworkDiscoveryGameObject != null) {
-			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
-			if (t_NetworkDiscovery != null &&
-			    t_NetworkDiscovery.running) {
-				t_NetworkDiscovery.StopBroadcast ();
-			}
-		}
-
-		Time.timeScale = 1;
-		if (isServer) {
-			if (isStart == false) {
-				NetworkManager.singleton.offlineScene = Constants.SCENE_LOBBY;
-			}
-
-			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StopHost);
-		} else if (isClient) {
-//			NetworkManager.singleton.StopClient ();
-			CmdQuit ();
+			isStart = true;
 		}
 	}
 
 	protected override void OnStart () {
 		if (!isServer) {
-			isStart = true;
 			return;
 		}
 		Debug.Log ("OnStart");
@@ -80,11 +56,6 @@ public class PT_NetworkBattleManager : PT_NetworkGameManager {
 		isStart = true;
 	}
 
-	[Command]
-	public override void CmdQuit () {
-		Debug.Log ("CmdQuit");
-		Quit ();
-	}
 
 	[ClientRpc]
 	public override void RpcAddChessToList(int g_playerID, GameObject g_chess) {

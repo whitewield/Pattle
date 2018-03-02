@@ -82,6 +82,10 @@ public class PT_BaseBoss : PT_BaseChess {
 		}
 	}
 
+	protected override void DoOnDead () {
+		myManager.CheckBossLose ();
+	}
+
 	protected GameObject GetEnemy_Random () {
 		// get the enemy list from manager
 		List<GameObject> t_enemyList = myManager.GetPlayerChessList ();

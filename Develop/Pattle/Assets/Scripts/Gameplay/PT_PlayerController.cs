@@ -75,10 +75,11 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		//rotate the camera
 //		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
-		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == 1)
+		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == 1) {
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
-		else
+		} else {
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 0);
+		}
 
 		if (wasInit)
 			return;

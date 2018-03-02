@@ -475,12 +475,10 @@ public class PT_BaseChess : NetworkBehaviour {
 			DoOnDead ();
 			myCurHP = 0;
 
-			if (myPlayerController != null)
+			if (myPlayerController != null) {
+				//remove the display
 				myPlayerController.RpcHideTarget (myID);
-
-			myPlayerController.CheckLose ();
-			//play SFX dead
-//			PlayMySFX (myDeadSFX);
+			}
 		}
 
 		RpcShowHP (myCurHP);
@@ -491,7 +489,10 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void DoOnDead () {
-
+		if (myPlayerController != null) {
+			//check if lose
+			myPlayerController.CheckLose ();
+		}
 	}
 
 	#endregion
