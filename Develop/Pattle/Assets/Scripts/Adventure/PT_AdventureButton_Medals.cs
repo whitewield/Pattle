@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PT_Global;
 using UnityEngine.UI;
+using Pattle.Global;
 
 public class PT_AdventureButton_Medals : MonoBehaviour {
 

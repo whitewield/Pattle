@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Preset_Collection_Slot : PT_Preset_Slot {
 	private bool inUse;
@@ -23,9 +24,9 @@ public class PT_Preset_Collection_Slot : PT_Preset_Slot {
 	public void SetInUse (bool g_inUse) {
 		inUse = g_inUse;
 		if (inUse) {
-			mySpriteRenderer.color = PT_Global.Constants.COLOR_CHESS_INACTIVE;
+			mySpriteRenderer.color = Constants.COLOR_CHESS_INACTIVE;
 		} else {
-			mySpriteRenderer.color = PT_Global.Constants.COLOR_CHESS_ACTIVE;
+			mySpriteRenderer.color = Constants.COLOR_CHESS_ACTIVE;
 		}
 	}
 

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_Chess_Avalok : PT_BaseChess {
 	[SerializeField] float myGoldTime;
 
 	protected override bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
-		if (myProcess == PT_Global.Process.Dead)
+		if (myProcess == Process.Dead)
 			return false;
 		
-		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
+		if (g_target.name == (Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
 			QueueMove ();
 			return true;
@@ -46,7 +47,7 @@ public class PT_Chess_Avalok : PT_BaseChess {
 		if (t_chess == null)
 			return;
 
-		t_chess.SetStatus (PT_Global.Status.Gold, myGoldTime);
+		t_chess.SetStatus (Status.Gold, myGoldTime);
 
 		CoolDown ();
 	}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using PT_Global;
+using Pattle.Global;
 
 public class PT_NetworkBattleManager : PT_NetworkGameManager {
 

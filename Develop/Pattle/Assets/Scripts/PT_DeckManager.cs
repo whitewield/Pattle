@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using PT_Global;
+using Pattle.Global;
 
 public class PT_DeckManager : MonoBehaviour {
 	
@@ -183,9 +183,9 @@ public class PT_DeckManager : MonoBehaviour {
 		return myAdventure_ChessPositions;
 	}
 
-//	public ChessType GetAdventureBossType () {
-//		return myAdventure_BossType;
-//	}
+	public BossType GetAdventureBossType () {
+		return myAdventure_BossType;
+	}
 
 	public GameObject GetAdventureBossPrefab () {
 		return myChessBank.GetBossPrefab (myAdventure_BossType, myAdventure_BossDifficulty);

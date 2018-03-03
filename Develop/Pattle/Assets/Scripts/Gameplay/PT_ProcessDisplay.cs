@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_ProcessDisplay : MonoBehaviour {
-	private PT_Global.Process myProcess = PT_Global.Process.None;
+	private Process myProcess = Process.None;
 
 	[SerializeField] Transform myTimerTransform;
 	[SerializeField] SpriteRenderer myTimerSpriteRenderer;
@@ -27,13 +28,13 @@ public class PT_ProcessDisplay : MonoBehaviour {
 	#region Process
 	public void HideProcess () {
 		myTimerTransform.localScale = Vector3.zero;
-		myProcess = PT_Global.Process.None;
+		myProcess = Process.None;
 	}
 
 	public void ShowCD (float g_time) {
 //		Debug.Log ("ShowCD: " + g_time);
 
-		myProcess = PT_Global.Process.CD;
+		myProcess = Process.CD;
 		myTimerSpriteRenderer.color = myColor_CD;
 
 		if (g_time != 0) {
@@ -49,7 +50,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 	public void ShowCT (float g_time) {
 //		Debug.Log ("ShowCT");
 
-		myProcess = PT_Global.Process.CT;
+		myProcess = Process.CT;
 		myTimerSpriteRenderer.color = myColor_CT;
 
 		if (g_time != 0) {
@@ -96,10 +97,10 @@ public class PT_ProcessDisplay : MonoBehaviour {
 		}
 
 		switch (myProcess) {
-		case PT_Global.Process.CT:
+		case Process.CT:
 			Update_CT ();
 			break;
-		case PT_Global.Process.CD:
+		case Process.CD:
 			Update_CD ();
 			break;
 		default:
@@ -113,7 +114,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 
 		if (myTimer > 1) {
 			myTimerTransform.localScale = Vector3.zero;
-			myProcess = PT_Global.Process.None;
+			myProcess = Process.None;
 			return;
 		}
 
@@ -126,7 +127,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 
 		if (myTimer > 1) {
 			myTimerTransform.localScale = Vector3.one;
-			myProcess = PT_Global.Process.None;
+			myProcess = Process.None;
 			return;
 		}
 

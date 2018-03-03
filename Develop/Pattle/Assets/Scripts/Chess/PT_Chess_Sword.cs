@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_Chess_Sword : PT_BaseChess {
 	[SerializeField] GameObject mySwordPrefab;
@@ -26,13 +27,13 @@ public class PT_Chess_Sword : PT_BaseChess {
 	protected override void CollisionAction (GameObject g_GO_Collision) {
 		if (!isServer)
 			return;
-		if (myProcess == PT_Global.Process.Dead)
+		if (myProcess == Process.Dead)
 			return;
 
 		//need to be rewrite in different chess
-		if (myProcess == PT_Global.Process.Attack &&
+		if (myProcess == Process.Attack &&
 		    g_GO_Collision.GetComponent<PT_BaseChess> () && g_GO_Collision.GetComponent<PT_BaseChess> ().GetMyOwnerID () != myOwnerID) {
-			g_GO_Collision.GetComponent<PT_BaseChess> ().HPModify (PT_Global.HPModifierType.PhysicalDamage, myAttributes.PD);
+			g_GO_Collision.GetComponent<PT_BaseChess> ().HPModify (HPModifierType.PhysicalDamage, myAttributes.PD);
 			AttackBack ();
 		}
 	}

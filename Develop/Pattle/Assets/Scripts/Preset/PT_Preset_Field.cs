@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Preset_Field : MonoBehaviour {
 	[SerializeField] PT_Preset_Field_Chess[] myChesses;
@@ -30,8 +31,8 @@ public class PT_Preset_Field : MonoBehaviour {
 	}
 
 	public void ApplyChessPosition () {
-		Vector2[] t_posArray = new Vector2[PT_Global.Constants.DECK_SIZE];
-		for (int i = 0; i < PT_Global.Constants.DECK_SIZE; i++) {
+		Vector2[] t_posArray = new Vector2[Constants.DECK_SIZE];
+		for (int i = 0; i < Constants.DECK_SIZE; i++) {
 			t_posArray [i] = myChesses [i].transform.localPosition;
 		}
 		PT_DeckManager.Instance.SetChessPositions (t_posArray);

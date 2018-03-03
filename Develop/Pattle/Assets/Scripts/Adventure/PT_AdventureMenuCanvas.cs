@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using PT_Global;
-using Pattle.Adventure;
 using UnityEngine.UI;
+using Pattle.Global;
+using Pattle.Adventure;
 
 namespace Pattle {
 	namespace Adventure {
@@ -130,11 +130,11 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 		PT_DeckManager.Instance.SetGameMode (GameMode.Adventure);
 
 		//saving test
-		MedalType[] t_saveTest = {MedalType.Gold, MedalType.Silver, MedalType.Bronze};
-		AdventureSave.SaveMedalTypes (BossType.FireDragon, t_saveTest);
-		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Easy));
-		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Normal));
-		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Hard));
+//		MedalType[] t_saveTest = {MedalType.Gold, MedalType.Silver, MedalType.Bronze};
+//		AdventureSave.SaveMedalTypes (BossType.FireDragon, t_saveTest);
+//		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Easy));
+//		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Normal));
+//		Debug.Log (AdventureSave.LoadMedalType (BossType.FireDragon, BossDifficulty.Hard));
 
 		Init_AdventureList ();
 
@@ -186,12 +186,12 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 	private void UpdatePage () {
 		Vector2 t_targetPos = new Vector2 (-myCurrentPage.anchoredPosition.x, myPageAll.anchoredPosition.y);
-		myPageAll.anchoredPosition = Vector2.Lerp (myPageAll.anchoredPosition, t_targetPos, Time.unscaledDeltaTime * PT_Global.Constants.SPEED_UI_LERP);
+		myPageAll.anchoredPosition = Vector2.Lerp (myPageAll.anchoredPosition, t_targetPos, Time.unscaledDeltaTime * Constants.SPEED_UI_LERP);
 	}
 
 
 //	public void OnButtonDragon (int boss) {
-//		PT_DeckManager.Instance.SetAdventureBossType (PT_Global.ChessType.FireDragon);
+//		PT_DeckManager.Instance.SetAdventureBossType (ChessType.FireDragon);
 //
 //		NetworkManager.singleton.matchSize = 1;
 //		NetworkManager.singleton.onlineScene = "NetworkAdventure";

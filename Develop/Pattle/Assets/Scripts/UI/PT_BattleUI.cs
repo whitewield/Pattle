@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using PT_Global;
+using Pattle.Global;
 
 public class PT_BattleUI : PT_GameUI {
 	[SerializeField] GameObject myPage_Wait;
@@ -45,7 +45,7 @@ public class PT_BattleUI : PT_GameUI {
 	}
 
 	public void OnButtonCancelWait () {
-		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
+		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (Constants.NAME_NETWORK_DISCOVERY);
 		if (t_NetworkDiscoveryGameObject != null) {
 			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
 			if (t_NetworkDiscovery != null &&

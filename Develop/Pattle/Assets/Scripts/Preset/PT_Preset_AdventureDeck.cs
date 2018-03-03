@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Preset_AdventureDeck : MonoBehaviour {
 	[SerializeField] PT_Preset_Deck_Slot[] mySlots;
@@ -10,7 +11,7 @@ public class PT_Preset_AdventureDeck : MonoBehaviour {
 	}
 
 	public void SetFromDeckManager () {
-		PT_Global.ChessType[] t_chessTypes = PT_DeckManager.Instance.GetAdventureChessTypes ();
+		ChessType[] t_chessTypes = PT_DeckManager.Instance.GetAdventureChessTypes ();
 		if (t_chessTypes == null)
 			return;
 		for (int i = 0; i < mySlots.Length; i++) {

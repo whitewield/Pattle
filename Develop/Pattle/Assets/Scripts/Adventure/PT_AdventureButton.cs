@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Pattle.Adventure;
 using UnityEngine.UI;
-using PT_Global;
+using Pattle.Adventure;
+using Pattle.Global;
 
 public class PT_AdventureButton : MonoBehaviour {
 

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PT_Action;
+using Pattle.Action;
+using Pattle.Global;
 
 public class PT_BaseBoss : PT_BaseChess {
 
@@ -204,7 +205,7 @@ public class PT_BaseBoss : PT_BaseChess {
 			Debug.LogError ("cannot get the base chess script!");
 			return true;
 		}
-		return g_enemyObject.GetComponent<PT_BaseChess> ().GetProcess () == PT_Global.Process.Dead;
+		return g_enemyObject.GetComponent<PT_BaseChess> ().GetProcess () == Process.Dead;
 	}
 
 	protected int GetEnemyHP (GameObject g_enemyObject) {

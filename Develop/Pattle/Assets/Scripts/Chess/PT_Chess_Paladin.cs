@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_Chess_Paladin : PT_BaseChess {
 //	[SerializeField] GameObject mySkillPrefab;
 
 	protected override bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
-		if (myProcess == PT_Global.Process.Dead)
+		if (myProcess == Process.Dead)
 			return false;
 		
-		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
+		if (g_target.name == (Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
 			QueueMove ();
 			return true;
@@ -40,7 +41,7 @@ public class PT_Chess_Paladin : PT_BaseChess {
 		//spawn the bullet on Clients
 //		NetworkServer.Spawn (t_skill);
 
-		myTargetGameObject.GetComponent<PT_BaseChess> ().HPModify (PT_Global.HPModifierType.Healing, myAttributes.MD);
+		myTargetGameObject.GetComponent<PT_BaseChess> ().HPModify (HPModifierType.Healing, myAttributes.MD);
 
 		CoolDown ();
 	}

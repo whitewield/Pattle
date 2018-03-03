@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_BaseChess : NetworkBehaviour {
 	[SyncVar] protected int myOwnerID = -1;
@@ -11,9 +12,9 @@ public class PT_BaseChess : NetworkBehaviour {
 	//Process
 	[SerializeField] GameObject myProcessDisplayPrefab;
 	protected PT_ProcessDisplay myProcessDisplay;
-	protected PT_Global.Process myProcess = PT_Global.Process.None;
-	protected PT_Global.Process myQueueProcess = PT_Global.Process.None;
-	protected PT_Global.Process myLastProcess = PT_Global.Process.None;
+	protected Process myProcess = Process.None;
+	protected Process myQueueProcess = Process.None;
+	protected Process myLastProcess = Process.None;
 
 	//Attributes
 	[SerializeField] protected SO_Attributes myAttributes;
@@ -43,7 +44,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		myCollider.isTrigger = true;
 		mySpriteRenderer = this.GetComponent<SpriteRenderer> ();
 
-		SetProcess (PT_Global.Process.Idle);
+		SetProcess (Process.Idle);
 		myProcessDisplay = Instantiate (myProcessDisplayPrefab, this.transform).GetComponent<PT_ProcessDisplay> ();
 		myProcessDisplay.transform.localPosition = Vector3.zero;
 		myProcessDisplay.HideProcess ();
@@ -51,12 +52,12 @@ public class PT_BaseChess : NetworkBehaviour {
 		myCurHP = myAttributes.HP;
 		myProcessDisplay.ShowHP (myCurHP);
 
-		for (int i = 0; i < (int)PT_Global.Status.End; i++) {
+		for (int i = 0; i < (int)Status.End; i++) {
 			myStatus.Add (0f);
 		}
 
 		//CD at beginning
-		SetProcess (PT_Global.Process.CD);
+		SetProcess (Process.CD);
 		myTimer = myAttributes.CD;
 		myProcessDisplay.ShowCD (myTimer);
 
@@ -70,8 +71,8 @@ public class PT_BaseChess : NetworkBehaviour {
 	#region Action
 	public virtual bool Action (GameObject g_target, Vector2 g_targetPos) {
 		
-		if (myProcess != PT_Global.Process.Idle && 
-			myProcess != PT_Global.Process.CD) {
+		if (myProcess != Process.Idle && 
+			myProcess != Process.CD) {
 			return false;
 		}
 
@@ -86,11 +87,11 @@ public class PT_BaseChess : NetworkBehaviour {
 	/// <param name="g_target">target gameobject.</param>
 	/// <param name="g_targetPos">target position.</param>
 	protected virtual bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
-		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
+		if (g_target.name == (Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
 			QueueMove ();
 			return true;
-		} else if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + (1 - myOwnerID).ToString ()) ||
+		} else if (g_target.name == (Constants.NAME_MAP_FIELD + (1 - myOwnerID).ToString ()) ||
 			(g_target.GetComponent<PT_BaseChess> () && g_target.GetComponent<PT_BaseChess> ().GetMyOwnerID () != myOwnerID)) {
 			myTargetPosition = g_targetPos;
 			myPosition = this.transform.position;
@@ -102,18 +103,18 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	public void QueueIdle () {
-		myQueueProcess = PT_Global.Process.Idle;
+		myQueueProcess = Process.Idle;
 	}
 
 	public void QueueMove () {
-		myQueueProcess = PT_Global.Process.Move;
+		myQueueProcess = Process.Move;
 
 		if (myPlayerController != null)
 			myPlayerController.RpcShowTarget (myID, -1, -1, myTargetPosition);
 	}
 
 	public void QueueAttack () {
-		myQueueProcess = PT_Global.Process.Attack;
+		myQueueProcess = Process.Attack;
 
 		if (myPlayerController != null)
 		if (isSingleTarget) {
@@ -125,7 +126,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	public void QueueCast () {
-		myQueueProcess = PT_Global.Process.CT;
+		myQueueProcess = Process.CT;
 
 		if (myPlayerController != null)
 		if (isSingleTarget) {
@@ -137,15 +138,15 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void Idle () {
-		SetProcess (PT_Global.Process.Idle);
+		SetProcess (Process.Idle);
 	}
 
 	protected virtual void Move () {
-		SetProcess (PT_Global.Process.Move);
+		SetProcess (Process.Move);
 	}
 
 	protected virtual void CoolDown (float g_scale = 1) {
-		SetProcess (PT_Global.Process.CD);
+		SetProcess (Process.CD);
 		myTimer = myAttributes.CD * g_scale;
 		RpcShowCD (myTimer);
 
@@ -154,36 +155,36 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void Cast (float g_scale = 1) {
-		SetProcess (PT_Global.Process.CT);
+		SetProcess (Process.CT);
 		myTimer = myAttributes.CT * g_scale;
 		RpcShowCT (myTimer);
 	}
 
 	protected virtual void Attack () {
-		SetProcess (PT_Global.Process.Attack);
+		SetProcess (Process.Attack);
 	}
 
 	protected void AttackBack () {
-		SetProcess (PT_Global.Process.AttackBack);
+		SetProcess (Process.AttackBack);
 
 		if (myPlayerController != null)
 			myPlayerController.RpcHideTarget (myID);
 	}
 
-	protected void SetProcess (PT_Global.Process g_process) {
+	protected void SetProcess (Process g_process) {
 		myProcess = g_process;
 		//update the collider, if attack or attack back, the collider is trigger, else is not trigger
 		if (isServer) {
-			if (myProcess == PT_Global.Process.Move ||
-			    myProcess == PT_Global.Process.Attack ||
-			    myProcess == PT_Global.Process.AttackBack)
+			if (myProcess == Process.Move ||
+			    myProcess == Process.Attack ||
+			    myProcess == Process.AttackBack)
 				myCollider.isTrigger = true;
 			else
 				myCollider.isTrigger = false;
 		}
 	}
 
-	public PT_Global.Process GetProcess () {
+	public Process GetProcess () {
 		return myProcess;
 	}
 
@@ -199,7 +200,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		
 		UpdateStatus ();
 
-		if (GetStatus (PT_Global.Status.Freeze) || GetStatus (PT_Global.Status.Gold)) {
+		if (GetStatus (Status.Freeze) || GetStatus (Status.Gold)) {
 			return;
 		}
 
@@ -209,22 +210,22 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual void UpdateAction () {
 
 		switch (myProcess) {
-		case PT_Global.Process.Idle:
+		case Process.Idle:
 			UpdateAction_Idle ();
 			break;
-		case PT_Global.Process.Move:
+		case Process.Move:
 			UpdateAction_Move ();
 			break;
-		case PT_Global.Process.CD:
+		case Process.CD:
 			UpdateAction_CD ();
 			break;
-		case PT_Global.Process.CT:
+		case Process.CT:
 			UpdateAction_CT ();
 			break;
-		case PT_Global.Process.Attack:
+		case Process.Attack:
 			UpdateAction_Attack ();
 			break;
-		case PT_Global.Process.AttackBack:
+		case Process.AttackBack:
 			UpdateAction_AttackBack ();
 			break;
 		}
@@ -236,29 +237,29 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void UpdateAction_Idle () {
-		if (myQueueProcess == PT_Global.Process.Move) {
+		if (myQueueProcess == Process.Move) {
 			Move ();
 			//play SFX move 
 //			PlayMySFX (myMoveSFX);
-		} else if (myQueueProcess == PT_Global.Process.Attack) {
+		} else if (myQueueProcess == Process.Attack) {
 			Attack ();
 			//play SFX ATK 
 //			PlayMySFX (myAttackSFX);
-		} else if (myQueueProcess == PT_Global.Process.CT) {
+		} else if (myQueueProcess == Process.CT) {
 			Cast ();
 			//play SFX CT 
 //			PlayMySFX (myCastSFX);
 		}
-		myQueueProcess = PT_Global.Process.None;
+		myQueueProcess = Process.None;
 	}
 
 	protected virtual void UpdateAction_Move () {
 		//move the chess
 		this.transform.position = 
-			Vector2.Lerp (this.transform.position, myTargetPosition, PT_Global.Constants.SPEED_MOVE * Time.deltaTime);
+			Vector2.Lerp (this.transform.position, myTargetPosition, Constants.SPEED_MOVE * Time.deltaTime);
 
 		//if the chess at the target, stop
-		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.Constants.DISTANCE_RESET) {
+		if (Vector2.Distance (this.transform.position, myTargetPosition) <= Constants.DISTANCE_RESET) {
 			//set my position
 			this.transform.position = myTargetPosition;
 			myPosition = myTargetPosition;
@@ -282,10 +283,10 @@ public class PT_BaseChess : NetworkBehaviour {
 		//different in different character
 		//move the chess
 		this.transform.position = 
-			Vector2.Lerp (this.transform.position, myTargetPosition, PT_Global.Constants.SPEED_MOVE * Time.deltaTime);
+			Vector2.Lerp (this.transform.position, myTargetPosition, Constants.SPEED_MOVE * Time.deltaTime);
 
 		//if the chess at the target, stop
-		if (Vector2.Distance (this.transform.position, myTargetPosition) <= PT_Global.Constants.DISTANCE_RESET) {
+		if (Vector2.Distance (this.transform.position, myTargetPosition) <= Constants.DISTANCE_RESET) {
 			//Reset and come back
 			AttackBack ();
 		}
@@ -294,10 +295,10 @@ public class PT_BaseChess : NetworkBehaviour {
 	public virtual void UpdateAction_AttackBack () {
 		//move the chess
 		this.transform.position = 
-			Vector2.Lerp (this.transform.position, myPosition, PT_Global.Constants.SPEED_MOVE * Time.deltaTime);
+			Vector2.Lerp (this.transform.position, myPosition, Constants.SPEED_MOVE * Time.deltaTime);
 
 		//if the chess at the target, stop
-		if (Vector2.Distance (this.transform.position, myPosition) <= PT_Global.Constants.DISTANCE_RESET) {
+		if (Vector2.Distance (this.transform.position, myPosition) <= Constants.DISTANCE_RESET) {
 			//set my position
 			this.transform.position = myPosition;
 
@@ -309,20 +310,20 @@ public class PT_BaseChess : NetworkBehaviour {
 	#endregion
 
 	#region Status
-	public void SetStatus (PT_Global.Status g_status, float g_time) {
-		if (GetStatus (PT_Global.Status.Gold))
+	public void SetStatus (Status g_status, float g_time) {
+		if (GetStatus (Status.Gold))
 			return;
 
-		if ((GetStatus (PT_Global.Status.SpellImmune) || GetStatus (PT_Global.Status.Bubble)) &&
-		    g_status == PT_Global.Status.Freeze)
+		if ((GetStatus (Status.SpellImmune) || GetStatus (Status.Bubble)) &&
+		    g_status == Status.Freeze)
 			return;
 
 		myStatus [(int)g_status] = Mathf.Max (myStatus [(int)g_status], g_time);
 
-		if (g_status == PT_Global.Status.Freeze) {
+		if (g_status == Status.Freeze) {
 			RpcShowStatus_Freeze (myStatus [(int)g_status]);
 		}
-		if (g_status == PT_Global.Status.Gold) {
+		if (g_status == Status.Gold) {
 			RpcShowStatus_Gold (myStatus [(int)g_status]);
 		}
 
@@ -333,7 +334,7 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	}
 
-	public bool GetStatus (PT_Global.Status g_status) {
+	public bool GetStatus (Status g_status) {
 		if (myStatus [(int)g_status] > 0) {
 			return true;
 		}
@@ -372,7 +373,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual void CollisionAction(GameObject g_GO_Collision) {
 		if (!isServer)
 			return;
-		if (myProcess == PT_Global.Process.Dead)
+		if (myProcess == Process.Dead)
 			return;
 
 		//need to be rewrite in different chess
@@ -380,8 +381,8 @@ public class PT_BaseChess : NetworkBehaviour {
 	#endregion
 
 	#region Damage
-	public virtual bool HPModify (PT_Global.HPModifierType g_type, int g_value) {
-		if (myProcess == PT_Global.Process.Dead)
+	public virtual bool HPModify (HPModifierType g_type, int g_value) {
+		if (myProcess == Process.Dead)
 			return false;
 
 		//gold prevent damage
@@ -390,7 +391,7 @@ public class PT_BaseChess : NetworkBehaviour {
 
 		int t_modifier = g_value;
 
-		if (g_type == PT_Global.HPModifierType.PhysicalDamage) {
+		if (g_type == HPModifierType.PhysicalDamage) {
 			t_modifier -= myAttributes.PR;
 			if (t_modifier < 1)
 				t_modifier = 1;
@@ -400,13 +401,13 @@ public class PT_BaseChess : NetworkBehaviour {
 			return false;
 
 		switch (g_type) {
-		case PT_Global.HPModifierType.PhysicalDamage:
+		case HPModifierType.PhysicalDamage:
 			HPModify_PhysicalDamage (t_modifier);
 			break;
-		case PT_Global.HPModifierType.MagicDamage:
+		case HPModifierType.MagicDamage:
 			HPModify_MagicDamage (t_modifier);
 			break;
-		case PT_Global.HPModifierType.Healing:
+		case HPModifierType.Healing:
 			HPModify_Healing (t_modifier);
 			break;
 		}
@@ -423,7 +424,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual void HPModify_PhysicalDamage (int g_value) {
 		//used by chameleon, mushroom
 
-		if (GetStatus (PT_Global.Status.Gold))
+		if (GetStatus (Status.Gold))
 			return;
 
 		myCurHP -= g_value;
@@ -438,9 +439,9 @@ public class PT_BaseChess : NetworkBehaviour {
 	protected virtual void HPModify_MagicDamage (int g_value) {
 		//used by chameleon
 
-		if (GetStatus (PT_Global.Status.Gold) ||
-		    GetStatus (PT_Global.Status.SpellImmune) ||
-		    GetStatus (PT_Global.Status.Bubble))
+		if (GetStatus (Status.Gold) ||
+		    GetStatus (Status.SpellImmune) ||
+		    GetStatus (Status.Bubble))
 			return;
 
 		myCurHP -= g_value;
@@ -466,11 +467,11 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected void CheckIsDead () {
-		if (myProcess == PT_Global.Process.Dead)
+		if (myProcess == Process.Dead)
 			return;
 
 		if (myCurHP <= 0) {
-			SetProcess (PT_Global.Process.Dead);
+			SetProcess (Process.Dead);
 
 			DoOnDead ();
 			myCurHP = 0;
@@ -570,8 +571,8 @@ public class PT_BaseChess : NetworkBehaviour {
 
 			myProcessDisplay.HideHP ();
 			myProcessDisplay.HideProcess ();
-			mySpriteRenderer.sortingLayerName = PT_Global.Constants.SORTINGLAYER_DEADBODY;
-			mySpriteRenderer.color = PT_Global.Constants.COLOR_DEADBODY;
+			mySpriteRenderer.sortingLayerName = Constants.SORTINGLAYER_DEADBODY;
+			mySpriteRenderer.color = Constants.COLOR_DEADBODY;
 			myCollider.enabled = false;
 		}
 	}

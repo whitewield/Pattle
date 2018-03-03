@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Skill_FireMage : PT_BaseSkill {
 
@@ -23,13 +24,13 @@ public class PT_Skill_FireMage : PT_BaseSkill {
 		}
 
 		if (myPD != 0) {
-			t_chess.HPModify (PT_Global.HPModifierType.PhysicalDamage, myPD);
+			t_chess.HPModify (HPModifierType.PhysicalDamage, myPD);
 		}
 		if (myMD != 0) {
-			t_chess.HPModify (PT_Global.HPModifierType.MagicDamage, myMD);
+			t_chess.HPModify (HPModifierType.MagicDamage, myMD);
 		}
 		if (myHeal != 0) {
-			t_chess.HPModify (PT_Global.HPModifierType.Healing, myHeal);
+			t_chess.HPModify (HPModifierType.Healing, myHeal);
 		}
 
 	}

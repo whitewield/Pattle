@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PT_Global;
+using Pattle.Global;
 
 public class PT_EndGameUI : MonoBehaviour {
 

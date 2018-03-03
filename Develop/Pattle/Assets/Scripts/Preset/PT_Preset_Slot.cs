@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Preset_Slot : MonoBehaviour {
 	protected ChessInfo myChessInfo;
@@ -8,12 +9,12 @@ public class PT_Preset_Slot : MonoBehaviour {
 	protected SpriteRenderer mySpriteRenderer;
 
 	public Sprite GetSprite () {
-		if (myChessInfo.chessType == PT_Global.ChessType.none)
+		if (myChessInfo.chessType == ChessType.none)
 			return null;
 		return myChessInfo.prefab.GetComponent<SpriteRenderer> ().sprite;
 	}
 
-	public PT_Global.ChessType GetChessType () {
+	public ChessType GetChessType () {
 		return myChessInfo.chessType;
 	}
 

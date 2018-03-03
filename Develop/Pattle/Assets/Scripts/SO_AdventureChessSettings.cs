@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using PT_Global;
+using Pattle.Global;
 
 [CreateAssetMenu(fileName = "AdventureChessSettings", menuName = "Wield/AdventureChessSettings", order = 1)]
 public class SO_AdventureChessSettings : ScriptableObject {

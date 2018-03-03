@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_Skill_Sword : PT_BaseSkill {
 
@@ -13,7 +14,7 @@ public class PT_Skill_Sword : PT_BaseSkill {
 		if (!isServer)
 			return;
 
-		if (myCaster.GetStatus (PT_Global.Status.Freeze) || myCaster.GetStatus (PT_Global.Status.Gold))
+		if (myCaster.GetStatus (Status.Freeze) || myCaster.GetStatus (Status.Gold))
 			return;
 		
 		myProcess += Time.deltaTime * mySpeed;

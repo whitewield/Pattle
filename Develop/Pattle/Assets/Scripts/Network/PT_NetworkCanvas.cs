@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using PT_Global;
+using Pattle.Global;
 
 public class PT_NetworkCanvas : MonoBehaviour {
 
@@ -43,9 +43,9 @@ public class PT_NetworkCanvas : MonoBehaviour {
 
 		myNetworkManager = NetworkManager.singleton;
 		myNetworkDiscovery = 
-			GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY).GetComponent<NetworkDiscovery> ();
+			GameObject.Find (Constants.NAME_NETWORK_DISCOVERY).GetComponent<NetworkDiscovery> ();
 		
-		mySplitStringArray [0] = PT_Global.Constants.SYMBOL_PASSWORD;
+		mySplitStringArray [0] = Constants.SYMBOL_PASSWORD;
 
 		string t_load = ShabbySave.LoadGame (Constants.SAVE_CATEGORY_NETWORK, Constants.SAVE_TITLE_NETWORK_NAME);
 		if (t_load != "0")
@@ -66,19 +66,19 @@ public class PT_NetworkCanvas : MonoBehaviour {
 
 	private void UpdatePage () {
 		Vector2 t_targetPos = new Vector2 (-myCurrentPage.anchoredPosition.x, -myCurrentPage.anchoredPosition.y);
-		myPageAll.anchoredPosition = Vector2.Lerp (myPageAll.anchoredPosition, t_targetPos, Time.unscaledDeltaTime * PT_Global.Constants.SPEED_UI_LERP);
+		myPageAll.anchoredPosition = Vector2.Lerp (myPageAll.anchoredPosition, t_targetPos, Time.unscaledDeltaTime * Constants.SPEED_UI_LERP);
 	}
 
 	public void OnButtonCreate () {
 		string t_name = myPageCreate_Input_Name.text;
-		if (t_name == "0" || t_name == "" || t_name.Contains (PT_Global.Constants.SYMBOL_PASSWORD)) {
+		if (t_name == "0" || t_name == "" || t_name.Contains (Constants.SYMBOL_PASSWORD)) {
 //			Debug.LogError ("error: you should't use this name");
 			myPageCreate_Info.text = "name is not allowed";
 			return;
 		}
 
 		string t_password = myPageCreate_Input_Password.text;
-		if (t_password == "0" || t_password.Contains (PT_Global.Constants.SYMBOL_PASSWORD)) {
+		if (t_password == "0" || t_password.Contains (Constants.SYMBOL_PASSWORD)) {
 //			Debug.LogError ("error: you should't use this password");
 			myPageCreate_Info.text = "password is not allowed";
 			return;
@@ -92,7 +92,7 @@ public class PT_NetworkCanvas : MonoBehaviour {
 
 		string t_data = "0";
 		if (t_password != "") {
-			t_data = t_name + PT_Global.Constants.SYMBOL_PASSWORD + t_password;
+			t_data = t_name + Constants.SYMBOL_PASSWORD + t_password;
 		} else {
 			t_data = t_name;
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_PlayerController : NetworkBehaviour {
 	[SyncVar] int myID = -1;
@@ -28,8 +29,8 @@ public class PT_PlayerController : NetworkBehaviour {
 	private GameObject myTargetLinePrefab;
 
 	void Awake () {
-		myTargetSignPrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_SIGN);
-		myTargetLinePrefab = Resources.Load<GameObject> (PT_Global.Constants.PATH_TARGET_LINE);
+		myTargetSignPrefab = Resources.Load<GameObject> (Constants.PATH_TARGET_SIGN);
+		myTargetLinePrefab = Resources.Load<GameObject> (Constants.PATH_TARGET_LINE);
 
 		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
 			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
@@ -84,7 +85,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		wasInit = true;
 
 		// init target display list
-		for (int i = 0; i < PT_Global.Constants.DECK_SIZE; i++) {
+		for (int i = 0; i < Constants.DECK_SIZE; i++) {
 			myTargetDisplays.Add (
 				new PT_PlayerController_TargetDisplay (
 					"(" + i.ToString () + ")",
@@ -135,9 +136,9 @@ public class PT_PlayerController : NetworkBehaviour {
 
 		if (isMouseDown == true && 
 			t_BaseChess_T != null && 
-			t_BaseChess_T.GetProcess() != PT_Global.Process.Dead &&
+			t_BaseChess_T.GetProcess() != Process.Dead &&
 			t_BaseChess_T.GetMyOwnerID() == myID &&
-			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > PT_Global.Constants.DISTANCE_DRAG) {
+			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > Constants.DISTANCE_DRAG) {
 			isMouseDrag = true;
 
 			ShowLine ();
@@ -172,7 +173,7 @@ public class PT_PlayerController : NetworkBehaviour {
 				} else {
 					if (myGameObject_X == null) {
 						if (t_BaseChess_T != null &&
-						   t_BaseChess_T.GetProcess () != PT_Global.Process.Dead &&
+						   t_BaseChess_T.GetProcess () != Process.Dead &&
 						   t_BaseChess_T.GetMyOwnerID () == myID) {
 							myGameObject_X = myGameObject_T;
 
@@ -242,7 +243,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (myID);
 		Debug.Log (t_chessList.Count);
 		for (int i = 0; i < t_chessList.Count; i++) {
-			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != PT_Global.Process.Dead) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
 				return;
 			}
 		}
@@ -256,7 +257,7 @@ public class PT_PlayerController : NetworkBehaviour {
 	}
 		
 	[Command]
-	public void CmdCreateChess (PT_Global.ChessType[] g_chessTypes, Vector2[] g_positions) {
+	public void CmdCreateChess (ChessType[] g_chessTypes, Vector2[] g_positions) {
 		myID = System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this);
 //		Debug.Log (myID);
 
@@ -316,7 +317,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (myID);
 		Debug.Log (t_chessList.Count);
 		for (int i = 0; i < t_chessList.Count; i++) {
-			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != PT_Global.Process.Dead) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
 				return;
 			}
 		}
@@ -331,7 +332,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 	[ClientRpc]
 	void RpcLose () {
-		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
+		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (Constants.NAME_NETWORK_DISCOVERY);
 		if (t_NetworkDiscoveryGameObject != null) {
 			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
 			if (t_NetworkDiscovery != null &&

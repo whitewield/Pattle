@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Preset_Collection : MonoBehaviour {
 
@@ -8,7 +9,7 @@ public class PT_Preset_Collection : MonoBehaviour {
 	public struct CollectionPage {
 		public Transform tagTransform;
 		public GameObject collections;
-		public PT_Global.ChessClass chessClass;
+		public ChessClass chessClass;
 	}
 
 	[SerializeField] CollectionPage myCollectionPage_Blood;
@@ -37,7 +38,7 @@ public class PT_Preset_Collection : MonoBehaviour {
 	/// <param name="g_array">the information from chess bank.</param>
 	public void InitPage (CollectionPage g_page, ref PT_Preset_Collection_Slot[] g_array) {
 		// get slots in the page
-		Transform t_slots = g_page.collections.transform.Find (PT_Global.Constants.NAME_SLOTS);
+		Transform t_slots = g_page.collections.transform.Find (Constants.NAME_SLOTS);
 		if (t_slots == null)
 			return;
 		g_array = t_slots.GetComponentsInChildren<PT_Preset_Collection_Slot> ();
@@ -75,17 +76,17 @@ public class PT_Preset_Collection : MonoBehaviour {
 		ShowClass_Hide (myCollectionPage_Earth);
 		ShowClass_Hide (myCollectionPage_Light);
 
-		switch ((PT_Global.ChessClass)System.Enum.Parse (typeof(PT_Global.ChessClass), g_class)) {
-		case PT_Global.ChessClass.Blood:
+		switch ((ChessClass)System.Enum.Parse (typeof(ChessClass), g_class)) {
+		case ChessClass.Blood:
 			ShowClass_Show (myCollectionPage_Blood);
 			break;
-		case PT_Global.ChessClass.Magic:
+		case ChessClass.Magic:
 			ShowClass_Show (myCollectionPage_Magic);
 			break;
-		case PT_Global.ChessClass.Earth:
+		case ChessClass.Earth:
 			ShowClass_Show (myCollectionPage_Earth);
 			break;
-		case PT_Global.ChessClass.Light:
+		case ChessClass.Light:
 			ShowClass_Show (myCollectionPage_Light);
 			break;
 		}
@@ -98,7 +99,7 @@ public class PT_Preset_Collection : MonoBehaviour {
 	private void ShowClass_Show (CollectionPage g_page) {
 		if (g_page.collections.activeSelf == false) {
 			g_page.collections.SetActive (true);
-			g_page.tagTransform.localPosition = new Vector2 (g_page.tagTransform.localPosition.x, PT_Global.Constants.UI_COLLECTION_TAG_ON);
+			g_page.tagTransform.localPosition = new Vector2 (g_page.tagTransform.localPosition.x, Constants.UI_COLLECTION_TAG_ON);
 		}
 	}
 		
@@ -113,7 +114,7 @@ public class PT_Preset_Collection : MonoBehaviour {
 		}
 	}
 
-	public void SetChessInUse (PT_Global.ChessType[] g_chessTypes) {
+	public void SetChessInUse (ChessType[] g_chessTypes) {
 		PT_Preset_Collection_Slot[] t_slots;
 		for (int i = 0; i < 4; i++) {
 			switch (i) {
@@ -145,7 +146,7 @@ public class PT_Preset_Collection : MonoBehaviour {
 		}
 	}
 
-	public void SetChessInUse (PT_Global.ChessType g_chessType, bool g_inUse) {
+	public void SetChessInUse (ChessType g_chessType, bool g_inUse) {
 		PT_Preset_Collection_Slot[] t_slots;
 		for (int i = 0; i < 4; i++) {
 			switch (i) {

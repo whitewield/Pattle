@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_NetworkRegisterPrefab : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
-		GameObject[] t_networkPrefabs = Resources.LoadAll<GameObject> (PT_Global.Constants.PATH_NETWORK);
+		GameObject[] t_networkPrefabs = Resources.LoadAll<GameObject> (Constants.PATH_NETWORK);
 		foreach (GameObject f_prefab in t_networkPrefabs) {
 			NetworkManager.singleton.spawnPrefabs.Add (f_prefab);
 		}

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Adventure;
+using Pattle.Global;
 
 public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 
@@ -61,9 +63,8 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 
 	public void CheckBossLose () {
 		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (1);
-		Debug.Log (t_chessList.Count);
 		for (int i = 0; i < t_chessList.Count; i++) {
-			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != PT_Global.Process.Dead) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
 				return;
 			}
 		}
@@ -71,6 +72,20 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 	}
 
 	private void BossLose () {
+		//save game
+		int t_medalNum = 3;
+		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (0);
+		for (int i = 0; i < t_chessList.Count; i++) {
+			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () == Process.Dead) {
+				t_medalNum--;
+			}
+		}
+		AdventureSave.SaveMedalType (
+			PT_DeckManager.Instance.GetAdventureBossType (), 
+			PT_DeckManager.Instance.GetAdventureDifficulty (),
+			(MedalType)t_medalNum
+		);
+
 		Time.timeScale = 1;
 
 		PT_DeckManager.Instance.IsWinning = true;

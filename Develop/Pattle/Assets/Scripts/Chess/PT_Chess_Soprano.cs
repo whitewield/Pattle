@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_Chess_Soprano : PT_BaseChess {
 	[SerializeField] GameObject mySkillPrefab;
 
 	protected override bool IndividualAction (GameObject g_target, Vector2 g_targetPos) {
-		if (myProcess == PT_Global.Process.Dead)
+		if (myProcess == Process.Dead)
 			return false;
 
-		if (g_target.name == (PT_Global.Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
+		if (g_target.name == (Constants.NAME_MAP_FIELD + myOwnerID.ToString ())) {
 			myTargetPosition = g_targetPos;
 			QueueMove ();
 			return true;
@@ -38,8 +39,8 @@ public class PT_Chess_Soprano : PT_BaseChess {
 
 		//if the chess is in cd or casting, make it ready
 		PT_BaseChess t_baseChess = myTargetGameObject.GetComponent<PT_BaseChess> ();
-		if (t_baseChess.GetProcess () == PT_Global.Process.CD ||
-		    t_baseChess.GetProcess () == PT_Global.Process.CT)
+		if (t_baseChess.GetProcess () == Process.CD ||
+		    t_baseChess.GetProcess () == Process.CT)
 			t_baseChess.BeReady ();
 
 		CoolDown ();

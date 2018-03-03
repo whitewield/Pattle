@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pattle.Global;
 
 public class PT_Preset : MonoBehaviour {
 
@@ -102,7 +103,7 @@ public class PT_Preset : MonoBehaviour {
 
 				myInput_Collection_Slot = t_collider.GetComponent<PT_Preset_Collection_Slot> ();
 				if (myInput_Collection_Slot != null &&
-					myInput_Collection_Slot.GetChessType () != PT_Global.ChessType.none) {
+					myInput_Collection_Slot.GetChessType () != ChessType.none) {
 					//show chess info
 					myInfo.ShowInfo (myInput_Collection_Slot.GetChessInfo ());
 					if (myInput_Collection_Slot.GetInUse () == false) {
@@ -118,7 +119,7 @@ public class PT_Preset : MonoBehaviour {
 
 				myInput_Deck_Slot = t_collider.GetComponent<PT_Preset_Deck_Slot> ();
 				if (myInput_Deck_Slot != null &&
-					myInput_Deck_Slot.GetChessType () != PT_Global.ChessType.none) {
+					myInput_Deck_Slot.GetChessType () != ChessType.none) {
 					//show chess info
 					myInfo.ShowInfo (myInput_Deck_Slot.GetChessInfo ());
 					myInput_Deck_Slot.RemoveSprite ();
@@ -334,11 +335,11 @@ public class PT_Preset : MonoBehaviour {
 				myAnimatedSections [i].sectionTransform.localPosition = 
 				Vector3.Lerp (myAnimatedSections [i].sectionTransform.localPosition, 
 					myAnimatedSections [i].targetPosition, 
-					Time.unscaledDeltaTime * PT_Global.Constants.SPEED_UI_LERP);
+					Time.unscaledDeltaTime * Constants.SPEED_UI_LERP);
 				if (Vector3.SqrMagnitude (
 					    myAnimatedSections [i].sectionTransform.localPosition - myAnimatedSections [i].targetPosition
 				    ) <
-					PT_Global.Constants.DISTANCE_UI_RESET) {
+					Constants.DISTANCE_UI_RESET) {
 					myAnimatedSections [i].sectionTransform.localPosition = myAnimatedSections [i].targetPosition;
 					myAnimatedSections [i].doAnimation = false;
 				}

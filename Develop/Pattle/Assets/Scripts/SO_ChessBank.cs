@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using PT_Global;
+using Pattle.Global;
 
 [CreateAssetMenu(fileName = "ChessBank", menuName = "Wield/ChessBank", order = 2)]
 public class SO_ChessBank : ScriptableObject {

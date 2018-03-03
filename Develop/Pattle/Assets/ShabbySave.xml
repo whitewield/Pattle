@@ -5,7 +5,7 @@
     <P2>-2.566,-3.633</P2>
     <C0>203</C0>
     <C1>202</C1>
-    <C2>204</C2>
+    <C2>104</C2>
     <IP>172.16.30.165</IP>
   </Preset>
   <Settings>
@@ -18,6 +18,6 @@
     </JoinPassword>
   </Network>
   <Adventure>
-    <FireDragon>321</FireDragon>
+    <FireDragon>331</FireDragon>
   </Adventure>
 </PattleData>

@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PT_Global;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Pattle.Global;
 
 public class PT_NetworkBattleCanvas : PT_NetworkGameCanvas {
 
@@ -49,7 +49,7 @@ public class PT_NetworkBattleCanvas : PT_NetworkGameCanvas {
 	}
 
 	public void OnButtonCancelWait () {
-		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (PT_Global.Constants.NAME_NETWORK_DISCOVERY);
+		GameObject t_NetworkDiscoveryGameObject = GameObject.Find (Constants.NAME_NETWORK_DISCOVERY);
 		if (t_NetworkDiscoveryGameObject != null) {
 			NetworkDiscovery t_NetworkDiscovery = t_NetworkDiscoveryGameObject.GetComponent<NetworkDiscovery> ();
 			if (t_NetworkDiscovery != null &&
