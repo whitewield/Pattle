@@ -5,6 +5,13 @@ using UnityEngine.Networking;
 using Pattle.Global;
 
 public class PT_BaseChess : NetworkBehaviour {
+
+	public enum SpriteState {
+		Idle,
+		Busy,
+		Dead,
+	}
+
 	[SyncVar] protected int myOwnerID = -1;
 	[SyncVar] protected int myID = -1;
 	private PT_PlayerController myPlayerController;
@@ -60,6 +67,9 @@ public class PT_BaseChess : NetworkBehaviour {
 		SetProcess (Process.CD);
 		myTimer = myAttributes.CD;
 		myProcessDisplay.ShowCD (myTimer);
+		RpcChangeSpriteColor (SpriteState.Busy);
+
+//		CoolDown ();
 
 		CustomInitialize ();
 	}
@@ -139,6 +149,7 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	protected virtual void Idle () {
 		SetProcess (Process.Idle);
+		RpcChangeSpriteColor (SpriteState.Idle);
 	}
 
 	protected virtual void Move () {
@@ -149,6 +160,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		SetProcess (Process.CD);
 		myTimer = myAttributes.CD * g_scale;
 		RpcShowCD (myTimer);
+		RpcChangeSpriteColor (SpriteState.Busy);
 
 		if (myPlayerController != null)
 			myPlayerController.RpcHideTarget (myID);
@@ -474,6 +486,7 @@ public class PT_BaseChess : NetworkBehaviour {
 			SetProcess (Process.Dead);
 
 			DoOnDead ();
+			RpcChangeSpriteColor (SpriteState.Dead);
 			myCurHP = 0;
 
 			if (myPlayerController != null) {
@@ -562,6 +575,21 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	[ClientRpc]
+	void RpcChangeSpriteColor (SpriteState g_state) {
+		switch (g_state) {
+		case SpriteState.Idle:
+			mySpriteRenderer.color = Color.white;
+			break;
+		case SpriteState.Busy:
+			mySpriteRenderer.color = Constants.COLOR_BUSY;
+			break;
+		case SpriteState.Dead:
+			mySpriteRenderer.color = Constants.COLOR_DEADBODY;
+			break;
+		}
+	}
+
+	[ClientRpc]
 	void RpcShowHP (int g_hp) {
 		//		Debug.Log ("RpcShowCT");
 		myProcessDisplay.ShowHP (g_hp);
@@ -572,7 +600,6 @@ public class PT_BaseChess : NetworkBehaviour {
 			myProcessDisplay.HideHP ();
 			myProcessDisplay.HideProcess ();
 			mySpriteRenderer.sortingLayerName = Constants.SORTINGLAYER_DEADBODY;
-			mySpriteRenderer.color = Constants.COLOR_DEADBODY;
 			myCollider.enabled = false;
 		}
 	}

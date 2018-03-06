@@ -95,7 +95,6 @@ namespace Pattle{
 		}
 
 
-
 		public static class Constants {
 
 			public const string SCENE_MENU = "NetworkMenu";
@@ -153,6 +152,7 @@ namespace Pattle{
 			public const string CAPTION_CHESSNAME = "ChessName";
 
 			public static Color COLOR_DEADBODY = new Color (0.2f, 0.2f, 0.2f, 0.5f);
+			public static Color COLOR_BUSY = new Color (0.8f, 0.8f, 0.9f, 1);
 			public static Color COLOR_CHESS_ACTIVE = Color.white;
 			public static Color COLOR_CHESS_INACTIVE = new Color (1, 1, 1, 0.5f);
 

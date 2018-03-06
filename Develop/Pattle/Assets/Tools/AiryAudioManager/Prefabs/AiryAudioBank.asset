@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d6c232778d544518f828ee7176837f, type: 3}
+  m_Name: AiryAudioBank
+  m_EditorClassIdentifier: 
+  myBank:
+  - myName: KnockOut
+    myAudioClip: {fileID: 8300000, guid: 8fa0f34e4745c4984a72c8aa87c7b04d, type: 3}
+    myBaseVolume: 1
+  - myName: Hit
+    myAudioClip: {fileID: 8300000, guid: 8fa0f34e4745c4984a72c8aa87c7b04d, type: 3}
+    myBaseVolume: 1
+  - myName: Dash1
+    myAudioClip: {fileID: 8300000, guid: 03a1cfd84c05846be891765832945c90, type: 3}
+    myBaseVolume: 1
+  - myName: Dash2
+    myAudioClip: {fileID: 8300000, guid: 6d0f4b6927f264d7fba4cc8e3ef2e976, type: 3}
+    myBaseVolume: 1
+  - myName: Score
+    myAudioClip: {fileID: 8300000, guid: a91c2b73ee05045ed9a5608e2ba98112, type: 3}
+    myBaseVolume: 1
