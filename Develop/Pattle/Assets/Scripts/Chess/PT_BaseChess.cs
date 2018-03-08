@@ -63,11 +63,16 @@ public class PT_BaseChess : NetworkBehaviour {
 			myStatus.Add (0f);
 		}
 
-		//CD at beginning
+//		CD at beginning
 		SetProcess (Process.CD);
 		myTimer = myAttributes.CD;
 		myProcessDisplay.ShowCD (myTimer);
-		RpcChangeSpriteColor (SpriteState.Busy);
+		mySpriteRenderer.color = Constants.COLOR_BUSY;
+//		mySpriteRenderer
+		//
+//		if (isServer)
+//			RpcChangeSpriteColor (SpriteState.Busy);
+
 
 //		CoolDown ();
 
