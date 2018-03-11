@@ -14,8 +14,8 @@ public class PT_BaseSkill : NetworkBehaviour {
 
 	[SerializeField] protected bool isFriendlyFire = true;
 
-	[SerializeField] GameObject mySubSkill;
-	[SerializeField] GameObject mySubParticle;
+	[SerializeField] protected GameObject mySubSkill;
+	[SerializeField] protected GameObject mySubParticle;
 
 	[SerializeField] float myKillTime = 0;
 	private float myKilltimer = 0;

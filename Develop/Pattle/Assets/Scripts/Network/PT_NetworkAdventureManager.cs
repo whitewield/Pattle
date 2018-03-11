@@ -36,6 +36,12 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 	}
 
 	private void CreateBoss () {
+		//create map
+		GameObject t_mapObject = Instantiate (PT_DeckManager.Instance.GetAdventureMapPrefab ()) as GameObject;
+
+		// spawn on the clients
+		NetworkServer.Spawn (t_mapObject);
+
 		//create boss
 		GameObject t_bossObject = Instantiate (PT_DeckManager.Instance.GetAdventureBossPrefab(), this.transform) as GameObject;
 

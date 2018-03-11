@@ -191,6 +191,10 @@ public class PT_DeckManager : MonoBehaviour {
 		return myChessBank.GetBossPrefab (myAdventure_BossType, myAdventure_BossDifficulty);
 	}
 
+	public GameObject GetAdventureMapPrefab () {
+		return myChessBank.GetMapPrefab (myAdventure_BossType);
+	}
+
 	public ChessType[] GetArenaChessTypes () {
 		return myChessTypes;
 	}

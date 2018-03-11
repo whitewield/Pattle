@@ -5,17 +5,15 @@ using UnityEngine.Networking;
 
 public class PT_Suicide : NetworkBehaviour {
 
-	public float mySuicideTime;
+	public float mySuicideTime = -1;
 
-	// Update is called once per frame
-	void Update () {
+	void Start () {
 		if (!isServer) {
 			return;
 		}
 
-		mySuicideTime -= Time.deltaTime; 
-		if (mySuicideTime < 0)
-			Kill ();
+		if (mySuicideTime > 0)
+			Destroy (this.gameObject, mySuicideTime);
 	}
 
 	public void Kill () {

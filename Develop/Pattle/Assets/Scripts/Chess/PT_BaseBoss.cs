@@ -34,8 +34,8 @@ public class PT_BaseBoss : PT_BaseChess {
 	}
 
 	protected override void Move () {
-
-		myTargetPosition = myMoveSettings.GetOtherRandomMovePosition (this.transform.position);
+		if (myMoveSettings != null)
+			myTargetPosition = myMoveSettings.GetOtherRandomMovePosition (this.transform.position);
 
 		base.Move ();
 

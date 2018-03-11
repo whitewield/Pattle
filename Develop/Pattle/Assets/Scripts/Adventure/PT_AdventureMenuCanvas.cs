@@ -14,7 +14,6 @@ namespace Pattle {
 			public GameObject myMenuDisplayPrefab;
 
 			public BossType myBossType;
-			public GameObject myMapPrefab;
 
 			public int myUnlockMedalCount;
 		}

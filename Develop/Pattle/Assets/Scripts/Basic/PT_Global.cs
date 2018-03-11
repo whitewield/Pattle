@@ -51,6 +51,7 @@ namespace Pattle{
 		public enum BossType {
 			none = 0,
 			FireDragon = 1,
+			IceMage = 2,
 		}
 
 		public enum MedalType {

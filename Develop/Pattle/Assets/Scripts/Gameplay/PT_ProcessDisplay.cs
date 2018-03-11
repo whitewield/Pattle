@@ -159,7 +159,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 		//Show Damage GameObject
 		GameObject t_go_damage = Instantiate (myDamagePrefab, this.transform) as GameObject;
 		t_go_damage.transform.rotation = Camera.main.transform.rotation;
-		t_go_damage.GetComponent<TextMesh> ().text = "-" + g_number.ToString();
+		t_go_damage.GetComponent<PT_Text> ().ShowText ("-" + g_number.ToString ("0"));
 		SetRandomPosition (t_go_damage);
 	}
 
@@ -167,7 +167,7 @@ public class PT_ProcessDisplay : MonoBehaviour {
 		//Show Heal GameObject
 		GameObject t_go_heal = Instantiate (myHealingPrefab, this.transform) as GameObject;
 		t_go_heal.transform.rotation = Camera.main.transform.rotation;
-		t_go_heal.GetComponent<TextMesh> ().text = "+" + g_number.ToString();
+		t_go_heal.GetComponent<PT_Text> ().ShowText ("+" + g_number.ToString ("0"));
 		SetRandomPosition (t_go_heal);
 	}
 

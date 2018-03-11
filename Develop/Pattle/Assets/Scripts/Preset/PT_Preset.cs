@@ -263,10 +263,14 @@ public class PT_Preset : MonoBehaviour {
 		if (myState == PresetState.ShowDeck) {
 			myState = PresetState.ShowCollection;
 			myInfo.ShowInfo (PT_DeckManager.Instance.myChessBank.GetChessInfo (PT_DeckManager.Instance.GetChessTypes () [0]));
+			myDeck.SetButtonFace (PT_Preset_Deck.ButtonFace.Confirm);
 		} else if (myState == PresetState.ShowCollection) {
 			if (myDeck.CheckReady ()) {
 				myField.SetSprites (myDeck.GetSprites ());
 				myState = PresetState.ShowFormation;
+				myDeck.SetButtonFace (PT_Preset_Deck.ButtonFace.Confirm);
+			} else {
+				PT_MessageManager.Instance.ShowMessage ("require 3 chesses", PT_MessageManager.BoxSize.Short);
 			}
 		} else if (myState == PresetState.ShowFormation) {
 			//save 
@@ -274,6 +278,7 @@ public class PT_Preset : MonoBehaviour {
 			myField.ApplyChessPosition();
 
 			myState = PresetState.ShowDeck;
+			myDeck.SetButtonFace (PT_Preset_Deck.ButtonFace.Edit);
 		}
 		SetAnimation (myState);
 	}

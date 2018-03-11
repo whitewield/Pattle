@@ -2,9 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pattle.Global;
+using UnityEngine.UI;
 
 public class PT_Preset_Deck : MonoBehaviour {
 	[SerializeField] PT_Preset_Deck_Slot[] mySlots;
+	[SerializeField] GameObject myButtonFace_Edit;
+	[SerializeField] GameObject myButtonFace_Confirm;
+
+	public enum ButtonFace {
+		Edit,
+		Confirm
+	}
+
 	// Use this for initialization
 	void Start () {
 		SetFromDeckManager ();
@@ -46,4 +55,16 @@ public class PT_Preset_Deck : MonoBehaviour {
 		return true;
 	}
 
+	public void SetButtonFace (ButtonFace g_face) {
+		switch (g_face) {
+		case ButtonFace.Edit:
+			myButtonFace_Confirm.SetActive (false);
+			myButtonFace_Edit.SetActive (true);
+			break;
+		case ButtonFace.Confirm:
+			myButtonFace_Confirm.SetActive (true);
+			myButtonFace_Edit.SetActive (false);
+			break;
+		}
+	}
 }

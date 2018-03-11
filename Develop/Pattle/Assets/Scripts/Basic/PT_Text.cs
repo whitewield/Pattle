@@ -4,14 +4,15 @@ using UnityEngine.UI;
 
 public class PT_Text : MonoBehaviour {
 
-	private Text myText;
+	[SerializeField] Text myText;
 	[SerializeField] string myCategory;
 	[SerializeField] string myTitle;
-	private Transform myTextShadow;
+	[SerializeField] PT_TextShadow myTextShadow;
 
 	// Use this for initialization
 	void Awake () {
-		myText = this.GetComponent<Text> ();
+		if (myText == null)
+			myText = this.GetComponentInChildren<Text> ();
 	}
 
 	void Start () {
@@ -25,12 +26,15 @@ public class PT_Text : MonoBehaviour {
 		if (myTitle == "")
 			return;
 		
-		myText.text = 
-			PT_Caption.Instance.LoadCaption (myCategory, myTitle);
+		ShowText (PT_Caption.Instance.LoadCaption (myCategory, myTitle));
+	}
 
-//		myTextShadow = this.transform.Find ("TX_Shadow");
-//		if (myTextShadow != null)
-//			myTextShadow.gameObject.SendMessage ("UpdateShadow");
+	public void ShowText (string g_text) {
+		myText.text = g_text;
+
+		//		myTextShadow = this.GetComponentInChildren<PT_TextShadow> ();
+		if (myTextShadow != null)
+			myTextShadow.UpdateShadow (myText);
 	}
 
 	public void SetCategory (string g_title) {

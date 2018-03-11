@@ -63,6 +63,16 @@ public class SO_ChessBank : ScriptableObject {
 		}
 	}
 
+	public GameObject GetMapPrefab (BossType g_bossType) {
+		BossInfo t_bossInfo = GetBossInfo (g_bossType);
+
+		if (t_bossInfo.bossType == emptyBossInfo.bossType)
+			return null;
+
+		return t_bossInfo.map;
+
+	}
+
 	public ChessInfo GetChessInfo (ChessType g_chessType) {
 		foreach (ChessInfo f_info in Blood) {
 			if (f_info.chessType == g_chessType)
@@ -115,5 +125,6 @@ public struct BossInfo {
 	public GameObject prefabEasy;
 	public GameObject prefabNormal;
 	public GameObject prefabHard;
+	public GameObject map;
 	public SO_AdventureChessSettings chessSettings;
 }

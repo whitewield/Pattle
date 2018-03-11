@@ -24,7 +24,6 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	[SerializeField] RectTransform myPageCreate;
 	[SerializeField] InputField myPageCreate_Input_Name;
 	[SerializeField] InputField myPageCreate_Input_Password;
-	[SerializeField] Text myPageCreate_Info;
 	[SerializeField] RectTransform myPageSearch;
 	[SerializeField] Text myPageSearch_Info;
 	[SerializeField] GameObject myPageSearch_ButtonPrefab;
@@ -32,7 +31,6 @@ public class PT_NetworkCanvas : MonoBehaviour {
 	[SerializeField] RectTransform myPagePassword;
 	[SerializeField] InputField myPagePassword_Input;
 	[SerializeField] Text myPagePassword_Name;
-	[SerializeField] Text myPagePassword_Info;
 	// Use this for initialization
 	void Start () {
 		if (NetworkManager.singleton.onlineScene != Constants.SCENE_BATTLE)
@@ -73,14 +71,15 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		string t_name = myPageCreate_Input_Name.text;
 		if (t_name == "0" || t_name == "" || t_name.Contains (Constants.SYMBOL_PASSWORD)) {
 //			Debug.LogError ("error: you should't use this name");
-			myPageCreate_Info.text = "name is not allowed";
+
+			PT_MessageManager.Instance.ShowMessage ("name is not allowed", PT_MessageManager.BoxSize.Short);
 			return;
 		}
 
 		string t_password = myPageCreate_Input_Password.text;
 		if (t_password == "0" || t_password.Contains (Constants.SYMBOL_PASSWORD)) {
 //			Debug.LogError ("error: you should't use this password");
-			myPageCreate_Info.text = "password is not allowed";
+			PT_MessageManager.Instance.ShowMessage ("password is not allowed", PT_MessageManager.BoxSize.Short);
 			return;
 		}
 
@@ -114,7 +113,6 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		if (GetRoomPassword (g_ip) == "")
 			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartClient);
 		else {
-			myPagePassword_Info.text = "Please enter password.";
 			myPagePassword_Name.text = GetRoomName (g_ip);
 			string t_password = 
 				ShabbySave.LoadGame (
@@ -136,8 +134,17 @@ public class PT_NetworkCanvas : MonoBehaviour {
 			);
 			TransitionManager.Instance.StartTransition (TransitionManager.TransitionMode.StartClient);
 		} else {
-			myPagePassword_Info.text = "Wrong password!";
+			PT_MessageManager.Instance.ShowMessage ("wrong password", PT_MessageManager.BoxSize.Short);
 		}
+	}
+
+	public void OnButtonHow () {
+		string t_message = "In this version, \"Arena\" only supports local area network (LAN). " +
+		                   "You and your opponent need to join the same wifi, " +
+		                   "or one of you needs to create a personal hot spot for the other to join. \n\n" +
+		                   "If you want to play online in the future, you can support Pattle on our itch page: \n" +
+		                   "https://ruanhang.itch.io/pattle";
+		PT_MessageManager.Instance.ShowMessage (t_message, PT_MessageManager.BoxSize.Long);
 	}
 
 	IEnumerator SearchRooms () {
@@ -199,7 +206,6 @@ public class PT_NetworkCanvas : MonoBehaviour {
 		myState = g_state;
 		switch (myState) {
 		case NetworkMenuState.Create:
-			myPageCreate_Info.text = "";
 			myCurrentPage = myPageCreate;
 			break;
 		case NetworkMenuState.Search:
