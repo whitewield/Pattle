@@ -212,6 +212,10 @@ public class PT_Preset : MonoBehaviour {
 			if (t_collider != null) {
 				myInput_Field_Chess = t_collider.GetComponent<PT_Preset_Field_Chess> ();
 				if (myInput_Field_Chess != null) {
+					// click on the chess in field slot
+
+					myAiryAudioData_Pick.Play ();
+
 					myDragChess.sprite = myInput_Field_Chess.GetSprite ();
 					myInput_Field_Chess.SetSprite (null);
 					isMouseDown = true;
@@ -219,6 +223,10 @@ public class PT_Preset : MonoBehaviour {
 
 				PT_Preset_Deck_Slot t_deck_slot = t_collider.GetComponent<PT_Preset_Deck_Slot> ();
 				if (t_deck_slot != null) {
+					// click on the chess in field slot
+
+					myAiryAudioData_Pick.Play ();
+
 					//show chess info
 					myInfo.ShowInfo (t_deck_slot.GetChessInfo ());
 				}
@@ -232,6 +240,10 @@ public class PT_Preset : MonoBehaviour {
 		}
 
 		if (Input.GetMouseButtonUp (0) && isMouseDown) {
+			// drop on the chess in field slot
+
+			myAiryAudioData_Drop.Play ();
+
 			//			Debug.Log ("GetMouseButtonUp");
 			isMouseDown = false;
 

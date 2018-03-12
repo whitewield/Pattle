@@ -1,11 +1,11 @@
 <PattleData>
   <Preset>
-    <P0>-1.58,-7.282</P0>
-    <P1>2.655,-3.598</P1>
-    <P2>-2.61,-2.775</P2>
-    <C0>301</C0>
-    <C1>103</C1>
-    <C2>204</C2>
+    <P0>-2.579,-2.068</P0>
+    <P1>-1.58,-7.282</P1>
+    <P2>2.655,-3.598</P2>
+    <C0>101</C0>
+    <C1>201</C1>
+    <C2>301</C2>
     <IP>172.16.30.165</IP>
   </Preset>
   <Settings>
@@ -18,7 +18,7 @@
     </JoinPassword>
   </Network>
   <Adventure>
-    <FireDragon>323</FireDragon>
-    <IceMage>302</IceMage>
+    <FireDragon>333</FireDragon>
+    <IceMage>333</IceMage>
   </Adventure>
 </PattleData>
