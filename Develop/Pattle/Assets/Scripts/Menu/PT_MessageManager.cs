@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Hang.AiryAudio;
 
 public class PT_MessageManager : MonoBehaviour {
 	
@@ -17,6 +18,7 @@ public class PT_MessageManager : MonoBehaviour {
 	[SerializeField] PT_MessageManager_Box myBox_Long;
 	private PT_MessageManager_Box myCurrentBox;
 
+	[SerializeField] AiryAudioData myAiryAudioData_Hide;
 
 	void Awake () {
 		if (instance != null && instance != this) {
@@ -53,6 +55,9 @@ public class PT_MessageManager : MonoBehaviour {
 	}
 
 	public void OnButtonHide () {
+		if (myAiryAudioData_Hide != null)
+			myAiryAudioData_Hide.Play ();
+
 		myCanvas.SetActive (false);
 
 		if (myCurrentBox != null)

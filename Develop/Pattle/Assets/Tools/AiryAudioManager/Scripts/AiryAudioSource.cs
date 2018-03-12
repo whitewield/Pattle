@@ -15,11 +15,7 @@ namespace Hang {
 		public class AiryAudioSource : MonoBehaviour {
 
 			[SerializeField] AudioSource myAudioSource;
-			public AudioSource AudioSource {
-				get {
-					return myAudioSource;
-				}
-			}
+			public AudioSource AudioSource { get { return myAudioSource; } }
 			private Transform myParent;
 			// Use this for initialization
 //			void Start () {
@@ -39,6 +35,20 @@ namespace Hang {
 			public void SetParent (Transform g_parent) {
 				myParent = g_parent;
 				this.transform.position = myParent.position;
+			}
+
+			public void SetAudioData (AiryAudioData g_data) {
+				SetAudioClip (g_data.GetMyAudioClip ());
+
+				if (g_data.isRandomVolume)
+					SetVolume (Random.Range (g_data.myVolumeRange.x, g_data.myVolumeRange.y));
+				else
+					SetVolume (g_data.myVolume);
+
+				if (g_data.isRandomPitch)
+					SetPitch (Random.Range (g_data.myPitchRange.x, g_data.myPitchRange.y));
+				else
+					SetPitch (g_data.myPitch);
 			}
 
 			public void SetAudioClip (AudioClip g_audioClip) {

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Pattle.Global;
 using Pattle.Action;
+using Hang.AiryAudio;
 
 public class PT_Boss_IceTotem : PT_BaseBoss {
 
@@ -11,6 +12,9 @@ public class PT_Boss_IceTotem : PT_BaseBoss {
 
 	[SerializeField] protected GameObject mySkill_1_IceRain;
 	[SerializeField] int mySkill_1_IceRain_Count = 5;
+
+	[SerializeField] AiryAudioData myAiryAudioData_IceRain;
+	[SerializeField] AiryAudioData myAiryAudioData_Heal;
 
 	private PT_BaseChess myMaster;
 	private float myCDScale;
@@ -36,9 +40,11 @@ public class PT_Boss_IceTotem : PT_BaseBoss {
 			break;
 		case ActionType.Skill_1:
 			Cast ();
+			myAiryAudioData_IceRain.Play ();
 //			PlayMySFX (mySkill1SFX);
 			break;
 		case ActionType.Skill_2:
+			myAiryAudioData_Heal.Play ();
 			Cast ();
 //			PlayMySFX (mySkill2SFX);
 			break;

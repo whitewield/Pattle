@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace Hang {
 	namespace AiryAudio {
-		[CreateAssetMenu(fileName = "AiryAudioBank", menuName = "Hang/AiryAudioBank", order = 1)]
+		[CreateAssetMenu(fileName = "AiryAudioBank", menuName = "Hang/AiryAudio/AiryAudioBank", order = 1)]
 		public class AiryAudioBank : ScriptableObject {
-			[System.Serializable]
-			public struct AiryAudioData {
-				public string myName;
-				public AudioClip myAudioClip;
-				public float myBaseVolume;
-			}
+
+			[SerializeField] List<AiryAudioSnapshot> mySnapshots;
 
 			[SerializeField] List<AiryAudioData> myBank;
+
+			public List<AiryAudioSnapshot> GetMySnapshots () {
+				return mySnapshots;
+			}
 
 			public List<AiryAudioData> GetMyBank () {
 				return myBank;

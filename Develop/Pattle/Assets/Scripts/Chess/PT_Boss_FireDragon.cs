@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Pattle.Global;
 using Pattle.Action;
+using Hang.AiryAudio;
 
 public class PT_Boss_FireDragon : PT_BaseBoss {
 
@@ -13,7 +14,9 @@ public class PT_Boss_FireDragon : PT_BaseBoss {
 	[SerializeField] protected GameObject mySkill_1_Fireball;
 	[SerializeField] protected GameObject mySkill_2_FireShoot;
 
-
+	[SerializeField] AiryAudioData myAiryAudioData_Attack;
+	[SerializeField] AiryAudioData myAiryAudioData_Fireball;
+	[SerializeField] AiryAudioData myAiryAudioData_FireShoot;
 
 	protected override void ActionAI () {
 		for (int f_loopTime = 0; f_loopTime < 1000; f_loopTime++) {
@@ -42,20 +45,21 @@ public class PT_Boss_FireDragon : PT_BaseBoss {
 			break;
 		case ActionType.Attack:
 			Attack ();
-//			PlayMySFX (myAttackSFX);
+			myAiryAudioData_Attack.Play ();
 			break;
 		case ActionType.Skill_1:
 			Cast ();
-//			PlayMySFX (mySkill1SFX);
+			myAiryAudioData_Fireball.Play ();
 			break;
 		case ActionType.Skill_2:
 			Cast ();
-//			PlayMySFX (mySkill2SFX);
+			myAiryAudioData_FireShoot.Play ();
 			break;
 		}
 	}
 
 	protected override void Attack () {
+
 		//get enemy position
 		myTargetPosition = GetEnemy_LowestHP ().transform.position;
 

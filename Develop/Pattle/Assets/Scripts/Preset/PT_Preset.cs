@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pattle.Global;
+using Hang.AiryAudio;
 
 public class PT_Preset : MonoBehaviour {
 
@@ -44,6 +45,9 @@ public class PT_Preset : MonoBehaviour {
 	private PT_Preset_Collection_Slot myInput_Collection_Slot;
 	private PT_Preset_Deck_Slot myInput_Deck_Slot;
 	private PT_Preset_Field_Chess myInput_Field_Chess;
+
+	[SerializeField] AiryAudioData myAiryAudioData_Pick;
+	[SerializeField] AiryAudioData myAiryAudioData_Drop;
 
 	private static PT_Preset instance = null;
 
@@ -104,6 +108,10 @@ public class PT_Preset : MonoBehaviour {
 				myInput_Collection_Slot = t_collider.GetComponent<PT_Preset_Collection_Slot> ();
 				if (myInput_Collection_Slot != null &&
 					myInput_Collection_Slot.GetChessType () != ChessType.none) {
+					// click on the chess in collection slot
+
+					myAiryAudioData_Pick.Play ();
+
 					//show chess info
 					myInfo.ShowInfo (myInput_Collection_Slot.GetChessInfo ());
 					if (myInput_Collection_Slot.GetInUse () == false) {
@@ -120,6 +128,10 @@ public class PT_Preset : MonoBehaviour {
 				myInput_Deck_Slot = t_collider.GetComponent<PT_Preset_Deck_Slot> ();
 				if (myInput_Deck_Slot != null &&
 					myInput_Deck_Slot.GetChessType () != ChessType.none) {
+					// click on the chess in input slot
+
+					myAiryAudioData_Pick.Play ();
+
 					//show chess info
 					myInfo.ShowInfo (myInput_Deck_Slot.GetChessInfo ());
 					myInput_Deck_Slot.RemoveSprite ();
@@ -138,6 +150,9 @@ public class PT_Preset : MonoBehaviour {
 		}
 
 		if (Input.GetMouseButtonUp (0) && isMouseDown) {
+			
+			myAiryAudioData_Drop.Play ();
+
 //			Debug.Log ("GetMouseButtonUp");
 			isMouseDown = false;
 

@@ -40,12 +40,12 @@ namespace Pattle{
 			Archer = 301,
 			Hunter = 302,
 			Soprano = 303,
-			Jam = 304,
+//			Jam = 304,
 			___Light___ = 400,
 			Paladin = 401,
 			Angel = 402,
 			Avalok = 403,
-			Neptu = 404,
+//			Neptu = 404,
 		}
 
 		public enum BossType {

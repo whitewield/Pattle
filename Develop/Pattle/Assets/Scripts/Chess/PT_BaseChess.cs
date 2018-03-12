@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Pattle.Global;
+using Hang.AiryAudio;
 
 public class PT_BaseChess : NetworkBehaviour {
 
@@ -40,6 +41,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	//my stuff
 	protected CircleCollider2D myCollider;
 	protected SpriteRenderer mySpriteRenderer;
+
 
 	// Use this for initialization
 	void Start () {
@@ -153,11 +155,15 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void Idle () {
+		RpcPlaySound ("Idle");
+
 		SetProcess (Process.Idle);
 		RpcChangeSpriteColor (SpriteState.Idle);
 	}
 
 	protected virtual void Move () {
+		RpcPlaySound ("Move");
+
 		SetProcess (Process.Move);
 	}
 
@@ -172,16 +178,23 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	protected virtual void Cast (float g_scale = 1) {
+		RpcPlaySound (myAttributes.name);
+
 		SetProcess (Process.CT);
 		myTimer = myAttributes.CT * g_scale;
 		RpcShowCT (myTimer);
 	}
 
 	protected virtual void Attack () {
+		RpcPlaySound ("Move");
+		RpcPlaySound (myAttributes.name);
+
 		SetProcess (Process.Attack);
 	}
 
 	protected void AttackBack () {
+		RpcPlaySound ("Move");
+
 		SetProcess (Process.AttackBack);
 
 		if (myPlayerController != null)
@@ -444,6 +457,8 @@ public class PT_BaseChess : NetworkBehaviour {
 		if (GetStatus (Status.Gold))
 			return;
 
+		RpcPlaySound ("Damage");
+
 		myCurHP -= g_value;
 
 		RpcShowDamage (g_value);
@@ -460,6 +475,8 @@ public class PT_BaseChess : NetworkBehaviour {
 		    GetStatus (Status.SpellImmune) ||
 		    GetStatus (Status.Bubble))
 			return;
+
+		RpcPlaySound ("Damage");
 
 		myCurHP -= g_value;
 
@@ -488,6 +505,8 @@ public class PT_BaseChess : NetworkBehaviour {
 			return;
 
 		if (myCurHP <= 0) {
+			RpcPlaySound ("Death");
+
 			SetProcess (Process.Dead);
 
 			DoOnDead ();
@@ -539,6 +558,12 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 
 	[ClientRpc]
+	protected void RpcPlaySound (string g_dataName) {
+//		Debug.Log ("RpcPlaySound:" + g_dataName);
+		AiryAudioActions.Play (AiryAudioManager.Instance.InitAudioSource (g_dataName), this.transform.position);
+	}
+
+	[ClientRpc]
 	void RpcShowIdle () {
 		myProcessDisplay.HideProcess ();
 	}
@@ -550,7 +575,7 @@ public class PT_BaseChess : NetworkBehaviour {
 	}
 		
 	[ClientRpc]
-	void RpcShowCT (float g_time) {
+	protected void RpcShowCT (float g_time) {
 		//		Debug.Log ("RpcShowCT");
 		myProcessDisplay.ShowCT (g_time);
 	}

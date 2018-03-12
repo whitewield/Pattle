@@ -6,32 +6,31 @@ namespace Hang {
 	namespace AiryAudio {
 		public class AiryAudioPlayer : MonoBehaviour {
 
-			[SerializeField] string[] myAudioNames;
+			[SerializeField] AiryAudioData[] myAudioDatas;
 			[SerializeField] bool playOnStart;
 
 
 			// Use this for initialization
 			void Start () {
-				if (playOnStart && myAudioNames != null) {
-					AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (myAudioNames);
-					AiryAudioActions.Play (t_source);
-
+				if (playOnStart && myAudioDatas != null) {
+					AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (myAudioDatas);
+					AiryAudioActions.Play (t_source, this.transform);
 				}
 			}
 
-			public void Play (int t_index) {
-				AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (myAudioNames [t_index]);
-				AiryAudioActions.Play (t_source);
+			public void PlayIndex (int t_index) {
+				AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (myAudioDatas [t_index]);
+				AiryAudioActions.Play (t_source, this.transform);
 			}
 
-			public void Play (string t_name) {
+			public void PlayName (string t_name) {
 				AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (t_name);
-				AiryAudioActions.Play (t_source);
+				AiryAudioActions.Play (t_source, this.transform);
 			}
 
 			public void Play () {
-				AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (myAudioNames);
-				AiryAudioActions.Play (t_source);
+				AiryAudioSource t_source = AiryAudioManager.Instance.InitAudioSource (myAudioDatas);
+				AiryAudioActions.Play (t_source, this.transform);
 			}
 		}
 	}

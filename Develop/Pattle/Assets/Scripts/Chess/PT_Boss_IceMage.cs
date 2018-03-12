@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Pattle.Global;
 using Pattle.Action;
+using Hang.AiryAudio;
 
 public class PT_Boss_IceMage : PT_BaseBoss {
 
@@ -12,6 +13,9 @@ public class PT_Boss_IceMage : PT_BaseBoss {
 
 	[SerializeField] protected GameObject mySkill_1_Iceball;
 	[SerializeField] protected GameObject mySkill_2_IceBird;
+
+	[SerializeField] AiryAudioData myAiryAudioData_Iceball;
+	[SerializeField] AiryAudioData myAiryAudioData_IceBird;
 
 	[SerializeField] GameObject myTotemPrefab;
 	private PT_Boss_IceTotem[] myTotems;
@@ -96,10 +100,12 @@ public class PT_Boss_IceMage : PT_BaseBoss {
 			break;
 		case ActionType.Skill_1:
 			Cast ();
+			myAiryAudioData_Iceball.Play ();
 //			PlayMySFX (mySkill1SFX);
 			break;
 		case ActionType.Skill_2:
 			Cast ();
+			myAiryAudioData_IceBird.Play ();
 //			PlayMySFX (mySkill2SFX);
 			break;
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pattle.Global;
+using Hang.AiryAudio;
 
 public class PT_EndGameUI : MonoBehaviour {
 
@@ -9,12 +10,19 @@ public class PT_EndGameUI : MonoBehaviour {
 	[SerializeField] GameObject myDefeatDisplay;
 	[SerializeField] SpriteRenderer[] myChessDisplays;
 
+	[SerializeField] AiryAudioData myAiryAudioData_Win;
+	[SerializeField] AiryAudioData myAiryAudioData_Lose;
+
 	void Start () {
 
 		if (PT_DeckManager.Instance.IsWinning) {
+			myAiryAudioData_Win.Play ();
+
 			myVictoryDisplay.SetActive (true);
 			myDefeatDisplay.SetActive (false);
 		} else {
+			myAiryAudioData_Lose.Play ();
+
 			myVictoryDisplay.SetActive (false);
 			myDefeatDisplay.SetActive (true);
 		}

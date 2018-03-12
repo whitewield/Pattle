@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using Hang.AiryAudio;
 
 
 public class PT_Button : MonoBehaviour {
@@ -23,7 +24,12 @@ public class PT_Button : MonoBehaviour {
 
 	private bool isPressed;
 
+	[SerializeField] AiryAudioData myAiryAudioData_Down;
+
 	public void OnMouseDown () {
+		if (myAiryAudioData_Down != null)
+			myAiryAudioData_Down.Play ();
+
 		if (doPositionChange)
 			myButtonTransform.localPosition = myPressedPosition;
 

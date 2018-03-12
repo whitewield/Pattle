@@ -41,6 +41,18 @@ public class PT_BaseBoss : PT_BaseChess {
 
 	}
 
+	protected override void Cast (float g_scale = 1) {
+		SetProcess (Process.CT);
+		myTimer = myAttributes.CT * g_scale;
+		RpcShowCT (myTimer);
+	}
+
+	protected override void Attack () {
+		RpcPlaySound ("Move");
+
+		SetProcess (Process.Attack);
+	}
+
 	protected virtual void Skill_1 () {
 		CoolDown ();
 	}
