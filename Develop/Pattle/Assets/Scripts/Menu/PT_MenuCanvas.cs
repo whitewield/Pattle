@@ -38,4 +38,11 @@ public class PT_MenuCanvas : MonoBehaviour {
 		NetworkManager.singleton.offlineScene = Constants.SCENE_ENDGAME;
 		TransitionManager.Instance.StartTransition (Constants.SCENE_LOBBY);
 	}
+
+	public void OnButtonWebsite () {
+		//		if (myButtonAiryAudioData != null)
+		//			myButtonAiryAudioData.Play ();
+
+		Application.OpenURL ("https://ruanhang.itch.io/pattle");
+	}
 }

@@ -47,15 +47,15 @@ public class PT_Caption : MonoBehaviour {
 		if (t_language == "0") {
 			//set default language
 			switch (Application.systemLanguage) { 
-			case SystemLanguage.ChineseSimplified:
-				t_language = Constants.LANGUAGE_CHS;
-				break;
-			case SystemLanguage.ChineseTraditional:
-				t_language = Constants.LANGUAGE_CHT;
-				break;
-			case SystemLanguage.Chinese:
-				t_language = Constants.LANGUAGE_CHS;
-				break;
+//			case SystemLanguage.ChineseSimplified:
+//				t_language = Constants.LANGUAGE_CHS;
+//				break;
+//			case SystemLanguage.ChineseTraditional:
+//				t_language = Constants.LANGUAGE_CHT;
+//				break;
+//			case SystemLanguage.Chinese:
+//				t_language = Constants.LANGUAGE_CHS;
+//				break;
 			case SystemLanguage.English:
 				t_language = Constants.LANGUAGE_EN;
 				break;

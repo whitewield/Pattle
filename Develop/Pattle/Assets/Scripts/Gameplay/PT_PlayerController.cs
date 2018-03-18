@@ -293,7 +293,7 @@ public class PT_PlayerController : NetworkBehaviour {
 
 			//test
 //			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
-
+//			t_chess.Initialize();
 
 			// spawn on the clients
 			NetworkServer.Spawn (t_chessObject);

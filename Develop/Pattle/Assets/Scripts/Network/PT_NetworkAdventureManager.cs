@@ -57,6 +57,8 @@ public class PT_NetworkAdventureManager : PT_NetworkGameManager {
 
 		t_boss.SetMyManager (this);
 
+//		t_boss.Initialize ();
+
 		// spawn on the clients
 		NetworkServer.Spawn (t_bossObject);
 

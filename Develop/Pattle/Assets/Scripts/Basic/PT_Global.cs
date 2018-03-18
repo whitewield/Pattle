@@ -52,6 +52,9 @@ namespace Pattle{
 			none = 0,
 			FireDragon = 1,
 			IceMage = 2,
+			Mushroom = 3,
+			Neptu = 4,
+			Brush = 5,
 		}
 
 		public enum MedalType {

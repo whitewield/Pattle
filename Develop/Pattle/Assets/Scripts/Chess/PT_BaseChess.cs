@@ -351,6 +351,7 @@ public class PT_BaseChess : NetworkBehaviour {
 		myStatus [(int)g_status] = Mathf.Max (myStatus [(int)g_status], g_time);
 
 		if (g_status == Status.Freeze) {
+			RpcPlaySound ("Freeze");
 			RpcShowStatus_Freeze (myStatus [(int)g_status]);
 		}
 		if (g_status == Status.Gold) {
@@ -489,6 +490,8 @@ public class PT_BaseChess : NetworkBehaviour {
 
 	protected virtual void HPModify_Healing (int g_value) {
 
+		RpcPlaySound ("Heal");
+
 		myCurHP += g_value;
 
 		if (myCurHP > myAttributes.HP) {
@@ -518,6 +521,14 @@ public class PT_BaseChess : NetworkBehaviour {
 				myPlayerController.RpcHideTarget (myID);
 			}
 		}
+
+		RpcShowHP (myCurHP);
+	}
+
+	public void SetCurHP (int g_curHP) {
+		if (g_curHP >= myAttributes.HP)
+			myCurHP = myAttributes.HP;
+		myCurHP = g_curHP;
 
 		RpcShowHP (myCurHP);
 	}
@@ -560,7 +571,16 @@ public class PT_BaseChess : NetworkBehaviour {
 	[ClientRpc]
 	protected void RpcPlaySound (string g_dataName) {
 //		Debug.Log ("RpcPlaySound:" + g_dataName);
-		AiryAudioActions.Play (AiryAudioManager.Instance.InitAudioSource (g_dataName), this.transform.position);
+		AiryAudioManager.Instance.GetAudioData (g_dataName).Play (this.transform.position);
+	}
+
+	[ClientRpc]
+	public void RpcSetCurHP (int g_curHP) {
+		if (g_curHP >= myAttributes.HP)
+			myCurHP = myAttributes.HP;
+		myCurHP = g_curHP;
+
+		RpcShowHP (myCurHP);
 	}
 
 	[ClientRpc]

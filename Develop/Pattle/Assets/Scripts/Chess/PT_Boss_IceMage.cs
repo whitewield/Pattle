@@ -46,6 +46,8 @@ public class PT_Boss_IceMage : PT_BaseBoss {
 
 			t_totemScript.SetMyManager (myManager);
 
+//			t_totemScript.Initialize ();
+
 			//spawn the totem on Clients
 			NetworkServer.Spawn (t_totem);
 

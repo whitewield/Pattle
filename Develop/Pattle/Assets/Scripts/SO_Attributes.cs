@@ -4,8 +4,6 @@ using System.Collections;
 [CreateAssetMenu(fileName = "Attributes", menuName = "Wield/Attributes", order = 1)]
 public class SO_Attributes : ScriptableObject {
 
-	public string name;
-
 	/// <summary>
 	/// Hit Point.
 	/// </summary>

@@ -1,11 +1,11 @@
 <PattleData>
   <Preset>
     <P0>-2.579,-2.068</P0>
-    <P1>-1.58,-7.282</P1>
-    <P2>2.655,-3.598</P2>
+    <P1>-1.786,-5.288</P1>
+    <P2>0.775,-3.434</P2>
     <C0>101</C0>
-    <C1>201</C1>
-    <C2>301</C2>
+    <C1>402</C1>
+    <C2>103</C2>
     <IP>172.16.30.165</IP>
   </Preset>
   <Settings>
@@ -20,5 +20,6 @@
   <Adventure>
     <FireDragon>333</FireDragon>
     <IceMage>333</IceMage>
+    <Mushroom>333</Mushroom>
   </Adventure>
 </PattleData>
