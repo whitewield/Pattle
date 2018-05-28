@@ -2,32 +2,29 @@
 <!--例子：我的\r\n收藏-->
 <!--Version : 20160903-->
 <PattleData>
-  <Menu>
-    <Collection>Collection</Collection>
-    <Adventures>Adventures</Adventures>
-    <Shop>Coupon</Shop>
-    <Arena>Arena\r\n(Closed)</Arena>
-  </Menu>
+  <UI>
+    <Adventure>Adventure</Adventure>
+    <Arena>Arena</Arena>
+    <Website>Website</Website>
 
-  <Shop>
-    <Coupon>Coupon</Coupon>
-  </Shop>
+    <Start>Start</Start>
 
-  <Plan>
-    <Introduction>Preparation Introduction</Introduction>
-  </Plan>
+    <Room>Room</Room>
+    <Password>Password</Password>
+    <IP>IP</IP>
+
+    <Easy>Easy</Easy>
+  	<Normal>Normal</Normal>
+  	<Hard>Hard</Hard>
+  </UI>
 
   <Settings>
     <Title>Settings</Title>
     <Language>Language</Language>
   </Settings>
 
-  <Difficulty>
-  	<Normal>Normal</Normal>
-  	<Hard>Hard</Hard>
-  </Difficulty>
+  <Adventure>
 
-  <Map>
     <Tutorial>Tutorial\r\nDifficulty : ★☆☆☆☆\r\n\r\nGet basic\r\ncharacters</Tutorial>
     <TutorialMove>Move</TutorialMove>
     <TutorialClose>Close-combat</TutorialClose>
@@ -43,7 +40,7 @@
     <Chameleon>GRUMPY</Chameleon>
     <Neptu>NEPTU</Neptu>
     <Fish>TAICHI</Fish>
-  </Map>
+  </Adventure>
 
   <Attributes>
     <HP>HP</HP>

@@ -5,21 +5,20 @@ using System.Xml;
 using System.IO;
 using System.Text;
 using Pattle.Global;
+using Pattle.Settings;
 
 public class PT_Caption : MonoBehaviour {
 
 	private static PT_Caption instance = null;
+	public static PT_Caption Instance { get { return instance; } }
 
 	[SerializeField] string myGameName = "Pattle";
+	[SerializeField] SO_LanguageSetup[] myLanguageSetups;
+	private Language myLanguage;
+	private Dictionary<Language, SO_LanguageSetup> myLanguageDictionary;
 
 	private XmlDocument xmlDoc;
 
-	//========================================================================
-	public static PT_Caption Instance {
-		get { 
-			return instance;
-		}
-	}
 
 	void Awake () {
 		if (instance != null && instance != this) {
@@ -30,14 +29,21 @@ public class PT_Caption : MonoBehaviour {
 
 		DontDestroyOnLoad(this.gameObject);
 		LoadCaptionLanguage ();
+		InitLanguageDictionary ();
 	}
-	//========================================================================
 
 //	void Start () {
 //	}
 
 	public void SetCaptionLanguage (string g_language) {
 		ShabbySave.SaveGame (Constants.SAVE_CATEGORY_SETTINGS, Constants.SAVE_TITLE_LANGUAGE, g_language);
+	}
+
+	private void InitLanguageDictionary () {
+		myLanguageDictionary = new Dictionary<Language, SO_LanguageSetup> ();
+		foreach (SO_LanguageSetup f_setup in myLanguageSetups) {
+			myLanguageDictionary.Add (f_setup.myLanguage, f_setup);
+		}
 	}
 
 	public void LoadCaptionLanguage () {
@@ -57,19 +63,25 @@ public class PT_Caption : MonoBehaviour {
 //				t_language = Constants.LANGUAGE_CHS;
 //				break;
 			case SystemLanguage.English:
-				t_language = Constants.LANGUAGE_EN;
+				myLanguage = Language.EN;
 				break;
 			default :
-				t_language = Constants.LANGUAGE_EN;
+				myLanguage = Language.EN;
 				break;
 			}
 
-			ShabbySave.SaveGame (Constants.SAVE_CATEGORY_SETTINGS, Constants.SAVE_TITLE_LANGUAGE, t_language);
+			ShabbySave.SaveGame (Constants.SAVE_CATEGORY_SETTINGS, Constants.SAVE_TITLE_LANGUAGE, myLanguage.ToString ());
+		} else {
+			myLanguage = (Language)System.Enum.Parse (typeof(Language), t_language);
 		}
 
-		Debug.Log("load caption language : " + t_language);
+		Debug.Log ("load caption language : " + myLanguage);
 		xmlDoc = new XmlDocument();
-		xmlDoc.LoadXml (Resources.Load<TextAsset> ("Caption_" + t_language).ToString ());
+		xmlDoc.LoadXml (Resources.Load<TextAsset> ("Caption_" + myLanguage.ToString ()).ToString ());
+	}
+
+	public Font GetFont () {
+		return myLanguageDictionary [myLanguage].myFont;
 	}
 
 	public string LoadCaption (string g_category, string g_title) {

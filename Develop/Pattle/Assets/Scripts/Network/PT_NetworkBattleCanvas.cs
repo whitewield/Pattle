@@ -9,17 +9,18 @@ public class PT_NetworkBattleCanvas : PT_NetworkGameCanvas {
 
 	[SerializeField] GameObject myPage_Wait;
 	[SerializeField] GameObject mySet_Password;
-	[SerializeField] Text myText_Room;
-	[SerializeField] Text myText_Password;
-	[SerializeField] Text myText_IP;
+	[SerializeField] PT_Text myText_Room;
+	[SerializeField] PT_Text myText_Password;
+	[SerializeField] PT_Text myText_IP;
 
 	// Use this for initialization
 	void Start () {
-		myText_Room.text = 
+		myText_Room.SetText (
 			ShabbySave.LoadGame (
 				Constants.SAVE_CATEGORY_NETWORK, 
 				Constants.SAVE_TITLE_NETWORK_NAME
-			);
+			)
+		);
 
 		string t_pwd = 
 			ShabbySave.LoadGame (
@@ -29,8 +30,8 @@ public class PT_NetworkBattleCanvas : PT_NetworkGameCanvas {
 		if (t_pwd == "0")
 			mySet_Password.SetActive (false);
 		else
-			myText_Password.text = t_pwd;
-		myText_IP.text = Network.player.ipAddress;
+			myText_Password.SetText (t_pwd);
+		myText_IP.SetText (Network.player.ipAddress);
 	}
 	
 	// Update is called once per frame

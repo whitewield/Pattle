@@ -5,6 +5,12 @@ using UnityEngine;
 namespace Pattle{
 	namespace Global{
 
+		public enum Language {
+			EN = 0,
+			CHS = 1,
+			CHT = 2,
+		}
+
 		public enum GameMode {
 			Adventure,
 			Arena,
@@ -146,11 +152,6 @@ namespace Pattle{
 			public const string SAVE_CATEGORY_PRESET = "Preset";
 			public static readonly string[] SAVE_TITLE_PRESET_CHESS = { "C0", "C1", "C2" };
 			public static readonly string[] SAVE_TITLE_PRESET_POSITION = { "P0", "P1", "P2" };
-
-			public const string LANGUAGE_DEFAULT = "CHS";
-			public const string LANGUAGE_CHS = "CHS";
-			public const string LANGUAGE_CHT = "CHT";
-			public const string LANGUAGE_EN = "EN";
 
 			public const string CAPTION_CHESSABILITY = "ChessAbility";
 			public const string CAPTION_CHESSNAME = "ChessName";

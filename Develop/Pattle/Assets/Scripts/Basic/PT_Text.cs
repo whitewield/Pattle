@@ -8,6 +8,7 @@ public class PT_Text : MonoBehaviour {
 	[SerializeField] string myCategory;
 	[SerializeField] string myTitle;
 	[SerializeField] PT_TextShadow myTextShadow;
+	[SerializeField] bool isAllCaps;
 
 	// Use this for initialization
 	void Awake () {
@@ -16,21 +17,29 @@ public class PT_Text : MonoBehaviour {
 	}
 
 	void Start () {
-		ShowText ();
+		myText.font = PT_Caption.Instance.GetFont ();
+		SetText ();
 	}
 
-	public void ShowText () {
+	public void SetText () {
 		if (myCategory == "")
 			return;
 
 		if (myTitle == "")
 			return;
 		
-		ShowText (PT_Caption.Instance.LoadCaption (myCategory, myTitle));
+		SetText (PT_Caption.Instance.LoadCaption (myCategory, myTitle));
 	}
 
-	public void ShowText (string g_text) {
-		myText.text = g_text;
+	public void SetColor (Color g_color) {
+		myText.color = g_color;
+	}
+
+	public void SetText (string g_text) {
+		if (isAllCaps)
+			myText.text = g_text.ToUpper ();
+		else
+			myText.text = g_text;
 
 		//		myTextShadow = this.GetComponentInChildren<PT_TextShadow> ();
 		if (myTextShadow != null)
@@ -44,7 +53,7 @@ public class PT_Text : MonoBehaviour {
 
 	public void SetTitle (string g_title) {
 		myTitle = g_title;
-		ShowText ();
+		SetText ();
 	}
 
 }

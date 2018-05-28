@@ -13,7 +13,7 @@ public class CheesyCanvas : MonoBehaviour {
 	private Vector2 myDefaultSize;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		myCanvasScaler = this.GetComponent<CanvasScaler> ();
 		myDefaultSize = myCanvasScaler.referenceResolution;
 		UpdateResize ();

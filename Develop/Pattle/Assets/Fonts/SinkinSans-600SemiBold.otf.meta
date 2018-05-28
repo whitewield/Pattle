@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 2a0f14b7e860547e6b5ad90b17290e52
+timeCreated: 1527457062
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Sinkin Sans
+  fontNames:
+  - Sinkin Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9a116d837b90b44a7b5fda1e65f29fbc, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

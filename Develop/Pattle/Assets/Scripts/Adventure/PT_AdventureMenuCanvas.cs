@@ -97,16 +97,16 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 
 	[Header ("Difficulty")]
 	[SerializeField] RectTransform myPageDifficulty;
-	[SerializeField] Text myPageDifficulty_Name;
+	[SerializeField] PT_Text myPageDifficulty_Name;
 	[SerializeField] RectTransform myPageDifficulty_Image;
 	private GameObject myPageDifficulty_CurrentImage;
 	[SerializeField] Image[] myPageDifficulty_MedalImages;
 
 	[Header ("Deck")]
 	[SerializeField] RectTransform myPageDeck;
-	[SerializeField] Text myPageDeck_Name;
+	[SerializeField] PT_Text myPageDeck_Name;
 	[SerializeField] RectTransform myPageDeck_Image;
-	[SerializeField] Text myPageDeck_DifficultyText;
+	[SerializeField] PT_Text myPageDeck_DifficultyText;
 	[SerializeField] Image myPageDeck_DifficultyImage;
 	private GameObject myPageDeck_CurrentImage;
 
@@ -212,8 +212,8 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 		myPageDeck_CurrentImage = Instantiate (g_setup.myMenuDisplayPrefab, myPageDeck_Image);
 
 		// update the boss name
-		myPageDifficulty_Name.text = g_setup.myMenuDisplayName;
-		myPageDeck_Name.text = g_setup.myMenuDisplayName;
+		myPageDifficulty_Name.SetText (g_setup.myMenuDisplayName);
+		myPageDeck_Name.SetText (g_setup.myMenuDisplayName);
 
 		//show medals
 		MedalType[] t_medals = AdventureSave.LoadMedalTypes (g_setup.myBossType);
@@ -232,8 +232,8 @@ public class PT_AdventureMenuCanvas : MonoBehaviour {
 //		myCurrentDifficulty = g_difficulty;
 
 		// change difficulty display
-		myPageDeck_DifficultyText.text = g_difficulty.ToString ();
-		myPageDeck_DifficultyText.color = g_color;
+		myPageDeck_DifficultyText.SetText (g_difficulty.ToString ());
+		myPageDeck_DifficultyText.SetColor (g_color);
 //		myPageDeck_DifficultyImage.color = g_color;
 
 		// update the boss in deck manager

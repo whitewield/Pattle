@@ -6,8 +6,8 @@ using Pattle.Global;
 
 public class PT_Preset_Info : MonoBehaviour {
 	[SerializeField] SpriteRenderer mySpriteRenderer_Chess;
-	[SerializeField] Text myText_Name;
-	[SerializeField] Text myText_Info;
+	[SerializeField] PT_Text myText_Name;
+	[SerializeField] PT_Text myText_Info;
 	[SerializeField] Text myText_HP;
 	[SerializeField] Text myText_PD;
 	[SerializeField] Text myText_PR;
@@ -26,8 +26,12 @@ public class PT_Preset_Info : MonoBehaviour {
 
 	public void ShowInfo (ChessInfo g_chessInfo) {
 		mySpriteRenderer_Chess.sprite = g_chessInfo.prefab.GetComponent<SpriteRenderer> ().sprite;
-		myText_Name.text = PT_Caption.Instance.LoadCaption (Constants.CAPTION_CHESSNAME, g_chessInfo.chessType.ToString ());
-		myText_Info.text = PT_Caption.Instance.LoadCaption (Constants.CAPTION_CHESSABILITY, g_chessInfo.chessType.ToString ());
+		myText_Name.SetText (
+			PT_Caption.Instance.LoadCaption (Constants.CAPTION_CHESSNAME, g_chessInfo.chessType.ToString ())
+		);
+		myText_Info.SetText (
+			PT_Caption.Instance.LoadCaption (Constants.CAPTION_CHESSABILITY, g_chessInfo.chessType.ToString ())
+		);
 
 		SO_Attributes t_attributes = g_chessInfo.prefab.GetComponent<PT_BaseChess> ().GetAttributes ();
 		myText_HP.text = t_attributes.HP.ToString ("0");
