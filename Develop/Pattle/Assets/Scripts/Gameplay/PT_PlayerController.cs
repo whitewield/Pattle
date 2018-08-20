@@ -67,6 +67,9 @@ public class PT_PlayerController : NetworkBehaviour {
 //		}
 	}
 
+	/// <summary>
+	/// Init player control
+	/// </summary>
 	public void Init () {
 		// if this player controller is not registered on the network game manager, do the initialization 1 sec later
 		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == -1) {
@@ -75,8 +78,7 @@ public class PT_PlayerController : NetworkBehaviour {
 			return;
 		}
 
-		// if it's the second player, rotate the camera for this palyer
-//		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
+		// if it's the second player, rotate the camera for this player
 		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == 1) {
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
 		} else {
@@ -104,39 +106,41 @@ public class PT_PlayerController : NetworkBehaviour {
 		// create chess
 		CmdCreateChess (PT_DeckManager.Instance.GetChessTypes (), PT_DeckManager.Instance.GetChessPositions ());
 
-		//		Debug.Log (GetInstanceID ());
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
+		// only local player will do the update
 		if (!base.isLocalPlayer)
 			return;
 
+		// update the target display
 		foreach (PT_PlayerController_TargetDisplay f_targetDisplay in myTargetDisplays) {
 			f_targetDisplay.UpdateTarget ();
 		}
 
+		// if its selecting an object, set the select effect poisiton to the object
 		if (myGameObject_X != null)
 			mySelect.transform.position = myGameObject_X.transform.position;
 
+		// hold down the left button
 		if (Input.GetMouseButtonDown (0)) {
+			// set isMouseDown to true
 			isMouseDown = true;
-			//			Debug.Log ("MouseDown" + Input.mousePosition);
-
+			// set the myMouseDownPosition to the mouse position
 			myMouseDownPosition = Input.mousePosition;
-
+			// do a raycast to the currently clicking position
 			Ray t_ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit2D t_hit = Physics2D.GetRayIntersection (t_ray, 100, 1024 + 2048);
 			if (t_hit.collider != null) {
-				//				Debug.Log (t_hit.transform.name);
-
+				// if hit something, update the temp gameObject and position
 				myGameObject_T = t_hit.collider.gameObject;
-				myPosition_T = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			} else
+				myPosition_T = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			} else {
+				// set isMouseDown back to false if didn't click on anything
 				isMouseDown = false;
+			}
 		}
 
-		//Debug.Log (Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition));
 		PT_BaseChess t_BaseChess_T = null;
 		if (myGameObject_T && myGameObject_T.GetComponent<PT_BaseChess> ())
 			t_BaseChess_T = myGameObject_T.GetComponent<PT_BaseChess> ();
@@ -453,14 +457,13 @@ public class PT_PlayerController_TargetDisplay {
 		UpdateTarget ();
 	}
 
+	// update the target display
 	public void UpdateTarget () {
 		if (myTargetLine == null || myTargetSign == null)
 			return;
 
 		if (myTargetLine.activeSelf == false || myTargetSign.activeSelf == false)
 			return;
-
-//		Debug.Log ("UpdateTarget");
 
 		if (myTargetIsSingle) {
 			myTargetSign.transform.position = myTargetGameObject.transform.position;
