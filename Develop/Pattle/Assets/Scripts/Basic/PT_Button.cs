@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using Hang.AiryAudio;
 
+using Hang.AiryAudio;
 
 public class PT_Button : MonoBehaviour {
 	// for position change

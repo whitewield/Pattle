@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// commit suicide 
+/// </summary>
 public class PT_Suicide : NetworkBehaviour {
 
 	public float mySuicideTime = -1;

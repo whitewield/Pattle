@@ -37,16 +37,16 @@ public class PT_PlayerController : NetworkBehaviour {
 		myTargetLinePrefab = Resources.Load<GameObject> (Constants.PATH_TARGET_LINE);
 
 		// register on network game manager
-		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
-			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
-			PT_NetworkGameManager.Instance.myPlayerList [1] = this;
+		if (PT_NetworkGameManager.Instance.myPlayerList[0] != null &&
+			PT_NetworkGameManager.Instance.myPlayerList[0].enabled == true) {
+			PT_NetworkGameManager.Instance.myPlayerList[1] = this;
 		} else {
-			PT_NetworkGameManager.Instance.myPlayerList [0] = this;
+			PT_NetworkGameManager.Instance.myPlayerList[0] = this;
 		}
 	}
 
 	void Start () {
-		
+
 		if (!base.isLocalPlayer) {
 			return;
 		}
@@ -60,11 +60,11 @@ public class PT_PlayerController : NetworkBehaviour {
 		// hide effects
 		HideSelect ();
 		HideLine ();
-		
-//		if (PT_NetworkGameManager.Instance != null) {
-//			//we MAY be awake late (see comment on _wasInit above), so if the instance is already there we init
-//			Init();
-//		}
+
+		//		if (PT_NetworkGameManager.Instance != null) {
+		//			//we MAY be awake late (see comment on _wasInit above), so if the instance is already there we init
+		//			Init();
+		//		}
 	}
 
 	/// <summary>
@@ -122,7 +122,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		if (myGameObject_X != null)
 			mySelect.transform.position = myGameObject_X.transform.position;
 
-		// hold down the left button
+		// if mouse down
 		if (Input.GetMouseButtonDown (0)) {
 			// set isMouseDown to true
 			isMouseDown = true;
@@ -141,71 +141,84 @@ public class PT_PlayerController : NetworkBehaviour {
 			}
 		}
 
+		// get the chess script from the temp game object
 		PT_BaseChess t_BaseChess_T = null;
 		if (myGameObject_T && myGameObject_T.GetComponent<PT_BaseChess> ())
 			t_BaseChess_T = myGameObject_T.GetComponent<PT_BaseChess> ();
 
-		if (isMouseDown == true && 
-			t_BaseChess_T != null && 
-			t_BaseChess_T.GetProcess() != Process.Dead &&
-			t_BaseChess_T.GetMyOwnerID() == myID &&
+		// if mouse down, click on my own chess and it's not dead, and mouse moving distance is far enough
+		if (isMouseDown == true &&
+			t_BaseChess_T != null &&
+			t_BaseChess_T.GetProcess () != Process.Dead &&
+			t_BaseChess_T.GetMyOwnerID () == myID &&
 			Vector3.SqrMagnitude (myMouseDownPosition - Input.mousePosition) > Constants.DISTANCE_DRAG) {
+			// set dragging to true
 			isMouseDrag = true;
-
+			// show the dragging line display
 			ShowLine ();
 		}
 
+		// if is dragging
 		if (isMouseDrag == true) {
+			// udpate the line display
 			UpdateLine (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 		}
 
+		// if mouse up
 		if (Input.GetMouseButtonUp (0)) {
-
+			// hide the line drag display
 			HideLine ();
-
+			// set mouse down
 			isMouseDown = false;
-
+			// do a raycast to the currently mouse position
 			Ray t_ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit2D t_hit = Physics2D.GetRayIntersection (t_ray, 100, 1024 + 2048);
 			GameObject t_gameObject;
 			if (t_hit.collider != null) {
+				// get the hit object
 				t_gameObject = t_hit.collider.gameObject;
-
+				// if its dragging
 				if (isMouseDrag == true) {
+					// set dragging back to false
 					isMouseDrag = false;
-
+					// set temp to X
 					myGameObject_X = myGameObject_T;
-
+					// set current hitting object to Y
 					myGameObject_Y = t_gameObject;
+					// set Y position
 					myPosition_Y = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
-					//Send Message to chess X
+					// send message to chess X
 					CmdChessAction (myGameObject_X, myGameObject_Y, myPosition_Y);
 				} else {
+					// if its not dragging
+					// if X is empty
 					if (myGameObject_X == null) {
+						// if temp is my active chess
 						if (t_BaseChess_T != null &&
 						   t_BaseChess_T.GetProcess () != Process.Dead &&
 						   t_BaseChess_T.GetMyOwnerID () == myID) {
+							// set temp to X
 							myGameObject_X = myGameObject_T;
-
+							// show selecting effect
 							ShowSelect ();
 						}
-					}
-					else {
+					} else {
+						// if X is not empty
+						// set temp to Y
 						myGameObject_Y = myGameObject_T;
 						myPosition_Y = myPosition_T;
-						//Send Message to chess X
+						// send message to chess X
 						CmdChessAction (myGameObject_X, myGameObject_Y, myPosition_Y);
 					}
 				}
 			}
-
-
-
-			//			Debug.Log ("MouseDown" + Input.mousePosition);
 		}
 	}
 
+	/// <summary>
+	/// the chess action is done
+	/// </summary>
 	public void Done () {
 		myGameObject_X = null;
 		myGameObject_Y = null;
@@ -214,97 +227,122 @@ public class PT_PlayerController : NetworkBehaviour {
 		HideSelect ();
 	}
 
+	/// <summary>
+	/// the chess action is undone
+	/// </summary>
 	public void Undone () {
-		if (myGameObject_Y.GetComponent<PT_BaseChess>()!= null && 
-			myGameObject_Y.GetComponent<PT_BaseChess>().GetMyOwnerID() == myID) {
+		if (myGameObject_Y.GetComponent<PT_BaseChess> () != null &&
+			myGameObject_Y.GetComponent<PT_BaseChess> ().GetMyOwnerID () == myID) {
 			myGameObject_X = myGameObject_Y;
 			myGameObject_Y = null;
 			myPosition_Y = Vector2.zero;
 
-			ShowSelect();
+			ShowSelect ();
 		} else
 			Done ();
 	}
 
+	/// <summary>
+	/// Shows the selecting effect.
+	/// </summary>
 	private void ShowSelect () {
 		mySelect.transform.position = myGameObject_X.transform.position;
 		mySelect.SetActive (true);
 	}
 
+	/// <summary>
+	/// Hides the selecting effect.
+	/// </summary>
 	private void HideSelect () {
 		mySelect.SetActive (false);
 	}
 
+	/// <summary>
+	/// Shows the line effect.
+	/// </summary>
 	private void ShowLine () {
 		myLine.GetComponent<LineRenderer> ().SetPosition (0, myGameObject_T.transform.position);
 		myLine.GetComponent<LineRenderer> ().SetPosition (1, myPosition_T);
 		myLine.SetActive (true);
 	}
 
+	/// <summary>
+	/// Updates the line effect.
+	/// </summary>
+	/// <param name="t_pos">target end position.</param>
 	private void UpdateLine (Vector3 t_pos) {
 		myLine.GetComponent<LineRenderer> ().SetPosition (0, myGameObject_T.transform.position);
-		myLine.GetComponent<LineRenderer> ().SetPosition (1, new Vector3(t_pos.x, t_pos.y, 0));
+		myLine.GetComponent<LineRenderer> ().SetPosition (1, new Vector3 (t_pos.x, t_pos.y, 0));
 	}
 
+	/// <summary>
+	/// Hides the line effect.
+	/// </summary>
 	private void HideLine () {
 		myLine.SetActive (false);
 	}
 
+	/// <summary>
+	/// Checks if this player controller lose
+	/// </summary>
 	public void CheckLose () {
 		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (myID);
 		Debug.Log (t_chessList.Count);
+		// if any of the chess is not dead, return
 		for (int i = 0; i < t_chessList.Count; i++) {
-			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
+			if (t_chessList[i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
 				return;
 			}
 		}
-
+		// tell other players that I lose
 		RpcLose ();
 	}
 
+	// used by ui, surrender
 	public void Lose () {
 		if (isLocalPlayer)
 			CmdLose ();
 	}
-		
+
+	#region Network
+	// create chess
 	[Command]
 	public void CmdCreateChess (ChessType[] g_chessTypes, Vector2[] g_positions) {
 		myID = System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this);
-//		Debug.Log (myID);
+		//		Debug.Log (myID);
 
 		if (myID == -1) {
 			Invoke ("CmdCreateChess", 1);
 			return;
 		}
 
-		for(int i = 0; i < g_chessTypes.Length; i++) {
+		for (int i = 0; i < g_chessTypes.Length; i++) {
 			// create server-side instance
-
 			GameObject t_chessObject = (GameObject)Instantiate (
-				                           PT_DeckManager.Instance.myChessBank.GetChessPrefab (g_chessTypes [i]), 
-				                           Random.insideUnitCircle * 4, 
-				                           Quaternion.identity
-			                           );
+										   PT_DeckManager.Instance.myChessBank.GetChessPrefab (g_chessTypes[i]),
+										   Random.insideUnitCircle * 4,
+										   Quaternion.identity
+									   );
 			PT_BaseChess t_chess = t_chessObject.GetComponent<PT_BaseChess> ();
 
 			//add the chess to the network game manager
-//			PT_NetworkGameManager.myChessList [myID].Add (t_chess);
+			//PT_NetworkGameManager.myChessList [myID].Add (t_chess);
 
 			//set the player id to the chess
 			t_chess.SetMyOwnerID (myID);
 			t_chess.SetMyPlayerController (this);
 
-//			myChessCount++;
+			//myChessCount++;
 
-			t_chess.transform.position = g_positions [i];
+			t_chess.transform.position = g_positions[i];
 
 			if (myID == 1) {
 				t_chess.transform.position *= -1;
 			}
 
 			//test
-//			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
-//			t_chess.Initialize();
+			//			if(myID == 0)t_chessObject.GetComponent<SpriteRenderer>().color = Color.red;
+			//			t_chess.Initialize();
 
 			// spawn on the clients
 			NetworkServer.Spawn (t_chessObject);
@@ -314,21 +352,22 @@ public class PT_PlayerController : NetworkBehaviour {
 		}
 	}
 
-
+	// do action for chess
 	[Command]
 	public void CmdChessAction (GameObject g_active, GameObject g_target, Vector2 g_targetPos) {
 		if (g_active.GetComponent<PT_BaseChess> () && g_active.GetComponent<PT_BaseChess> ().Action (g_target, g_targetPos))
 			RpcDone ();
-		else 
+		else
 			RpcUndone ();
 	}
 
+	// check lose
 	[Command]
 	public void CmdCheckLose () {
 		List<GameObject> t_chessList = PT_NetworkGameManager.Instance.GetChessList (myID);
 		Debug.Log (t_chessList.Count);
 		for (int i = 0; i < t_chessList.Count; i++) {
-			if (t_chessList [i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
+			if (t_chessList[i].GetComponent<PT_BaseChess> ().GetProcess () != Process.Dead) {
 				return;
 			}
 		}
@@ -386,14 +425,14 @@ public class PT_PlayerController : NetworkBehaviour {
 		if (!isLocalPlayer)
 			return;
 
-//		Debug.Log (g_ID + ", " + g_targetOwnerID + ", " + g_targetID + ", " + g_TargetPosition);
+		//		Debug.Log (g_ID + ", " + g_targetOwnerID + ", " + g_targetID + ", " + g_TargetPosition);
 
-		myTargetDisplays [g_ID].SetOwner (myID, g_ID);
+		myTargetDisplays[g_ID].SetOwner (myID, g_ID);
 
 		if (g_targetOwnerID == -1 || g_targetID == -1) {
-			myTargetDisplays [g_ID].ShowTarget (g_TargetPosition);
+			myTargetDisplays[g_ID].ShowTarget (g_TargetPosition);
 		} else
-			myTargetDisplays [g_ID].ShowTarget (g_targetOwnerID, g_targetID);
+			myTargetDisplays[g_ID].ShowTarget (g_targetOwnerID, g_targetID);
 	}
 
 	[ClientRpc]
@@ -401,7 +440,7 @@ public class PT_PlayerController : NetworkBehaviour {
 		if (!isLocalPlayer)
 			return;
 
-		myTargetDisplays [g_ID].HideTarget ();
+		myTargetDisplays[g_ID].HideTarget ();
 	}
 
 	[ClientRpc]
@@ -410,8 +449,12 @@ public class PT_PlayerController : NetworkBehaviour {
 			Init ();
 		}
 	}
+	#endregion
 }
 
+/// <summary>
+/// used for target display
+/// </summary>
 public class PT_PlayerController_TargetDisplay {
 	private GameObject myChess;
 	private GameObject myTargetSign;
@@ -421,6 +464,7 @@ public class PT_PlayerController_TargetDisplay {
 	private bool myTargetIsSingle = false;
 	private Vector2 myTargetPosition;
 
+	// init the target display
 	public PT_PlayerController_TargetDisplay (string g_name, GameObject g_sign, GameObject g_line) {
 		myTargetSign = g_sign;
 		myTargetSign.name = "TargetSign_" + g_name;
@@ -431,6 +475,7 @@ public class PT_PlayerController_TargetDisplay {
 		myTargetLine.SetActive (false);
 	}
 
+	// set the owner
 	public void SetOwner (int g_chessOwnerID, int g_chessID) {
 		if (myChess == null) {
 			myChess = PT_NetworkGameManager.Instance.myChessList [g_chessOwnerID] [g_chessID];
