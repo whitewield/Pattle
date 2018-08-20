@@ -12,13 +12,15 @@ public class PT_TextShadow : MonoBehaviour {
 	}
 	
 	public void UpdateShadow (Text g_target) {
-		//set text
+		// set text
 		myText.text = g_target.text;
-		//set font size
+		// set font 
+		myText.font = g_target.font;
+		// set font size
 		myText.fontSize = g_target.fontSize;
-		//set font style
+		// set font style
 		myText.fontStyle = g_target.fontStyle;
-		//set alignment
+		// set alignment
 		myText.alignment = g_target.alignment;
 	}
 }

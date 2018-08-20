@@ -5,53 +5,59 @@ using UnityEngine.Networking;
 using Pattle.Global;
 
 public class PT_PlayerController : NetworkBehaviour {
+	// the id of this controller, used for networking
 	[SyncVar] int myID = -1;
-//	[SerializeField] GameObject[] myChessPrefabs;
-//	[SerializeField] Vector2[] myChessPositions;
-//	[SyncVar] int myChessCount = 0;
 
 	private bool wasInit = false;
 
+	// control feed back prefabs
 	[SerializeField] GameObject mySelect;
 	[SerializeField] GameObject myLine;
+
+	// the targets records
 	private GameObject myGameObject_X;
 	private GameObject myGameObject_T;
 	private Vector2 myPosition_T;
 	private GameObject myGameObject_Y;
 	private Vector2 myPosition_Y;
-	//new input
+
+	// input
 	private bool isMouseDown;
 	private Vector3 myMouseDownPosition;
 	private bool isMouseDrag;
 
+	// target display for controlling
 	private List<PT_PlayerController_TargetDisplay> myTargetDisplays = new List<PT_PlayerController_TargetDisplay> ();
 	private GameObject myTargetSignPrefab;
 	private GameObject myTargetLinePrefab;
 
 	void Awake () {
+		// find basic sign and line prefabs for target display
 		myTargetSignPrefab = Resources.Load<GameObject> (Constants.PATH_TARGET_SIGN);
 		myTargetLinePrefab = Resources.Load<GameObject> (Constants.PATH_TARGET_LINE);
 
+		// register on network game manager
 		if (PT_NetworkGameManager.Instance.myPlayerList [0] != null && 
 			PT_NetworkGameManager.Instance.myPlayerList [0].enabled == true) {
 			PT_NetworkGameManager.Instance.myPlayerList [1] = this;
 		} else {
 			PT_NetworkGameManager.Instance.myPlayerList [0] = this;
 		}
-//		ClientScene.RegisterPrefab
 	}
 
-	// Use this for initialization
 	void Start () {
-		// register on network game manager
+		
 		if (!base.isLocalPlayer) {
 			return;
 		}
-			
+
+		// create a selected effect
 		mySelect = Instantiate (mySelect, Vector3.zero, Quaternion.identity) as GameObject;
 		mySelect.transform.SetParent (this.transform);
+		// create a drag line effect
 		myLine = Instantiate (myLine) as GameObject;
 		myLine.transform.SetParent (this.transform);
+		// hide effects
 		HideSelect ();
 		HideLine ();
 		
@@ -62,16 +68,14 @@ public class PT_PlayerController : NetworkBehaviour {
 	}
 
 	public void Init () {
-
-		//		Debug.Log (GetInstanceID ());
+		// if this player controller is not registered on the network game manager, do the initialization 1 sec later
 		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == -1) {
 			Invoke ("Init", 1);
 			Debug.Log ("Invoke");
 			return;
 		}
 
-
-		//rotate the camera
+		// if it's the second player, rotate the camera for this palyer
 //		Debug.Log ("do" + System.Array.IndexOf (PT_NetworkGameManager.myPlayerList, this));
 		if (System.Array.IndexOf (PT_NetworkGameManager.Instance.myPlayerList, this) == 1) {
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 180);
@@ -79,9 +83,11 @@ public class PT_PlayerController : NetworkBehaviour {
 			Camera.main.transform.rotation = Quaternion.Euler (0, 0, 0);
 		}
 
+		// if it's already init, return
 		if (wasInit)
 			return;
 
+		// set init to true
 		wasInit = true;
 
 		// init target display list
@@ -95,6 +101,7 @@ public class PT_PlayerController : NetworkBehaviour {
 			);
 		}
 
+		// create chess
 		CmdCreateChess (PT_DeckManager.Instance.GetChessTypes (), PT_DeckManager.Instance.GetChessPositions ());
 
 		//		Debug.Log (GetInstanceID ());

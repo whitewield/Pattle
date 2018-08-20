@@ -99,11 +99,6 @@ public class PT_DeckManager : MonoBehaviour {
 
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void SetGameMode (GameMode g_mode) {
 		myGameMode = g_mode;
